@@ -11,9 +11,6 @@
   "environment": "client",
   "entrypoints": {
     "client": [
-      "kr1v.malilibApi.client.MalilibApiClient"
-    ],
-    "main": [
       "kr1v.malilibApi.MalilibApi"
     ]
   },
