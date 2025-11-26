@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "malilib-api",
+  "version": "${version}",
+  "name": "malilib-api",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/malilib-api/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "kr1v.malilibApi.client.MalilibApiClient"
+    ],
+    "main": [
+      "kr1v.malilibApi.MalilibApi"
+    ]
+  },
+  "mixins": [
+    "malilib-api.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "minecraft": "${minecraft_version}"
+  }
+}
