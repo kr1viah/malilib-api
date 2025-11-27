@@ -118,12 +118,15 @@ jar {
 
 publishing {
     publications {
-        create("mavenJava", MavenPublication) {
-            artifactId = project.archives_base_name
+        mavenJava(MavenPublication) {
+            groupId = 'com.kr1v'
+            artifactId = 'malilib-api'
+            version = project.version
+
             from components.java
         }
     }
-
     repositories {
+        mavenLocal()
     }
 }
