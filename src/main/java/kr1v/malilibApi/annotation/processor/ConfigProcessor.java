@@ -1,4 +1,4 @@
-package kr1v.processor;
+package kr1v.malilibApi.annotation.processor;
 
 import com.google.auto.service.AutoService;
 import com.google.gson.*;

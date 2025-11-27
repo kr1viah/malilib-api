@@ -1,6 +1,6 @@
 package kr1v.malilibApi.util;
 
-import kr1v.processor.ConfigProcessor;
+import kr1v.malilibApi.annotation.processor.ConfigProcessor;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;

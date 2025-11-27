@@ -6,10 +6,10 @@ import kr1v.malilibApi.annotation.Extras;
 import kr1v.malilibApi.annotation.Label;
 import kr1v.malilibApi.annotation.Marker;
 import kr1v.malilibApi.annotation.PopupConfig;
+import kr1v.malilibApi.annotation.processor.ConfigProcessor;
 import kr1v.malilibApi.config.ConfigButton;
 import kr1v.malilibApi.config.ConfigLabel;
 import kr1v.malilibApi.screen.ConfigPopupScreen;
-import kr1v.processor.ConfigProcessor;
 import net.minecraft.client.MinecraftClient;
 
 import java.lang.annotation.Annotation;
