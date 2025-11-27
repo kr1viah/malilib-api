@@ -11,7 +11,6 @@ import kr1v.malilibApi.annotation.PopupConfig;
 import kr1v.malilibApi.annotation.processor.ConfigProcessor;
 import kr1v.malilibApi.screen.ConfigScreen;
 import kr1v.malilibApi.util.AnnotationUtils;
-import kr1v.malilibApi.util.ClassUtils;
 import kr1v.malilibApi.util.ConfigUtils;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
@@ -25,26 +24,26 @@ public class MalilibApi implements ClientModInitializer {
     public void onInitializeClient() {}
 
     public static void registerMod(String modName) {
-        registerMod(modName, modName, "0.0.0", new ConfigHandler(modName), new InputHandler(modName), ClassUtils.getCaller());
+        registerMod(modName, modName, "0.0.0", new ConfigHandler(modName), new InputHandler(modName));
     }
 
     public static void registerMod(String modName, String version) {
-        registerMod(modName, modName, version, new ConfigHandler(modName), new InputHandler(modName), ClassUtils.getCaller());
+        registerMod(modName, modName, version, new ConfigHandler(modName), new InputHandler(modName));
     }
 
     public static void registerMod(String modName, String version, ConfigHandler configHandler) {
-        registerMod(modName, modName, version, configHandler, new InputHandler(modName), ClassUtils.getCaller());
+        registerMod(modName, modName, version, configHandler, new InputHandler(modName));
     }
 
     public static void registerMod(String modName, String version, InputHandler inputHandler) {
-        registerMod(modName, modName, version, new ConfigHandler(modName), inputHandler, ClassUtils.getCaller());
+        registerMod(modName, modName, version, new ConfigHandler(modName), inputHandler);
     }
 
     public static void registerMod(String modName, String version, ConfigHandler configHandler, InputHandler inputHandler) {
-        registerMod(modName, modName, version, configHandler, inputHandler, ClassUtils.getCaller());
+        registerMod(modName, modName, version, configHandler, inputHandler);
     }
 
-    public static void registerMod(String modId, String modName, String version, ConfigHandler configHandler, InputHandler inputHandler, Class<?> mainClass) {
+    public static void registerMod(String modId, String modName, String version, ConfigHandler configHandler, InputHandler inputHandler) {
         if (registeredMods.contains(modId)) throw new IllegalStateException("Mod id is already registered!");
         registeredMods.add(modId);
         AnnotationUtils.registerMod(modId);
@@ -63,7 +62,7 @@ public class MalilibApi implements ClientModInitializer {
         ClientLifecycleEvents.CLIENT_STOPPING.register(client -> configHandler.save());
 
         try {
-            for (String s : ConfigProcessor.getElementsForMod(mainClass).keySet()) {
+            for (String s : ConfigProcessor.getElementsForMod(modId).keySet()) {
                 Class<?> cfgClass = Class.forName(s);
                 if (cfgClass.isAnnotationPresent(PopupConfig.class)) continue;
                 Config ann = cfgClass.getDeclaredAnnotation(Config.class);

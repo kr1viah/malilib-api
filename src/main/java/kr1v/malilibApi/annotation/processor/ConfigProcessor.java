@@ -6,6 +6,9 @@ import com.google.gson.reflect.TypeToken;
 import com.sun.source.tree.*;
 import com.sun.source.util.TreePath;
 import com.sun.source.util.Trees;
+import kr1v.malilibApi.annotation.Config;
+import kr1v.malilibApi.annotation.MainClass;
+import kr1v.malilibApi.annotation.PopupConfig;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
@@ -27,13 +30,15 @@ import java.util.stream.Collectors;
 
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
 @SupportedAnnotationTypes({"kr1v.malilibApi.annotation.Config",
-        "kr1v.malilibApi.annotation.PopupConfig"})
+                "kr1v.malilibApi.annotation.PopupConfig",
+                "kr1v.malilibApi.annotation.MainClass"})
 @AutoService(Processor.class)
 public class ConfigProcessor extends AbstractProcessor {
     public static final Gson GSON = new GsonBuilder().registerTypeAdapter(ValueDTO.class, new ValueDTODeserializer()).setPrettyPrinting().create();
 
     // fqcn -> class representation
     private static final Map<String, List<ElementRepresentation>> map = new HashMap<>();
+    private static String identifier = null;
 
     private Trees trees;
     private Elements elementUtils;
@@ -49,13 +54,24 @@ public class ConfigProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annos, RoundEnvironment roundEnv) {
+        println(roundEnv.getElementsAnnotatedWith(Config.class));
+        println(roundEnv.getElementsAnnotatedWith(PopupConfig.class));
+        println(roundEnv.getElementsAnnotatedWith(MainClass.class));
         Set<TypeElement> classes = new HashSet<>();
-        for (TypeElement a : annos) {
-            for (javax.lang.model.element.Element e : roundEnv.getElementsAnnotatedWith(a)) {
-                if (e.getKind() == ElementKind.CLASS || e.getKind() == ElementKind.INTERFACE) {
-                    classes.add((TypeElement) e);
-                }
-            }
+        Set<? extends javax.lang.model.element.Element> mains = roundEnv.getElementsAnnotatedWith(MainClass.class);
+        if (mains.size() > 1) {
+            throw new IllegalStateException("Only one class may be annotated with @MainClass");
+        }
+        for (var e : mains) {
+            MainClass ann = e.getAnnotation(MainClass.class);
+            identifier = ann.value();
+        }
+
+        for (var e : roundEnv.getElementsAnnotatedWith(Config.class)) {
+            classes.add((TypeElement) e);
+        }
+        for (var e : roundEnv.getElementsAnnotatedWith(PopupConfig.class)) {
+            classes.add((TypeElement) e);
         }
 
         for (TypeElement typeElement : classes) {
@@ -116,7 +132,8 @@ public class ConfigProcessor extends AbstractProcessor {
         try {
             Filer filer = processingEnv.getFiler();
             if (roundEnv.processingOver()) {
-                FileObject file = filer.createResource(StandardLocation.CLASS_OUTPUT, "", "META-INF/kr1v/classes.json");
+                if (identifier == null) throw new IllegalStateException();
+                FileObject file = filer.createResource(StandardLocation.CLASS_OUTPUT, "", "META-INF/kr1v/" + identifier + ".classes.json");
                 try (Writer w = file.openWriter()) {
                     GSON.toJson(map, w);
                 }
@@ -298,16 +315,16 @@ public class ConfigProcessor extends AbstractProcessor {
         public String className;
     }
 
-    public static List<ElementRepresentation> getDeclaredElementRepresentationsForClass(Class<?> clazz) {
-        return getElementsForMod(clazz).get(clazz.getName());
+    public static List<ElementRepresentation> getDeclaredElementRepresentationsForClass(Class<?> clazz, String modId) {
+        return getElementsForMod(modId).get(clazz.getName());
     }
 
-    public static Map<String, List<ElementRepresentation>> getElementsForMod(Class<?> mainClass) {
-        try (InputStream in = mainClass.getClassLoader()
-                .getResourceAsStream("META-INF/kr1v/classes.json")) {
+    public static Map<String, List<ElementRepresentation>> getElementsForMod(String modId) {
+        try (InputStream in = ConfigProcessor.class.getClassLoader()
+                .getResourceAsStream("META-INF/kr1v/" + modId + ".classes.json")) {
 
             if (in == null) {
-                throw new IllegalStateException("META-INF/kr1v/classes.json not found");
+                throw new IllegalStateException("META-INF/kr1v/" + modId + ".classes.json not found");
             }
 
             String json = new String(in.readAllBytes(), StandardCharsets.UTF_8);

@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClassUtils {
-    public static List<ConfigProcessor.Element> getDeclaredElements(Class<?> clazz) {
+    public static List<ConfigProcessor.Element> getDeclaredElements(Class<?> clazz, String modId) {
         List<ConfigProcessor.Element> elementsOfClass = new ArrayList<>();
-        List<ConfigProcessor.ElementRepresentation> elementRepresentations = ConfigProcessor.getDeclaredElementRepresentationsForClass(clazz);
+        List<ConfigProcessor.ElementRepresentation> elementRepresentations = ConfigProcessor.getDeclaredElementRepresentationsForClass(clazz, modId);
 
         try {
             assert elementRepresentations != null;
@@ -45,14 +45,5 @@ public class ClassUtils {
         }
 
         return elementsOfClass;
-    }
-
-    private static final StackWalker WALKER =
-            StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE);
-
-    public static Class<?> getCaller() {
-        return WALKER.walk(frames ->
-                frames.skip(1).findFirst().map(StackWalker.StackFrame::getDeclaringClass).orElse(null)
-        );
     }
 }
