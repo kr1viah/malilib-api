@@ -104,9 +104,9 @@ public class ConfigScreen  extends GuiConfigsBase {
                 List<ConfigGuiTab> valuesList = new ArrayList<>();
                 for (Class<?> clazz : AnnotationUtils.cacheFor(modId).keySet()) {
                     if (clazz.isAnnotationPresent(PopupConfig.class)) {
-                        valuesList.add(new ConfigGuiTab(AnnotationUtils.nameForConfig(clazz), AnnotationUtils.configsFor(clazz), true));
+                        valuesList.add(new ConfigGuiTab(AnnotationUtils.nameForConfig(clazz), AnnotationUtils.cacheFor(modId).get(clazz), true));
                     } else {
-                        valuesList.add(new ConfigGuiTab(AnnotationUtils.nameForConfig(clazz), AnnotationUtils.configsFor(clazz), false));
+                        valuesList.add(new ConfigGuiTab(AnnotationUtils.nameForConfig(clazz), AnnotationUtils.cacheFor(modId).get(clazz), false));
                     }
                 }
                 valueMap.put(modId, valuesList.toArray(new ConfigGuiTab[0]));

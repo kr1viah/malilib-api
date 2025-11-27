@@ -26,8 +26,8 @@ import java.util.stream.Collectors;
 
 
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
-@SupportedAnnotationTypes({"kr1v.kr1vUtils.client.utils.annotation.classannotations.Config",
-        "kr1v.kr1vUtils.client.utils.annotation.classannotations.PopupConfig"})
+@SupportedAnnotationTypes({"kr1v.malilibApi.annotation.Config",
+        "kr1v.malilibApi.annotation.PopupConfig"})
 @AutoService(Processor.class)
 public class ConfigProcessor extends AbstractProcessor {
     public static final Gson GSON = new GsonBuilder().registerTypeAdapter(ValueDTO.class, new ValueDTODeserializer()).setPrettyPrinting().create();
@@ -116,12 +116,11 @@ public class ConfigProcessor extends AbstractProcessor {
         try {
             Filer filer = processingEnv.getFiler();
             if (roundEnv.processingOver()) {
-                for (Map.Entry<String, List<ElementRepresentation>> entry : map.entrySet()) {
-                    FileObject file = filer.createResource(StandardLocation.CLASS_OUTPUT, "", "META-INF/kr1v/" + entry.getKey() + ".json");
-                    try (Writer w = file.openWriter()) {
-                        GSON.toJson(entry.getValue(), w);
-                    }
+                FileObject file = filer.createResource(StandardLocation.CLASS_OUTPUT, "", "META-INF/kr1v/classes.json");
+                try (Writer w = file.openWriter()) {
+                    GSON.toJson(map, w);
                 }
+
                 println("Written map. classes processed: " + map.size());
             }
         } catch (Throwable t) {
@@ -300,16 +299,20 @@ public class ConfigProcessor extends AbstractProcessor {
     }
 
     public static List<ElementRepresentation> getDeclaredElementRepresentationsForClass(Class<?> clazz) {
-        try (InputStream in = ConfigProcessor.class.getClassLoader()
-                .getResourceAsStream("META-INF/kr1v/" + clazz.getName() + ".json")) {
+        return getElementsForMod(clazz).get(clazz.getName());
+    }
+
+    public static Map<String, List<ElementRepresentation>> getElementsForMod(Class<?> mainClass) {
+        try (InputStream in = mainClass.getClassLoader()
+                .getResourceAsStream("META-INF/kr1v/classes.json")) {
 
             if (in == null) {
-                throw new IllegalStateException(clazz.getName() + ".json not found");
+                throw new IllegalStateException("META-INF/kr1v/classes.json not found");
             }
 
             String json = new String(in.readAllBytes(), StandardCharsets.UTF_8);
 
-            Type type = new TypeToken<List<ElementRepresentation>>(){}.getType();
+            Type type = new TypeToken<Map<String, List<ElementRepresentation>>>(){}.getType();
             return GSON.fromJson(json, type);
         } catch (IOException e) {
             throw new RuntimeException(e);

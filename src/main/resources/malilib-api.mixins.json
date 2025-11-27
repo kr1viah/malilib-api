@@ -4,6 +4,7 @@
   "package": "kr1v.malilibApi.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "malilib.WidgetConfigOptionMixin"
   ],
   "client": [
     "accessor.WidgetListConfigOptionsBaseAccessor"

@@ -20,14 +20,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConfigUtils {
-    public static List<IConfigBase> generateOptions(Class<?> clazz) {
+    public static List<IConfigBase> generateOptions(Class<?> clazz, String modId) {
         List<IConfigBase> list = new ArrayList<>();
 
         List<ConfigProcessor.Element> elements = ClassUtils.getDeclaredElements(clazz);
 
         try {
             for (ConfigProcessor.Element element : elements) {
-                handleAnnotations(element, list, clazz);
+                handleAnnotations(element, list, clazz, modId);
                 if (element.field != null) {
                     Field f = element.field;
                     if (IConfigBase.class.isAssignableFrom(f.getType())) {
@@ -45,7 +45,7 @@ public class ConfigUtils {
         return list;
     }
 
-    private static void handleAnnotations(ConfigProcessor.Element element, List<IConfigBase> list, Class<?> declaringClass) throws InvocationTargetException, IllegalAccessException {
+    private static void handleAnnotations(ConfigProcessor.Element element, List<IConfigBase> list, Class<?> declaringClass, String modId) throws InvocationTargetException, IllegalAccessException {
         for (Annotation annotation : element.annotations) {
             switch (annotation) {
                 case PopupConfig popupConfig -> {
@@ -62,13 +62,13 @@ public class ConfigUtils {
 
                     ConfigButton<Class<?>> configButton = new ConfigButton<>(name, buttonName, () ->
                             MinecraftClient.getInstance().setScreen(
-                                    new ConfigPopupScreen(klass, GuiUtils.getCurrentScreen())
+                                    new ConfigPopupScreen(klass, GuiUtils.getCurrentScreen(), modId)
                             ),
                             klass);
 
                     boolean prev = AnnotationUtils.getDefaultEnabled();
                     AnnotationUtils.setDefaultEnabled(klass.getAnnotation(PopupConfig.class).defaultEnabled());
-                    AnnotationUtils.CACHE.put(klass, generateOptions(klass));
+                    AnnotationUtils.cacheFor(modId).put(klass, generateOptions(klass, modId));
                     AnnotationUtils.setDefaultEnabled(prev);
                     list.add(configButton);
                 }

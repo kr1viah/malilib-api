@@ -28,15 +28,17 @@ public class ConfigPopupScreen extends GuiConfigsBase {
     private final int configDistanceFromTops;
 
     private final Class<?> configClass;
+    private final String modId;
 
     private final Screen customParent;
 
-    public ConfigPopupScreen(Class<?> configClass, Screen parent) {
+    public ConfigPopupScreen(Class<?> configClass, Screen parent, String modId) {
         super(0, 0, "", parent, configClass.getAnnotation(PopupConfig.class).name().isEmpty() ? configClass.getSimpleName() : configClass.getAnnotation(PopupConfig.class).name());
 
         this.setParent(parent);
         this.customParent = parent;
 
+        this.modId = modId;
         PopupConfig popupConfig = configClass.getAnnotation(PopupConfig.class);
         configDistanceFromTops = popupConfig.distanceFromTops();
         configDistanceFromSides = popupConfig.distanceFromSides();
@@ -111,7 +113,7 @@ public class ConfigPopupScreen extends GuiConfigsBase {
     @Override
     public List<ConfigOptionWrapper> getConfigs() {
         ImmutableList.Builder<ConfigOptionWrapper> builder = ImmutableList.builder();
-        for (IConfigBase config : AnnotationUtils.configsFor(this.configClass)) {
+        for (IConfigBase config : AnnotationUtils.cacheFor(modId).get(this.configClass)) {
             if (config instanceof ConfigLabel)
                 builder.add(new ConfigOptionWrapper(config.getComment()));
             else

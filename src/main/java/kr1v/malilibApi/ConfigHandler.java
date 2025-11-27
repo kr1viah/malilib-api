@@ -31,7 +31,7 @@ public class ConfigHandler implements IConfigHandler {
                 JsonObject root = element.getAsJsonObject();
 
                 for (Class<?> configClass : AnnotationUtils.cacheFor(MOD_ID).keySet()) {
-                    ConfigUtils.readConfigBase(root, configClass.getSimpleName(), AnnotationUtils.configsFor(configClass));
+                    ConfigUtils.readConfigBase(root, configClass.getSimpleName(), AnnotationUtils.cacheFor(MOD_ID).get(configClass));
                 }
             }
         }
@@ -44,7 +44,7 @@ public class ConfigHandler implements IConfigHandler {
         if ((dir.exists() && dir.isDirectory()) || dir.mkdirs()) {
             JsonObject root = new JsonObject();
             for (Class<?> configClass : AnnotationUtils.cacheFor(MOD_ID).keySet()) {
-                ConfigUtils.writeConfigBase(root, configClass.getSimpleName(), AnnotationUtils.configsFor(configClass));
+                ConfigUtils.writeConfigBase(root, configClass.getSimpleName(), AnnotationUtils.cacheFor(MOD_ID).get(configClass));
             }
             JsonUtils.writeJsonToFile(root, new File(dir, CONFIG_FILE_NAME));
         }

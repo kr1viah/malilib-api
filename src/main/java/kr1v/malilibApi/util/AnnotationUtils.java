@@ -10,20 +10,18 @@ import java.util.*;
 public final class AnnotationUtils {
     private AnnotationUtils() {}
 
-    public static Map<Class<?>, List<IConfigBase>> CACHE;
     private static final Map<String, Map<Class<?>, List<IConfigBase>>> MOD_CACHE = new HashMap<>();
 
     @NotNull
     public static Map<Class<?>, List<IConfigBase>> cacheFor(String modId) {
-        MOD_CACHE.computeIfAbsent(modId, k -> new TreeMap<>(Comparator.comparing((Class<?> x) -> AnnotationUtils.nameForConfig(x) + x.getName())));
         return MOD_CACHE.get(modId);
     }
 
-    private static boolean defaultEnabled = true;
-
-    public static List<IConfigBase> configsFor(Class<?> configClass) {
-        return CACHE.get(configClass);
+    public static void registerMod(String modId) {
+        MOD_CACHE.put(modId, new TreeMap<>(Comparator.comparing((Class<?> x) -> AnnotationUtils.nameForConfig(x) + x.getName())));
     }
+
+    private static boolean defaultEnabled = true;
 
     public static String nameForConfig(Class<?> configClass) {
         String name;
