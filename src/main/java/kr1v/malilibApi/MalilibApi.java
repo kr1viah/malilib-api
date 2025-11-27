@@ -19,7 +19,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import java.util.*;
 
 public class MalilibApi implements ClientModInitializer {
-    private static final List<String> registeredods = new ArrayList<>();
+    private static final List<String> registeredMods = new ArrayList<>();
 
     @Override
     public void onInitializeClient() {}
@@ -45,8 +45,8 @@ public class MalilibApi implements ClientModInitializer {
     }
 
     public static void registerMod(String modId, String modName, String version, ConfigHandler configHandler, InputHandler inputHandler, Class<?> mainClass) {
-        if (registeredods.contains(modId)) throw new IllegalStateException("Mod id is already registered!");
-        registeredods.add(modId);
+        if (registeredMods.contains(modId)) throw new IllegalStateException("Mod id is already registered!");
+        registeredMods.add(modId);
         AnnotationUtils.registerMod(modId);
 
         InitializationHandler.getInstance().registerInitializationHandler(() -> {

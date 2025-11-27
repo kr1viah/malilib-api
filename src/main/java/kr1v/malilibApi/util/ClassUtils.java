@@ -1,7 +1,6 @@
 package kr1v.malilibApi.util;
 
 import kr1v.malilibApi.annotation.processor.ConfigProcessor;
-import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -9,18 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClassUtils {
-    public static final Unsafe unsafe;
-
-    static {
-        try {
-            Field f = Unsafe.class.getDeclaredField("theUnsafe");
-            f.setAccessible(true);
-            unsafe = (Unsafe) f.get(null);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public static List<ConfigProcessor.Element> getDeclaredElements(Class<?> clazz) {
         List<ConfigProcessor.Element> elementsOfClass = new ArrayList<>();
         List<ConfigProcessor.ElementRepresentation> elementRepresentations = ConfigProcessor.getDeclaredElementRepresentationsForClass(clazz);
