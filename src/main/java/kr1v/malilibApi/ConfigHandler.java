@@ -19,6 +19,7 @@ public class ConfigHandler implements IConfigHandler {
         this.CONFIG_FILE_NAME = MOD_ID + ".json";
     }
 
+    public void loadAdditionalData(JsonObject root) {}
 
     @Override
     public void load() {
@@ -30,12 +31,23 @@ public class ConfigHandler implements IConfigHandler {
             if (element != null && element.isJsonObject()) {
                 JsonObject root = element.getAsJsonObject();
 
-                for (Class<?> configClass : AnnotationUtils.cacheFor(MOD_ID).keySet()) {
-                    ConfigUtils.readConfigBase(root, configClass.getSimpleName(), AnnotationUtils.cacheFor(MOD_ID).get(configClass));
+                if (root.has("configs") && root.get("configs").isJsonObject()) {
+                    JsonObject configs = root.get("configs").getAsJsonObject();
+                    for (Class<?> configClass : AnnotationUtils.cacheFor(MOD_ID).keySet()) {
+                        ConfigUtils.readConfigBase(configs, configClass.getSimpleName(), AnnotationUtils.cacheFor(MOD_ID).get(configClass));
+                    }
                 }
+
+                if (root.has("custom_data") && root.get("custom_data").isJsonObject()) {
+                    JsonObject customData = root.get("custom_data").getAsJsonObject();
+                    loadAdditionalData(customData);
+                }
+
             }
         }
     }
+
+    public void saveAdditionalData(JsonObject root) {}
 
     @Override
     public void save() {
@@ -43,9 +55,14 @@ public class ConfigHandler implements IConfigHandler {
 
         if ((dir.exists() && dir.isDirectory()) || dir.mkdirs()) {
             JsonObject root = new JsonObject();
+            JsonObject configs = new JsonObject();
+            JsonObject customData = new JsonObject();
+            saveAdditionalData(customData);
             for (Class<?> configClass : AnnotationUtils.cacheFor(MOD_ID).keySet()) {
-                ConfigUtils.writeConfigBase(root, configClass.getSimpleName(), AnnotationUtils.cacheFor(MOD_ID).get(configClass));
+                ConfigUtils.writeConfigBase(configs, configClass.getSimpleName(), AnnotationUtils.cacheFor(MOD_ID).get(configClass));
             }
+            root.add("configs", configs);
+            root.add("custom_data", customData);
             JsonUtils.writeJsonToFile(root, new File(dir, CONFIG_FILE_NAME));
         }
     }
