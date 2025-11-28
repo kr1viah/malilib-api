@@ -7,7 +7,7 @@
     "malilib.WidgetConfigOptionMixin"
   ],
   "client": [
-    "RenderSystemMixin",
+    "MinecraftClientMixin",
     "accessor.WidgetListConfigOptionsBaseAccessor"
   ],
   "injectors": {
