@@ -40,7 +40,6 @@ public class MalilibApi {
         });
 
         ClientLifecycleEvents.CLIENT_STOPPING.register(client -> configHandler.save());
-        configHandler.onConfigsChanged();
     }
 
     public static void init() {
