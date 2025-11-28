@@ -23,7 +23,7 @@ public class ConfigUtils {
     public static List<IConfigBase> generateOptions(Class<?> clazz, String modId) {
         List<IConfigBase> list = new ArrayList<>();
 
-        List<ConfigProcessor.Element> elements = ClassUtils.getDeclaredElements(clazz, modId);
+        List<ConfigProcessor.Element> elements = ClassUtils.getDeclaredElements(clazz);
 
         try {
             for (ConfigProcessor.Element element : elements) {

@@ -4,77 +4,68 @@ import fi.dy.masa.malilib.config.ConfigManager;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.event.InitializationHandler;
 import fi.dy.masa.malilib.event.InputEventHandler;
+import fi.dy.masa.malilib.gui.GuiBase;
 import fi.dy.masa.malilib.registry.Registry;
 import fi.dy.masa.malilib.util.data.ModInfo;
 import kr1v.malilibApi.annotation.Config;
-import kr1v.malilibApi.annotation.PopupConfig;
-import kr1v.malilibApi.annotation.processor.ConfigProcessor;
 import kr1v.malilibApi.screen.ConfigScreen;
 import kr1v.malilibApi.util.AnnotationUtils;
 import kr1v.malilibApi.util.ConfigUtils;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
+import org.reflections.Reflections;
 
 import java.util.*;
+import java.util.function.Supplier;
 
 public class MalilibApi implements ClientModInitializer {
-    private static final List<String> registeredMods = new ArrayList<>();
-
+    private static final Map<String, ModInfo> modIdToModInfoMap = new HashMap<>();
     @Override
     public void onInitializeClient() {}
 
-    public static void registerMod(String modName) {
-        registerMod(modName, modName, "0.0.0", new ConfigHandler(modName), new InputHandler(modName));
-    }
-
-    public static void registerMod(String modName, String version) {
-        registerMod(modName, modName, version, new ConfigHandler(modName), new InputHandler(modName));
-    }
-
-    public static void registerMod(String modName, String version, ConfigHandler configHandler) {
-        registerMod(modName, modName, version, configHandler, new InputHandler(modName));
-    }
-
-    public static void registerMod(String modName, String version, InputHandler inputHandler) {
-        registerMod(modName, modName, version, new ConfigHandler(modName), inputHandler);
-    }
-
-    public static void registerMod(String modName, String version, ConfigHandler configHandler, InputHandler inputHandler) {
-        registerMod(modName, modName, version, configHandler, inputHandler);
-    }
-
-    public static void registerMod(String modId, String modName, String version, ConfigHandler configHandler, InputHandler inputHandler) {
-        if (registeredMods.contains(modId)) throw new IllegalStateException("Mod id is already registered!");
-        registeredMods.add(modId);
+    public static void registerMod(String modId, String modName, ConfigHandler configHandler, InputHandler inputHandler) {
+        if (AnnotationUtils.isModRegistered(modId)) throw new IllegalStateException("Mod id is already registered!");
         AnnotationUtils.registerMod(modId);
 
         InitializationHandler.getInstance().registerInitializationHandler(() -> {
             ConfigManager.getInstance().registerConfigHandler(modId, configHandler);
 
-            Registry.CONFIG_SCREEN.registerConfigScreenFactory(
-                    new ModInfo(modId, modName, () -> new ConfigScreen(modId, modName, version))
-            );
+            var ref = new Object() {ModInfo modInfo = null;};
+            Supplier<GuiBase> configScreenSupplier = () -> new ConfigScreen(modId, modName, ref.modInfo);
+            ref.modInfo = new ModInfo(modId, modName, configScreenSupplier);
+
+            Registry.CONFIG_SCREEN.registerConfigScreenFactory(ref.modInfo);
+            modIdToModInfoMap.put(modId, ref.modInfo);
+
             InputEventHandler.getKeybindManager().registerKeybindProvider(inputHandler);
             InputEventHandler.getInputManager().registerKeyboardInputHandler(inputHandler);
             InputEventHandler.getInputManager().registerMouseInputHandler(inputHandler);
         });
 
         ClientLifecycleEvents.CLIENT_STOPPING.register(client -> configHandler.save());
+    }
 
-        try {
-            for (String s : ConfigProcessor.getElementsForMod(modId).keySet()) {
-                Class<?> cfgClass = Class.forName(s);
-                if (cfgClass.isAnnotationPresent(PopupConfig.class)) continue;
-                Config ann = cfgClass.getDeclaredAnnotation(Config.class);
-
-                AnnotationUtils.setDefaultEnabled(ann.defaultEnabled());
-                List<IConfigBase> list = ConfigUtils.generateOptions(cfgClass, modId);
-                AnnotationUtils.setDefaultEnabled(true);
-
-                AnnotationUtils.cacheFor(modId).put(cfgClass, list);
+    public static void init() {
+        Reflections reflections = new Reflections();
+        Set<Class<?>> configClasses = reflections.getTypesAnnotatedWith(Config.class);
+        for (Class<?> cfgClass : configClasses) {
+            Config annotation = cfgClass.getAnnotation(Config.class);
+            String modId = annotation.value();
+            boolean defaultEnabled = annotation.defaultEnabled();
+            if (!AnnotationUtils.isModRegistered(modId)) {
+                registerMod(modId, modId, new ConfigHandler(modId), new InputHandler(modId));
             }
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+
+            AnnotationUtils.setDefaultEnabled(defaultEnabled);
+            List<IConfigBase> list = ConfigUtils.generateOptions(cfgClass, modId);
+            AnnotationUtils.setDefaultEnabled(true);
+
+            AnnotationUtils.cacheFor(modId).put(cfgClass, list);
         }
+    }
+
+    public static void openScreenFor(String modId) {
+        ModInfo modInfo = modIdToModInfoMap.get(modId);
+        GuiBase.openGui(new ConfigScreen(modInfo.getModId(), modInfo.getModName(), modInfo));
     }
 }

@@ -1,10 +1,16 @@
 package kr1v.malilibApi.screen;
 
 import com.google.common.collect.ImmutableList;
+import fi.dy.masa.malilib.MaLiLibConfigs;
 import fi.dy.masa.malilib.config.IConfigBase;
+import fi.dy.masa.malilib.gui.GuiBase;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
+import fi.dy.masa.malilib.gui.widgets.WidgetDropDownList;
+import fi.dy.masa.malilib.registry.Registry;
+import fi.dy.masa.malilib.util.GuiUtils;
 import fi.dy.masa.malilib.util.StringUtils;
+import fi.dy.masa.malilib.util.data.ModInfo;
 import kr1v.malilibApi.annotation.PopupConfig;
 import kr1v.malilibApi.config.ConfigLabel;
 import kr1v.malilibApi.mixin.accessor.WidgetListConfigOptionsBaseAccessor;
@@ -16,9 +22,11 @@ import java.util.*;
 
 public class ConfigScreen  extends GuiConfigsBase {
     public ConfigGuiTab tab = ConfigScreen.ConfigGuiTab.values(this.modId)[0];
+    private final ModInfo modInfo;
 
-    public ConfigScreen(String modId, String titleKey, String version) {
-        super(10, 50, modId, null, titleKey, version);
+    public ConfigScreen(String modId, String titleKey, ModInfo modInfo) {
+        super(10, 50, modId, null, titleKey);
+        this.modInfo = modInfo;
     }
 
     @Override
@@ -85,6 +93,34 @@ public class ConfigScreen  extends GuiConfigsBase {
         if (this.client != null && this.client.world == null) this.renderPanoramaBackground(drawContext, partialTicks);
         this.applyBlur();
         super.render(drawContext, mouseX, mouseY, partialTicks);
+    }
+
+    // why was it using the class :sob: that's so brittle
+    @Override
+    protected void buildConfigSwitcher() {
+        if (MaLiLibConfigs.Generic.ENABLE_CONFIG_SWITCHER.getBooleanValue()) {
+            this.modSwitchWidget = new WidgetDropDownList<>(GuiUtils.getScaledWindowWidth() - 155, 6, 130, 18, 200, 10, Registry.CONFIG_SCREEN.getAllModsWithConfigScreens()) {
+                {
+                    selectedEntry = modInfo;
+                }
+
+                @Override
+                protected void setSelectedEntry(int index) {
+                    super.setSelectedEntry(index);
+
+                    if (selectedEntry != null && selectedEntry.getConfigScreenSupplier() != null) {
+                        GuiBase.openGui(selectedEntry.getConfigScreenSupplier().get());
+                    }
+                }
+
+                @Override
+                protected String getDisplayString(ModInfo entry) {
+                    return entry.getModName();
+                }
+            };
+
+            addWidget(this.modSwitchWidget);
+        }
     }
 
     public static class ConfigGuiTab {

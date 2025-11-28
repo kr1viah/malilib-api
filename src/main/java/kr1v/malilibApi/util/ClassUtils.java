@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClassUtils {
-    public static List<ConfigProcessor.Element> getDeclaredElements(Class<?> clazz, String modId) {
+    public static List<ConfigProcessor.Element> getDeclaredElements(Class<?> clazz) {
         List<ConfigProcessor.Element> elementsOfClass = new ArrayList<>();
-        List<ConfigProcessor.ElementRepresentation> elementRepresentations = ConfigProcessor.getDeclaredElementRepresentationsForClass(clazz, modId);
+        List<ConfigProcessor.ElementRepresentation> elementRepresentations = ConfigProcessor.getDeclaredElementRepresentationsForClass(clazz);
 
         try {
             assert elementRepresentations != null;

@@ -21,6 +21,10 @@ public final class AnnotationUtils {
         MOD_CACHE.put(modId, new TreeMap<>(Comparator.comparing((Class<?> x) -> AnnotationUtils.nameForConfig(x) + x.getName())));
     }
 
+    public static boolean isModRegistered(String modId) {
+        return MOD_CACHE.containsKey(modId);
+    }
+
     private static boolean defaultEnabled = true;
 
     public static String nameForConfig(Class<?> configClass) {

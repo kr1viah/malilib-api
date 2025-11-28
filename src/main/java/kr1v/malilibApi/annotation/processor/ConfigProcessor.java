@@ -7,7 +7,6 @@ import com.sun.source.tree.*;
 import com.sun.source.util.TreePath;
 import com.sun.source.util.Trees;
 import kr1v.malilibApi.annotation.Config;
-import kr1v.malilibApi.annotation.MainClass;
 import kr1v.malilibApi.annotation.PopupConfig;
 
 import javax.annotation.processing.*;
@@ -38,7 +37,6 @@ public class ConfigProcessor extends AbstractProcessor {
 
     // fqcn -> class representation
     private static final Map<String, List<ElementRepresentation>> map = new HashMap<>();
-    private static String identifier = null;
 
     private Trees trees;
     private Elements elementUtils;
@@ -54,18 +52,7 @@ public class ConfigProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annos, RoundEnvironment roundEnv) {
-        println(roundEnv.getElementsAnnotatedWith(Config.class));
-        println(roundEnv.getElementsAnnotatedWith(PopupConfig.class));
-        println(roundEnv.getElementsAnnotatedWith(MainClass.class));
         Set<TypeElement> classes = new HashSet<>();
-        Set<? extends javax.lang.model.element.Element> mains = roundEnv.getElementsAnnotatedWith(MainClass.class);
-        if (mains.size() > 1) {
-            throw new IllegalStateException("Only one class may be annotated with @MainClass");
-        }
-        for (var e : mains) {
-            MainClass ann = e.getAnnotation(MainClass.class);
-            identifier = ann.value();
-        }
 
         for (var e : roundEnv.getElementsAnnotatedWith(Config.class)) {
             classes.add((TypeElement) e);
@@ -132,10 +119,11 @@ public class ConfigProcessor extends AbstractProcessor {
         try {
             Filer filer = processingEnv.getFiler();
             if (roundEnv.processingOver()) {
-                if (identifier == null) throw new IllegalStateException();
-                FileObject file = filer.createResource(StandardLocation.CLASS_OUTPUT, "", "META-INF/kr1v/" + identifier + ".classes.json");
-                try (Writer w = file.openWriter()) {
-                    GSON.toJson(map, w);
+                for (Map.Entry<String, List<ElementRepresentation>> entry : map.entrySet()) {
+                    FileObject file = filer.createResource(StandardLocation.CLASS_OUTPUT, "", "META-INF/kr1v/" + entry.getKey() + ".classes.json");
+                    try (Writer w = file.openWriter()) {
+                        GSON.toJson(entry.getValue(), w);
+                    }
                 }
 
                 println("Written map. classes processed: " + map.size());
@@ -315,21 +303,17 @@ public class ConfigProcessor extends AbstractProcessor {
         public String className;
     }
 
-    public static List<ElementRepresentation> getDeclaredElementRepresentationsForClass(Class<?> clazz, String modId) {
-        return getElementsForMod(modId).get(clazz.getName());
-    }
-
-    public static Map<String, List<ElementRepresentation>> getElementsForMod(String modId) {
+    public static List<ElementRepresentation> getDeclaredElementRepresentationsForClass(Class<?> clazz) {
         try (InputStream in = ConfigProcessor.class.getClassLoader()
-                .getResourceAsStream("META-INF/kr1v/" + modId + ".classes.json")) {
+                .getResourceAsStream("META-INF/kr1v/" + clazz.getName() + ".classes.json")) {
 
             if (in == null) {
-                throw new IllegalStateException("META-INF/kr1v/" + modId + ".classes.json not found");
+                throw new IllegalStateException("META-INF/kr1v/" + clazz.getName() + ".classes.json not found");
             }
 
             String json = new String(in.readAllBytes(), StandardCharsets.UTF_8);
 
-            Type type = new TypeToken<Map<String, List<ElementRepresentation>>>(){}.getType();
+            Type type = new TypeToken<List<ElementRepresentation>>(){}.getType();
             return GSON.fromJson(json, type);
         } catch (IOException e) {
             throw new RuntimeException(e);

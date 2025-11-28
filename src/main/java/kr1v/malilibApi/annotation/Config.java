@@ -11,6 +11,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Config {
+    /**
+     * Which mod this config belongs to
+     */
+    String value();
     String name() default "";
     boolean defaultEnabled() default true;
 }
