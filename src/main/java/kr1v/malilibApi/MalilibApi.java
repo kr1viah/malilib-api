@@ -11,17 +11,14 @@ import kr1v.malilibApi.annotation.Config;
 import kr1v.malilibApi.screen.ConfigScreen;
 import kr1v.malilibApi.util.AnnotationUtils;
 import kr1v.malilibApi.util.ConfigUtils;
-import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import org.reflections.Reflections;
 
 import java.util.*;
 import java.util.function.Supplier;
 
-public class MalilibApi implements ClientModInitializer {
+public class MalilibApi {
     private static final Map<String, ModInfo> modIdToModInfoMap = new HashMap<>();
-    @Override
-    public void onInitializeClient() {}
 
     public static void registerMod(String modId, String modName, ConfigHandler configHandler, InputHandler inputHandler) {
         if (AnnotationUtils.isModRegistered(modId)) throw new IllegalStateException("Mod id is already registered!");

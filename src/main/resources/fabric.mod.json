@@ -9,11 +9,6 @@
   "license": "MIT",
   "icon": "assets/malilib-api/icon.png",
   "environment": "client",
-  "entrypoints": {
-    "client": [
-      "kr1v.malilibApi.MalilibApi"
-    ]
-  },
   "mixins": [
     "malilib-api.mixins.json"
   ],
