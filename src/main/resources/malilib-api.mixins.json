@@ -10,6 +10,7 @@
     "MinecraftClientMixin",
     "accessor.WidgetListConfigOptionsBaseAccessor"
   ],
+  "plugin": "kr1v.malilibApi.ReflectionsInit",
   "injectors": {
     "defaultRequire": 1
   },

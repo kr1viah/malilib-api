@@ -19,6 +19,7 @@ import java.util.function.Supplier;
 
 public class MalilibApi {
     private static final Map<String, ModInfo> modIdToModInfoMap = new HashMap<>();
+    public static Reflections reflections;
 
     public static void registerMod(String modId, String modName, ConfigHandler configHandler, InputHandler inputHandler) {
         if (AnnotationUtils.isModRegistered(modId)) throw new IllegalStateException("Mod id is already registered!");
@@ -43,7 +44,6 @@ public class MalilibApi {
     }
 
     public static void init() {
-        Reflections reflections = new Reflections();
         Set<Class<?>> configClasses = reflections.getTypesAnnotatedWith(Config.class);
         for (Class<?> cfgClass : configClasses) {
             Config annotation = cfgClass.getAnnotation(Config.class);
