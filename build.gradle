@@ -27,9 +27,9 @@ dependencies {
 
     include "org.reflections:reflections:${project.reflections_version}"
     implementation "org.reflections:reflections:${project.reflections_version}"
-    implementation "com.google.auto.service:auto-service-annotations:1.1.1"
-    implementation "com.google.code.gson:gson:2.13.2"
-    annotationProcessor "com.google.auto.service:auto-service:1.1.1"
+    implementation "com.google.auto.service:auto-service-annotations:${project.auto_service_version}"
+    implementation "com.google.code.gson:gson:${project.gson_version}"
+    annotationProcessor "com.google.auto.service:auto-service:${project.auto_service_version}"
 }
 
 processResources {
