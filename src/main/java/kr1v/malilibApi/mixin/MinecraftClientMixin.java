@@ -10,8 +10,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
     // handle before malilib
-    @Inject(method = "<init>", at = @At("RETURN"), order = 500)
-    private void init(CallbackInfo ci) {
+    @Inject(method = "<init>", at = @At("HEAD"))
+    private static void init(CallbackInfo ci) {
         MalilibApi.init();
     }
 }
