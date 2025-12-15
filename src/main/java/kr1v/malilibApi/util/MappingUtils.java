@@ -46,36 +46,39 @@ public class MappingUtils {
 
 
     static {
-        try {
-            if (!mappingsPath.toFile().exists()) {
-                String version = MinecraftVersion.CURRENT.getName();
-                String url = "https://maven.fabricmc.net/net/fabricmc/yarn/" + version + "%2Bbuild.1/yarn-" + version + "%2Bbuild.1-tiny.gz";
+        new Thread(() -> {
 
-                Path gzPath = mappingsPath.resolveSibling("temp.gz");
-                InputStream in = URI.create(url).toURL().openStream();
+            try {
+                if (!mappingsPath.toFile().exists()) {
+                    String version = MinecraftVersion.CURRENT.getName();
+                    String url = "https://maven.fabricmc.net/net/fabricmc/yarn/" + version + "%2Bbuild.1/yarn-" + version + "%2Bbuild.1-tiny.gz";
 
-                if (!Files.exists(gzPath)) {
-                    Files.createDirectories(gzPath.getParent());
-                    Files.createFile(gzPath);
-                }
+                    Path gzPath = mappingsPath.resolveSibling("temp.gz");
+                    InputStream in = URI.create(url).toURL().openStream();
 
-                Files.copy(in, gzPath, StandardCopyOption.REPLACE_EXISTING);
-                GZIPInputStream gis = new GZIPInputStream(new FileInputStream(gzPath.toFile()));
-                try (FileOutputStream fos = new FileOutputStream(mappingsPath.toFile())) {
-
-                    byte[] buffer = new byte[8192];
-                    int len;
-                    while ((len = gis.read(buffer)) != -1) {
-                        fos.write(buffer, 0, len);
+                    if (!Files.exists(gzPath)) {
+                        Files.createDirectories(gzPath.getParent());
+                        Files.createFile(gzPath);
                     }
+
+                    Files.copy(in, gzPath, StandardCopyOption.REPLACE_EXISTING);
+                    GZIPInputStream gis = new GZIPInputStream(new FileInputStream(gzPath.toFile()));
+                    try (FileOutputStream fos = new FileOutputStream(mappingsPath.toFile())) {
+
+                        byte[] buffer = new byte[8192];
+                        int len;
+                        while ((len = gis.read(buffer)) != -1) {
+                            fos.write(buffer, 0, len);
+                        }
+                    }
+
+                    Files.delete(gzPath);
                 }
 
-                Files.delete(gzPath);
+                MappingReader.read(mappingsPath, tree);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-
-            MappingReader.read(mappingsPath, tree);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        }).start();
     }
 }
