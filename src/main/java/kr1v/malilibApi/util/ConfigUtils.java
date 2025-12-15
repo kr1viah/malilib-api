@@ -19,7 +19,9 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConfigUtils {
+public final class ConfigUtils {
+    private ConfigUtils() {}
+
     public static List<IConfigBase> generateOptions(Class<?> clazz, String modId) {
         List<IConfigBase> list = new ArrayList<>();
 

@@ -9,7 +9,9 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClassUtils {
+public final class ClassUtils {
+    private ClassUtils() {}
+
     public static List<ConfigProcessor.Element> getDeclaredElements(Class<?> clazz) {
         List<ConfigProcessor.Element> elementsOfClass = new ArrayList<>();
         List<ConfigProcessor.ElementRepresentation> elementRepresentations = MalilibApi.classToRepresentation.get(clazz);

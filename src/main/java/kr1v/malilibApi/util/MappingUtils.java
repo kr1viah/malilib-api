@@ -19,7 +19,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.zip.GZIPInputStream;
 
-public class MappingUtils {
+public final class MappingUtils {
+    private MappingUtils() {}
+
     private static final Map<String, String> cachedClassesReverse = new HashMap<>();
 
     private static final MemoryMappingTree tree = new MemoryMappingTree();
