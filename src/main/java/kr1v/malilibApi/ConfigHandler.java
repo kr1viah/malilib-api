@@ -33,8 +33,8 @@ public class ConfigHandler implements IConfigHandler {
 
                 if (root.has("configs") && root.get("configs").isJsonObject()) {
                     JsonObject configs = root.get("configs").getAsJsonObject();
-                    for (Class<?> configClass : AnnotationUtils.cacheFor(MOD_ID).keySet()) {
-                        ConfigUtils.readConfigBase(configs, configClass.getSimpleName(), AnnotationUtils.cacheFor(MOD_ID).get(configClass));
+                    for (Class<?> configClass : AnnotationUtils.classesFor(MOD_ID)) {
+                        ConfigUtils.readConfigBase(configs, configClass.getSimpleName(), AnnotationUtils.configListFor(MOD_ID, configClass));
                     }
                 }
 
@@ -58,8 +58,8 @@ public class ConfigHandler implements IConfigHandler {
             JsonObject configs = new JsonObject();
             JsonObject customData = new JsonObject();
             saveAdditionalData(customData);
-            for (Class<?> configClass : AnnotationUtils.cacheFor(MOD_ID).keySet()) {
-                ConfigUtils.writeConfigBase(configs, configClass.getSimpleName(), AnnotationUtils.cacheFor(MOD_ID).get(configClass));
+            for (Class<?> configClass : AnnotationUtils.classesFor(MOD_ID)) {
+                ConfigUtils.writeConfigBase(configs, configClass.getSimpleName(), AnnotationUtils.configListFor(MOD_ID, configClass));
             }
             root.add("configs", configs);
             root.add("custom_data", customData);

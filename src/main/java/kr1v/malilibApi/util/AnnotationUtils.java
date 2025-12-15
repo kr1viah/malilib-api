@@ -17,6 +17,14 @@ public final class AnnotationUtils {
         return MOD_CACHE.get(modId);
     }
 
+    public static List<IConfigBase> configListFor(String modId, Class<?> configClass) {
+        return MOD_CACHE.get(modId).get(configClass);
+    }
+
+    public static Set<Class<?>> classesFor(String modId) {
+        return MOD_CACHE.get(modId).keySet();
+    }
+
     public static void registerMod(String modId) {
         MOD_CACHE.put(modId, new TreeMap<>(Comparator.comparing((Class<?> x) -> AnnotationUtils.nameForConfig(x) + x.getName())));
     }

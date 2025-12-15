@@ -138,11 +138,11 @@ public class ConfigScreen  extends GuiConfigsBase {
         public static ConfigGuiTab[] values(@NotNull String modId) {
             if (valueMap.get(modId) == null) {
                 List<ConfigGuiTab> valuesList = new ArrayList<>();
-                for (Class<?> clazz : AnnotationUtils.cacheFor(modId).keySet()) {
+                for (Class<?> clazz : AnnotationUtils.classesFor(modId)) {
                     if (clazz.isAnnotationPresent(PopupConfig.class)) {
-                        valuesList.add(new ConfigGuiTab(AnnotationUtils.nameForConfig(clazz), AnnotationUtils.cacheFor(modId).get(clazz), true));
+                        valuesList.add(new ConfigGuiTab(AnnotationUtils.nameForConfig(clazz), AnnotationUtils.configListFor(modId, clazz), true));
                     } else {
-                        valuesList.add(new ConfigGuiTab(AnnotationUtils.nameForConfig(clazz), AnnotationUtils.cacheFor(modId).get(clazz), false));
+                        valuesList.add(new ConfigGuiTab(AnnotationUtils.nameForConfig(clazz), AnnotationUtils.configListFor(modId, clazz), false));
                     }
                 }
                 valueMap.put(modId, valuesList.toArray(new ConfigGuiTab[0]));

@@ -113,7 +113,7 @@ public class ConfigPopupScreen extends GuiConfigsBase {
     @Override
     public List<ConfigOptionWrapper> getConfigs() {
         ImmutableList.Builder<ConfigOptionWrapper> builder = ImmutableList.builder();
-        for (IConfigBase config : AnnotationUtils.cacheFor(modId).get(this.configClass)) {
+        for (IConfigBase config : AnnotationUtils.configListFor(modId, this.configClass)) {
             if (config instanceof ConfigLabel)
                 builder.add(new ConfigOptionWrapper(config.getComment()));
             else
