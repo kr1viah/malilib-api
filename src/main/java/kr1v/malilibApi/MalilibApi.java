@@ -9,10 +9,12 @@ import fi.dy.masa.malilib.gui.GuiBase;
 import fi.dy.masa.malilib.registry.Registry;
 import fi.dy.masa.malilib.util.data.ModInfo;
 import kr1v.malilibApi.annotation.Config;
+import kr1v.malilibApi.annotation.PopupConfig;
 import kr1v.malilibApi.annotation.processor.ConfigProcessor;
 import kr1v.malilibApi.screen.ConfigScreen;
 import kr1v.malilibApi.util.AnnotationUtils;
 import kr1v.malilibApi.util.ConfigUtils;
+import kr1v.malilibApi.util.TabUtils;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import org.reflections.Reflections;
 
@@ -87,7 +89,7 @@ public class MalilibApi {
             AnnotationUtils.setDefaultEnabled(defaultEnabled);
             List<IConfigBase> list = ConfigUtils.generateOptions(cfgClass, modId);
             AnnotationUtils.setDefaultEnabled(true);
-
+            TabUtils.registerTab(modId, AnnotationUtils.nameForConfig(cfgClass), list, false);
             AnnotationUtils.cacheFor(modId).put(cfgClass, list);
         }
     }

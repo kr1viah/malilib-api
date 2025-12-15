@@ -70,6 +70,7 @@ public class ConfigUtils {
                     AnnotationUtils.setDefaultEnabled(klass.getAnnotation(PopupConfig.class).defaultEnabled());
                     AnnotationUtils.cacheFor(modId).put(klass, generateOptions(klass, modId));
                     AnnotationUtils.setDefaultEnabled(prev);
+                    TabUtils.registerTab(modId, AnnotationUtils.nameForConfig(klass), list, true);
                     list.add(configButton);
                 }
                 case Label label ->

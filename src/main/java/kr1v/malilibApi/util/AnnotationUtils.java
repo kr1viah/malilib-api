@@ -1,6 +1,7 @@
 package kr1v.malilibApi.util;
 
 import fi.dy.masa.malilib.config.IConfigBase;
+import kr1v.malilibApi.ModConfig;
 import kr1v.malilibApi.annotation.Config;
 import kr1v.malilibApi.annotation.PopupConfig;
 import org.jetbrains.annotations.NotNull;
@@ -10,27 +11,31 @@ import java.util.*;
 public final class AnnotationUtils {
     private AnnotationUtils() {}
 
-    private static final Map<String, Map<Class<?>, List<IConfigBase>>> MOD_CACHE = new HashMap<>();
+    private static final Map<String, ModConfig> MODS = new HashMap<>();
+
+    public static ModConfig getModConfig(String modId) {
+        return MODS.get(modId);
+    }
 
     @NotNull
     public static Map<Class<?>, List<IConfigBase>> cacheFor(String modId) {
-        return MOD_CACHE.get(modId);
+        return MODS.get(modId).configs;
     }
 
     public static List<IConfigBase> configListFor(String modId, Class<?> configClass) {
-        return MOD_CACHE.get(modId).get(configClass);
+        return MODS.get(modId).configs.get(configClass);
     }
 
     public static Set<Class<?>> classesFor(String modId) {
-        return MOD_CACHE.get(modId).keySet();
+        return MODS.get(modId).configs.keySet();
     }
 
     public static void registerMod(String modId) {
-        MOD_CACHE.put(modId, new TreeMap<>(Comparator.comparing((Class<?> x) -> AnnotationUtils.nameForConfig(x) + x.getName())));
+        MODS.put(modId, new ModConfig());
     }
 
     public static boolean isModRegistered(String modId) {
-        return MOD_CACHE.containsKey(modId);
+        return MODS.containsKey(modId);
     }
 
     private static boolean defaultEnabled = true;

@@ -9,19 +9,17 @@ import fi.dy.masa.malilib.gui.button.ButtonGeneric;
 import fi.dy.masa.malilib.gui.widgets.WidgetDropDownList;
 import fi.dy.masa.malilib.registry.Registry;
 import fi.dy.masa.malilib.util.GuiUtils;
-import fi.dy.masa.malilib.util.StringUtils;
 import fi.dy.masa.malilib.util.data.ModInfo;
-import kr1v.malilibApi.annotation.PopupConfig;
+import kr1v.malilibApi.ModConfig;
 import kr1v.malilibApi.config.ConfigLabel;
 import kr1v.malilibApi.mixin.accessor.WidgetListConfigOptionsBaseAccessor;
-import kr1v.malilibApi.util.AnnotationUtils;
+import kr1v.malilibApi.util.TabUtils;
 import net.minecraft.client.gui.DrawContext;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
 public class ConfigScreen  extends GuiConfigsBase {
-    public ConfigGuiTab tab = ConfigScreen.ConfigGuiTab.values(this.modId)[0];
+    public ModConfig.Tab tab = TabUtils.tabsFor(modId).getFirst();
     private final ModInfo modInfo;
 
     public ConfigScreen(String modId, String titleKey, ModInfo modInfo) {
@@ -40,17 +38,18 @@ public class ConfigScreen  extends GuiConfigsBase {
         int x = 10;
         int y = 26;
 
-        for (ConfigGuiTab tab : ConfigGuiTab.values(this.modId)) {
-            if (!tab.isPopup)
+        for (ModConfig.Tab tab : TabUtils.tabsFor(modId)) {
+            if (!tab.isPopup()) {
                 x += this.createButton(x, y, -1, tab);
+            }
         }
     }
 
     @SuppressWarnings("SameParameterValue")
-    private int createButton(int x, int y, int width, ConfigGuiTab tab) {
-        ButtonGeneric button = new ButtonGeneric(x, y, width, 20, tab.getDisplayName());
+    private int createButton(int x, int y, int width, ModConfig.Tab tab) {
+        ButtonGeneric button = new ButtonGeneric(x, y, width, 20, tab.translationKey());
         button.setEnabled(this.tab != tab);
-        final ConfigGuiTab tab2 = tab;
+        final ModConfig.Tab tab2 = tab;
 
         this.addButton(button, (button1, mouseButton) -> {
             this.tab = tab2;
@@ -79,7 +78,7 @@ public class ConfigScreen  extends GuiConfigsBase {
     @Override
     public List<ConfigOptionWrapper> getConfigs() {
         ImmutableList.Builder<ConfigOptionWrapper> builder = ImmutableList.builder();
-        for (IConfigBase config : this.tab.getOptions()) {
+        for (IConfigBase config : this.tab.options()) {
             if (config instanceof ConfigLabel)
                 builder.add(new ConfigOptionWrapper(config.getComment()));
             else
@@ -120,42 +119,6 @@ public class ConfigScreen  extends GuiConfigsBase {
             };
 
             addWidget(this.modSwitchWidget);
-        }
-    }
-
-    public static class ConfigGuiTab {
-        private final String translationKey;
-        private final List<? extends IConfigBase> options;
-        private static final Map<String, ConfigGuiTab[]> valueMap = new HashMap<>();
-        public final boolean isPopup;
-
-        ConfigGuiTab(String translationKey, List<? extends IConfigBase> options, boolean isPopup) {
-            this.options = options;
-            this.translationKey = translationKey;
-            this.isPopup = isPopup;
-        }
-
-        public static ConfigGuiTab[] values(@NotNull String modId) {
-            if (valueMap.get(modId) == null) {
-                List<ConfigGuiTab> valuesList = new ArrayList<>();
-                for (Class<?> clazz : AnnotationUtils.classesFor(modId)) {
-                    if (clazz.isAnnotationPresent(PopupConfig.class)) {
-                        valuesList.add(new ConfigGuiTab(AnnotationUtils.nameForConfig(clazz), AnnotationUtils.configListFor(modId, clazz), true));
-                    } else {
-                        valuesList.add(new ConfigGuiTab(AnnotationUtils.nameForConfig(clazz), AnnotationUtils.configListFor(modId, clazz), false));
-                    }
-                }
-                valueMap.put(modId, valuesList.toArray(new ConfigGuiTab[0]));
-            }
-            return valueMap.get(modId);
-        }
-
-        public List<? extends IConfigBase> getOptions() {
-            return this.options;
-        }
-
-        public String getDisplayName() {
-            return StringUtils.translate(this.translationKey);
         }
     }
 }
