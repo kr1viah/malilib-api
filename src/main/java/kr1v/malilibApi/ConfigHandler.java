@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import fi.dy.masa.malilib.config.ConfigUtils;
 import fi.dy.masa.malilib.config.IConfigHandler;
 import fi.dy.masa.malilib.util.JsonUtils;
-import kr1v.malilibApi.util.AnnotationUtils;
 import net.minecraft.client.MinecraftClient;
 
 import java.io.File;
@@ -33,8 +32,8 @@ public class ConfigHandler implements IConfigHandler {
 
                 if (root.has("configs") && root.get("configs").isJsonObject()) {
                     JsonObject configs = root.get("configs").getAsJsonObject();
-                    for (Class<?> configClass : AnnotationUtils.classesFor(MOD_ID)) {
-                        ConfigUtils.readConfigBase(configs, configClass.getSimpleName(), AnnotationUtils.configListFor(MOD_ID, configClass));
+                    for (Class<?> configClass : MalilibApi.classesFor(MOD_ID)) {
+                        ConfigUtils.readConfigBase(configs, configClass.getSimpleName(), MalilibApi.configListFor(MOD_ID, configClass));
                     }
                 }
 
@@ -58,8 +57,8 @@ public class ConfigHandler implements IConfigHandler {
             JsonObject configs = new JsonObject();
             JsonObject customData = new JsonObject();
             saveAdditionalData(customData);
-            for (Class<?> configClass : AnnotationUtils.classesFor(MOD_ID)) {
-                ConfigUtils.writeConfigBase(configs, configClass.getSimpleName(), AnnotationUtils.configListFor(MOD_ID, configClass));
+            for (Class<?> configClass : MalilibApi.classesFor(MOD_ID)) {
+                ConfigUtils.writeConfigBase(configs, configClass.getSimpleName(), MalilibApi.configListFor(MOD_ID, configClass));
             }
             root.add("configs", configs);
             root.add("custom_data", customData);

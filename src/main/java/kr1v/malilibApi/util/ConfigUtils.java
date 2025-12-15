@@ -2,6 +2,7 @@ package kr1v.malilibApi.util;
 
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.util.GuiUtils;
+import kr1v.malilibApi.MalilibApi;
 import kr1v.malilibApi.annotation.Extras;
 import kr1v.malilibApi.annotation.Label;
 import kr1v.malilibApi.annotation.Marker;
@@ -68,11 +69,11 @@ public final class ConfigUtils {
                             ),
                             klass);
 
-                    boolean prev = AnnotationUtils.getDefaultEnabled();
-                    AnnotationUtils.setDefaultEnabled(klass.getAnnotation(PopupConfig.class).defaultEnabled());
-                    AnnotationUtils.cacheFor(modId).put(klass, generateOptions(klass, modId));
-                    AnnotationUtils.setDefaultEnabled(prev);
-                    TabUtils.registerTab(modId, AnnotationUtils.nameForConfig(klass), list, true);
+                    boolean prev = MalilibApi.getDefaultEnabled();
+                    MalilibApi.setDefaultEnabled(klass.getAnnotation(PopupConfig.class).defaultEnabled());
+                    MalilibApi.cacheFor(modId).put(klass, generateOptions(klass, modId));
+                    MalilibApi.setDefaultEnabled(prev);
+                    MalilibApi.registerTab(modId, AnnotationUtils.nameForConfig(klass), list, true);
                     list.add(configButton);
                 }
                 case Label label ->

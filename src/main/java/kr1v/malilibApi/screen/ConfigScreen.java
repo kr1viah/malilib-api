@@ -14,16 +14,20 @@ import kr1v.malilibApi.MalilibApi;
 import kr1v.malilibApi.ModConfig;
 import kr1v.malilibApi.config.ConfigLabel;
 import kr1v.malilibApi.mixin.accessor.WidgetListConfigOptionsBaseAccessor;
-import kr1v.malilibApi.util.TabUtils;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.Screen;
 
 import java.util.*;
 
 public class ConfigScreen  extends GuiConfigsBase {
-    public ModConfig.Tab tab = TabUtils.tabsFor(modId).getFirst();
+    public ModConfig.Tab tab = MalilibApi.tabsFor(modId).getFirst();
 
     public ConfigScreen(String modId, String titleKey) {
-        super(10, 50, modId, null, titleKey);
+        this(modId, titleKey, null);
+    }
+
+    public ConfigScreen(String modId, String titleKey, Screen parent) {
+        super(10, 50, modId, parent, titleKey);
     }
 
     @Override
@@ -37,7 +41,7 @@ public class ConfigScreen  extends GuiConfigsBase {
         int x = 10;
         int y = 26;
 
-        for (ModConfig.Tab tab : TabUtils.tabsFor(modId)) {
+        for (ModConfig.Tab tab : MalilibApi.tabsFor(modId)) {
             if (!tab.isPopup()) {
                 x += this.createButton(x, y, -1, tab);
             }

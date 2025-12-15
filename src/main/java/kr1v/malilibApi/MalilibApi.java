@@ -1,5 +1,7 @@
 package kr1v.malilibApi;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import fi.dy.masa.malilib.config.ConfigManager;
 import fi.dy.masa.malilib.config.IConfigBase;
@@ -13,8 +15,8 @@ import kr1v.malilibApi.annotation.processor.ConfigProcessor;
 import kr1v.malilibApi.screen.ConfigScreen;
 import kr1v.malilibApi.util.AnnotationUtils;
 import kr1v.malilibApi.util.ConfigUtils;
-import kr1v.malilibApi.util.TabUtils;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
+import net.minecraft.client.gui.screen.Screen;
 import org.reflections.Reflections;
 
 import java.io.IOException;
@@ -26,26 +28,26 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.function.Supplier;
 
-import static kr1v.malilibApi.annotation.processor.ConfigProcessor.GSON;
-
 public class MalilibApi {
-    private static final Map<String, ModInfo> modIdToModInfoMap = new HashMap<>();
+    private static final Map<String, ModConfig> modIdToModConfig = new HashMap<>();
+
     public static final Map<Class<?>, List<ConfigProcessor.ElementRepresentation>> classToRepresentation = new HashMap<>();
 
     public static Reflections reflections;
+    public static final Gson GSON = new GsonBuilder().registerTypeAdapter(ConfigProcessor.ValueDTO.class, new ConfigProcessor.ValueDTODeserializer()).setPrettyPrinting().create();
 
     public static void registerMod(String modId, String modName, ConfigHandler configHandler, InputHandler inputHandler) {
-        if (AnnotationUtils.isModRegistered(modId)) throw new IllegalStateException("Mod id is already registered!");
-        AnnotationUtils.registerMod(modId);
+        if (isModRegistered(modId)) throw new IllegalStateException("Mod id is already registered!");
+
+        Supplier<GuiBase> configScreenSupplier = () -> new ConfigScreen(modId, modName);
+        ModInfo modInfo = new ModInfo(modId, modName, configScreenSupplier);
+
+        registerMod(modId, modInfo);
 
         InitializationHandler.getInstance().registerInitializationHandler(() -> {
             ConfigManager.getInstance().registerConfigHandler(modId, configHandler);
 
-            Supplier<GuiBase> configScreenSupplier = () -> new ConfigScreen(modId, modName);
-            ModInfo modInfo = new ModInfo(modId, modName, configScreenSupplier);
-
             Registry.CONFIG_SCREEN.registerConfigScreenFactory(modInfo);
-            modIdToModInfoMap.put(modId, modInfo);
 
             InputEventHandler.getKeybindManager().registerKeybindProvider(inputHandler);
             InputEventHandler.getInputManager().registerKeyboardInputHandler(inputHandler);
@@ -75,30 +77,85 @@ public class MalilibApi {
         }
 
         for (Class<?> cfgClass : classToRepresentation.keySet()) {
-            if (!cfgClass.isAnnotationPresent(Config.class)) continue;
-            Config annotation = cfgClass.getAnnotation(Config.class);
-            String modId = annotation.value();
-            boolean defaultEnabled = annotation.defaultEnabled();
-
-            if (!AnnotationUtils.isModRegistered(modId)) {
-                registerMod(modId, modId, new ConfigHandler(modId), new InputHandler(modId));
-            }
-
-            AnnotationUtils.setDefaultEnabled(defaultEnabled);
-            List<IConfigBase> list = ConfigUtils.generateOptions(cfgClass, modId);
-            AnnotationUtils.setDefaultEnabled(true);
-            TabUtils.registerTab(modId, AnnotationUtils.nameForConfig(cfgClass), list, false);
-            AnnotationUtils.cacheFor(modId).put(cfgClass, list);
+            handleClass(cfgClass);
         }
     }
 
+    private static void handleClass(Class<?> cfgClass) {
+        if (!cfgClass.isAnnotationPresent(Config.class)) return;
+        Config annotation = cfgClass.getAnnotation(Config.class);
+        String modId = annotation.value();
+        boolean defaultEnabled = annotation.defaultEnabled();
+
+        if (!isModRegistered(modId)) {
+            registerMod(modId, modId, new ConfigHandler(modId), new InputHandler(modId));
+        }
+
+        setDefaultEnabled(defaultEnabled);
+        List<IConfigBase> list = ConfigUtils.generateOptions(cfgClass, modId);
+        setDefaultEnabled(true);
+        registerTab(modId, AnnotationUtils.nameForConfig(cfgClass), list, false);
+        cacheFor(modId).put(cfgClass, list);
+    }
+
     public static ModInfo modInfoFor(String modId) {
-        return modIdToModInfoMap.get(modId);
+        return modIdToModConfig.get(modId).modInfo;
     }
 
     @SuppressWarnings("unused")
     public static void openScreenFor(String modId) {
-        ModInfo modInfo = modIdToModInfoMap.get(modId);
-        GuiBase.openGui(new ConfigScreen(modInfo.getModId(), modInfo.getModName()));
+        openScreenFor(modId, null);
+    }
+
+    public static void openScreenFor(String modId, Screen parent) {
+        ModInfo modInfo = modIdToModConfig.get(modId).modInfo;
+        GuiBase.openGui(new ConfigScreen(modInfo.getModId(), modInfo.getModName(), parent));
+    }
+
+    public static ModConfig getModConfig(String modId) {
+        return modIdToModConfig.get(modId);
+    }
+
+    public static Map<Class<?>, List<IConfigBase>> cacheFor(String modId) {
+        return modIdToModConfig.get(modId).configs;
+    }
+
+    public static List<IConfigBase> configListFor(String modId, Class<?> configClass) {
+        return modIdToModConfig.get(modId).configs.get(configClass);
+    }
+
+    public static Set<Class<?>> classesFor(String modId) {
+        return modIdToModConfig.get(modId).configs.keySet();
+    }
+
+    public static void registerMod(String modId, ModInfo modInfo) {
+        modIdToModConfig.put(modId, new ModConfig(modInfo));
+    }
+
+    public static boolean isModRegistered(String modId) {
+        return modIdToModConfig.containsKey(modId);
+    }
+
+    private static boolean defaultEnabled = true;
+
+    public static boolean getDefaultEnabled() {
+        return defaultEnabled;
+    }
+
+    public static void setDefaultEnabled(boolean defaultEnabled1) {
+        defaultEnabled = defaultEnabled1;
+    }
+
+    public static void registerTab(String modId, String tab, List<IConfigBase> options, boolean isPopup) {
+        getModConfig(modId).tabs.add(new ModConfig.Tab(tab, options, isPopup));
+    }
+
+    @SuppressWarnings("unused")
+    public static void unregisterTab(String modId, String tabName) {
+        getModConfig(modId).tabs.removeIf(tab -> tab.translationKey().equals(tabName));
+    }
+
+    public static List<ModConfig.Tab> tabsFor(String modId) {
+        return getModConfig(modId).tabs;
     }
 }
