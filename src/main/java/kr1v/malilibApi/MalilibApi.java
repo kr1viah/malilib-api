@@ -9,7 +9,6 @@ import fi.dy.masa.malilib.gui.GuiBase;
 import fi.dy.masa.malilib.registry.Registry;
 import fi.dy.masa.malilib.util.data.ModInfo;
 import kr1v.malilibApi.annotation.Config;
-import kr1v.malilibApi.annotation.PopupConfig;
 import kr1v.malilibApi.annotation.processor.ConfigProcessor;
 import kr1v.malilibApi.screen.ConfigScreen;
 import kr1v.malilibApi.util.AnnotationUtils;
@@ -42,12 +41,11 @@ public class MalilibApi {
         InitializationHandler.getInstance().registerInitializationHandler(() -> {
             ConfigManager.getInstance().registerConfigHandler(modId, configHandler);
 
-            var ref = new Object() {ModInfo modInfo = null;};
-            Supplier<GuiBase> configScreenSupplier = () -> new ConfigScreen(modId, modName, ref.modInfo);
-            ref.modInfo = new ModInfo(modId, modName, configScreenSupplier);
+            Supplier<GuiBase> configScreenSupplier = () -> new ConfigScreen(modId, modName);
+            ModInfo modInfo = new ModInfo(modId, modName, configScreenSupplier);
 
-            Registry.CONFIG_SCREEN.registerConfigScreenFactory(ref.modInfo);
-            modIdToModInfoMap.put(modId, ref.modInfo);
+            Registry.CONFIG_SCREEN.registerConfigScreenFactory(modInfo);
+            modIdToModInfoMap.put(modId, modInfo);
 
             InputEventHandler.getKeybindManager().registerKeybindProvider(inputHandler);
             InputEventHandler.getInputManager().registerKeyboardInputHandler(inputHandler);
@@ -94,9 +92,13 @@ public class MalilibApi {
         }
     }
 
+    public static ModInfo modInfoFor(String modId) {
+        return modIdToModInfoMap.get(modId);
+    }
+
     @SuppressWarnings("unused")
     public static void openScreenFor(String modId) {
         ModInfo modInfo = modIdToModInfoMap.get(modId);
-        GuiBase.openGui(new ConfigScreen(modInfo.getModId(), modInfo.getModName(), modInfo));
+        GuiBase.openGui(new ConfigScreen(modInfo.getModId(), modInfo.getModName()));
     }
 }

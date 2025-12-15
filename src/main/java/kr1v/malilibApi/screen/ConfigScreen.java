@@ -10,6 +10,7 @@ import fi.dy.masa.malilib.gui.widgets.WidgetDropDownList;
 import fi.dy.masa.malilib.registry.Registry;
 import fi.dy.masa.malilib.util.GuiUtils;
 import fi.dy.masa.malilib.util.data.ModInfo;
+import kr1v.malilibApi.MalilibApi;
 import kr1v.malilibApi.ModConfig;
 import kr1v.malilibApi.config.ConfigLabel;
 import kr1v.malilibApi.mixin.accessor.WidgetListConfigOptionsBaseAccessor;
@@ -20,11 +21,9 @@ import java.util.*;
 
 public class ConfigScreen  extends GuiConfigsBase {
     public ModConfig.Tab tab = TabUtils.tabsFor(modId).getFirst();
-    private final ModInfo modInfo;
 
-    public ConfigScreen(String modId, String titleKey, ModInfo modInfo) {
+    public ConfigScreen(String modId, String titleKey) {
         super(10, 50, modId, null, titleKey);
-        this.modInfo = modInfo;
     }
 
     @Override
@@ -100,7 +99,7 @@ public class ConfigScreen  extends GuiConfigsBase {
         if (MaLiLibConfigs.Generic.ENABLE_CONFIG_SWITCHER.getBooleanValue()) {
             this.modSwitchWidget = new WidgetDropDownList<>(GuiUtils.getScaledWindowWidth() - 155, 6, 130, 18, 200, 10, Registry.CONFIG_SCREEN.getAllModsWithConfigScreens()) {
                 {
-                    selectedEntry = modInfo;
+                    selectedEntry = MalilibApi.modInfoFor(modId);
                 }
 
                 @Override
