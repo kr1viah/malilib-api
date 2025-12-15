@@ -2,7 +2,6 @@ package kr1v.malilibApi.annotation.processor;
 
 import com.google.auto.service.AutoService;
 import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
 import com.sun.source.tree.*;
 import com.sun.source.util.TreePath;
 import com.sun.source.util.Trees;
@@ -17,12 +16,9 @@ import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.Writer;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -117,15 +113,12 @@ public class ConfigProcessor extends AbstractProcessor {
         }
 
         try {
-            Filer filer = processingEnv.getFiler();
             if (roundEnv.processingOver()) {
-                for (Map.Entry<String, List<ElementRepresentation>> entry : map.entrySet()) {
-                    FileObject file = filer.createResource(StandardLocation.CLASS_OUTPUT, "", "META-INF/kr1v/" + entry.getKey() + ".classes.json");
-                    try (Writer w = file.openWriter()) {
-                        GSON.toJson(entry.getValue(), w);
-                    }
+                Filer filer = processingEnv.getFiler();
+                FileObject file = filer.createResource(StandardLocation.CLASS_OUTPUT, "", "META-INF/kr1v/index.json");
+                try (Writer w = file.openWriter()) {
+                    GSON.toJson(map, w);
                 }
-
                 println("Written map. classes processed: " + map.size());
             }
         } catch (Throwable t) {
@@ -301,23 +294,6 @@ public class ConfigProcessor extends AbstractProcessor {
     }
     public static class ClassDTO {
         public String className;
-    }
-
-    public static List<ElementRepresentation> getDeclaredElementRepresentationsForClass(Class<?> clazz) {
-        try (InputStream in = ConfigProcessor.class.getClassLoader()
-                .getResourceAsStream("META-INF/kr1v/" + clazz.getName() + ".classes.json")) {
-
-            if (in == null) {
-                throw new IllegalStateException("META-INF/kr1v/" + clazz.getName() + ".classes.json not found");
-            }
-
-            String json = new String(in.readAllBytes(), StandardCharsets.UTF_8);
-
-            Type type = new TypeToken<List<ElementRepresentation>>(){}.getType();
-            return GSON.fromJson(json, type);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @SuppressWarnings("unchecked")

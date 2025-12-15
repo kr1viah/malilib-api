@@ -1,8 +1,8 @@
 package kr1v.malilibApi.util;
 
+import kr1v.malilibApi.MalilibApi;
 import kr1v.malilibApi.annotation.processor.ConfigProcessor;
 import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.MappingResolver;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -12,9 +12,8 @@ import java.util.List;
 public class ClassUtils {
     public static List<ConfigProcessor.Element> getDeclaredElements(Class<?> clazz) {
         List<ConfigProcessor.Element> elementsOfClass = new ArrayList<>();
-        List<ConfigProcessor.ElementRepresentation> elementRepresentations = ConfigProcessor.getDeclaredElementRepresentationsForClass(clazz);
+        List<ConfigProcessor.ElementRepresentation> elementRepresentations = MalilibApi.classToRepresentation.get(clazz);
 
-        MappingResolver mappingResolver = FabricLoader.getInstance().getMappingResolver();
         try {
             assert elementRepresentations != null;
             for (ConfigProcessor.ElementRepresentation el : elementRepresentations) {
