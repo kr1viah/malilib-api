@@ -1,16 +1,18 @@
 package kr1v.malilibApi.util;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.impl.lib.mappingio.MappingReader;
 import net.fabricmc.loader.impl.lib.mappingio.tree.MappingTree;
 import net.fabricmc.loader.impl.lib.mappingio.tree.MemoryMappingTree;
-import net.minecraft.MinecraftVersion;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -25,7 +27,8 @@ public final class MappingUtils {
     private static final Map<String, String> cachedClassesReverse = new HashMap<>();
 
     private static final MemoryMappingTree tree = new MemoryMappingTree();
-    private static final Path mappingsPath = FabricLoader.getInstance().getGameDir().resolve(".tiny").resolve("yarn-" + MinecraftVersion.CURRENT.getName() + "+build.1-tiny");
+    private static final String currentVersion = FabricLoader.getInstance().getRawGameVersion();
+    private static final Path mappingsPath = FabricLoader.getInstance().getGameDir().resolve(".tiny").resolve("yarn-" + currentVersion + "+build.1-tiny");
 
     public static String yarnToIntermediary(String yarnName) {
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) return yarnName; // already intermediary in dev
@@ -49,11 +52,13 @@ public final class MappingUtils {
 
     static {
         new Thread(() -> {
+            if (!mappingsPath.toFile().exists()) {
+                try (InputStream versionStream = URI.create("https://meta.fabricmc.net/v2/versions/yarn/" + currentVersion).toURL().openStream()) {
+                    String versionJson = new String(versionStream.readAllBytes(), StandardCharsets.UTF_8);
+                    JsonArray versionObject = JsonParser.parseString(versionJson).getAsJsonArray();
+                    String versionString = versionObject.get(0).getAsJsonObject().get("version").getAsString();
 
-            try {
-                if (!mappingsPath.toFile().exists()) {
-                    String version = MinecraftVersion.CURRENT.getName();
-                    String url = "https://maven.fabricmc.net/net/fabricmc/yarn/" + version + "%2Bbuild.1/yarn-" + version + "%2Bbuild.1-tiny.gz";
+                    String url = "https://maven.fabricmc.net/net/fabricmc/yarn/" + versionString + "/yarn-" + versionString + "-tiny.gz";
 
                     Path gzPath = mappingsPath.resolveSibling("temp.gz");
                     InputStream in = URI.create(url).toURL().openStream();
@@ -75,8 +80,11 @@ public final class MappingUtils {
                     }
 
                     Files.delete(gzPath);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
-
+            }
+            try {
                 MappingReader.read(mappingsPath, tree);
             } catch (IOException e) {
                 throw new RuntimeException(e);

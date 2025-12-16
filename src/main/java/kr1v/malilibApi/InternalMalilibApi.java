@@ -15,7 +15,9 @@ import kr1v.malilibApi.annotation.processor.ConfigProcessor;
 import kr1v.malilibApi.screen.ConfigScreen;
 import kr1v.malilibApi.util.AnnotationUtils;
 import kr1v.malilibApi.util.ConfigUtils;
+import kr1v.malilibApi.util.MappingUtils;
 import net.minecraft.client.gui.screen.Screen;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.reflections.Reflections;
 
 import java.io.IOException;
@@ -58,6 +60,12 @@ public class InternalMalilibApi {
     }
 
     public static void init() {
+        try {
+            Class.forName(MappingUtils.class.getName());
+        } catch (ClassNotFoundException e) {
+            throw ExceptionUtils.asRuntimeException(e);
+        }
+
         Type type = new TypeToken<Map<String, List<ConfigProcessor.ElementRepresentation>>>() {}.getType();
         try {
             ClassLoader cl = Thread.currentThread().getContextClassLoader();
