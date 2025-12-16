@@ -1,6 +1,6 @@
 package kr1v.malilibApi.util;
 
-import kr1v.malilibApi.MalilibApi;
+import kr1v.malilibApi.InternalMalilibApi;
 import kr1v.malilibApi.annotation.processor.ConfigProcessor;
 import net.fabricmc.loader.api.FabricLoader;
 
@@ -14,7 +14,7 @@ public final class ClassUtils {
 
     public static List<ConfigProcessor.Element> getDeclaredElements(Class<?> clazz) {
         List<ConfigProcessor.Element> elementsOfClass = new ArrayList<>();
-        List<ConfigProcessor.ElementRepresentation> elementRepresentations = MalilibApi.classToRepresentation.get(clazz);
+        List<ConfigProcessor.ElementRepresentation> elementRepresentations = InternalMalilibApi.classToRepresentation.get(clazz);
 
         try {
             assert elementRepresentations != null;

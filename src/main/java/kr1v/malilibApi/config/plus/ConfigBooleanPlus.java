@@ -5,8 +5,9 @@ import fi.dy.masa.malilib.config.options.ConfigBooleanHotkeyed;
 import fi.dy.masa.malilib.hotkeys.IHotkeyCallback;
 import fi.dy.masa.malilib.hotkeys.KeybindSettings;
 import fi.dy.masa.malilib.interfaces.IValueChangeCallback;
-import kr1v.malilibApi.MalilibApi;
+import kr1v.malilibApi.InternalMalilibApi;
 
+@SuppressWarnings("unused")
 public class ConfigBooleanPlus extends ConfigBooleanHotkeyed implements Plus {
     {
         getKeybind().setCallback((keyAction, keybind) -> {
@@ -16,7 +17,7 @@ public class ConfigBooleanPlus extends ConfigBooleanHotkeyed implements Plus {
     }
 
     public ConfigBooleanPlus(String name) {
-        this(name, MalilibApi.getDefaultEnabled(), "", "");
+        this(name, InternalMalilibApi.getDefaultEnabled(), "", "");
     }
 
     public ConfigBooleanPlus(String name, boolean defaultValue) {
@@ -32,7 +33,7 @@ public class ConfigBooleanPlus extends ConfigBooleanHotkeyed implements Plus {
     }
 
     public ConfigBooleanPlus(String name, IHotkeyCallback callback) {
-        this(name, MalilibApi.getDefaultEnabled(), "", "");
+        this(name, InternalMalilibApi.getDefaultEnabled(), "", "");
         getKeybind().setCallback(callback);
     }
 
@@ -56,7 +57,7 @@ public class ConfigBooleanPlus extends ConfigBooleanHotkeyed implements Plus {
     }
 
     public ConfigBooleanPlus(String name, IValueChangeCallback<ConfigBoolean> callback) {
-        this(name, MalilibApi.getDefaultEnabled(), "", "");
+        this(name, InternalMalilibApi.getDefaultEnabled(), "", "");
         setValueChangeCallback(callback);
     }
 

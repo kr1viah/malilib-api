@@ -32,8 +32,8 @@ public class ConfigHandler implements IConfigHandler {
 
                 if (root.has("configs") && root.get("configs").isJsonObject()) {
                     JsonObject configs = root.get("configs").getAsJsonObject();
-                    for (Class<?> configClass : MalilibApi.classesFor(MOD_ID)) {
-                        ConfigUtils.readConfigBase(configs, configClass.getSimpleName(), MalilibApi.configListFor(MOD_ID, configClass));
+                    for (Class<?> configClass : InternalMalilibApi.classesFor(MOD_ID)) {
+                        ConfigUtils.readConfigBase(configs, configClass.getSimpleName(), InternalMalilibApi.configListFor(MOD_ID, configClass));
                     }
                 }
 
@@ -57,8 +57,8 @@ public class ConfigHandler implements IConfigHandler {
             JsonObject configs = new JsonObject();
             JsonObject customData = new JsonObject();
             saveAdditionalData(customData);
-            for (Class<?> configClass : MalilibApi.classesFor(MOD_ID)) {
-                ConfigUtils.writeConfigBase(configs, configClass.getSimpleName(), MalilibApi.configListFor(MOD_ID, configClass));
+            for (Class<?> configClass : InternalMalilibApi.classesFor(MOD_ID)) {
+                ConfigUtils.writeConfigBase(configs, configClass.getSimpleName(), InternalMalilibApi.configListFor(MOD_ID, configClass));
             }
             root.add("configs", configs);
             root.add("custom_data", customData);

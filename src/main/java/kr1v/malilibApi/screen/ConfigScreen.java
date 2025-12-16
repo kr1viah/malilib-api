@@ -10,7 +10,7 @@ import fi.dy.masa.malilib.gui.widgets.WidgetDropDownList;
 import fi.dy.masa.malilib.registry.Registry;
 import fi.dy.masa.malilib.util.GuiUtils;
 import fi.dy.masa.malilib.util.data.ModInfo;
-import kr1v.malilibApi.MalilibApi;
+import kr1v.malilibApi.InternalMalilibApi;
 import kr1v.malilibApi.ModConfig;
 import kr1v.malilibApi.config.ConfigLabel;
 import kr1v.malilibApi.mixin.accessor.WidgetListConfigOptionsBaseAccessor;
@@ -19,8 +19,8 @@ import net.minecraft.client.gui.screen.Screen;
 
 import java.util.*;
 
-public class ConfigScreen  extends GuiConfigsBase {
-    public ModConfig.Tab tab = MalilibApi.tabsFor(modId).getFirst();
+public class ConfigScreen extends GuiConfigsBase {
+    public ModConfig.Tab tab = InternalMalilibApi.tabsFor(modId).getFirst();
 
     public ConfigScreen(String modId, String titleKey) {
         this(modId, titleKey, null);
@@ -104,7 +104,7 @@ public class ConfigScreen  extends GuiConfigsBase {
         if (MaLiLibConfigs.Generic.ENABLE_CONFIG_SWITCHER.getBooleanValue()) {
             this.modSwitchWidget = new WidgetDropDownList<>(GuiUtils.getScaledWindowWidth() - 155, 6, 130, 18, 200, 10, Registry.CONFIG_SCREEN.getAllModsWithConfigScreens()) {
                 {
-                    selectedEntry = MalilibApi.modInfoFor(modId);
+                    selectedEntry = InternalMalilibApi.modInfoFor(modId);
                 }
 
                 @Override

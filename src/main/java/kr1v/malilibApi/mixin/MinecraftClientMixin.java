@@ -1,6 +1,6 @@
 package kr1v.malilibApi.mixin;
 
-import kr1v.malilibApi.MalilibApi;
+import kr1v.malilibApi.InternalMalilibApi;
 import net.minecraft.client.MinecraftClient;
 import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,6 +14,6 @@ public class MinecraftClientMixin {
     // handle before malilib, but after mod init
     @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Ljava/lang/Thread;currentThread()Ljava/lang/Thread;"))
     private static void init(CallbackInfo ci) {
-        MalilibApi.init();
+        InternalMalilibApi.init();
     }
 }

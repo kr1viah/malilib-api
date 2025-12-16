@@ -11,7 +11,7 @@ import java.util.Set;
 public class ReflectionsInit implements IMixinConfigPlugin {
     @Override
     public void onLoad(String mixinPackage) {
-        new Thread(() -> MalilibApi.reflections = new Reflections()).start();
+        new Thread(() -> InternalMalilibApi.reflections = new Reflections()).start();
     }
 
     @Override

@@ -5,7 +5,7 @@ import com.google.gson.*;
 import com.sun.source.tree.*;
 import com.sun.source.util.TreePath;
 import com.sun.source.util.Trees;
-import kr1v.malilibApi.MalilibApi;
+import kr1v.malilibApi.InternalMalilibApi;
 import kr1v.malilibApi.annotation.Config;
 import kr1v.malilibApi.annotation.PopupConfig;
 
@@ -117,7 +117,7 @@ public class ConfigProcessor extends AbstractProcessor {
                 Filer filer = processingEnv.getFiler();
                 FileObject file = filer.createResource(StandardLocation.CLASS_OUTPUT, "", "META-INF/kr1v/index.json");
                 try (Writer w = file.openWriter()) {
-                    MalilibApi.GSON.toJson(map, w);
+                    InternalMalilibApi.GSON.toJson(map, w);
                 }
                 println("Written map. classes processed: " + map.size());
             }

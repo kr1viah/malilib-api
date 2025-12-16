@@ -7,7 +7,7 @@ import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
 import fi.dy.masa.malilib.render.RenderUtils;
 import fi.dy.masa.malilib.util.GuiUtils;
-import kr1v.malilibApi.MalilibApi;
+import kr1v.malilibApi.InternalMalilibApi;
 import kr1v.malilibApi.annotation.PopupConfig;
 import kr1v.malilibApi.config.ConfigLabel;
 import kr1v.malilibApi.mixin.accessor.WidgetListConfigOptionsBaseAccessor;
@@ -113,7 +113,7 @@ public class ConfigPopupScreen extends GuiConfigsBase {
     @Override
     public List<ConfigOptionWrapper> getConfigs() {
         ImmutableList.Builder<ConfigOptionWrapper> builder = ImmutableList.builder();
-        for (IConfigBase config : MalilibApi.configListFor(modId, this.configClass)) {
+        for (IConfigBase config : InternalMalilibApi.configListFor(modId, this.configClass)) {
             if (config instanceof ConfigLabel)
                 builder.add(new ConfigOptionWrapper(config.getComment()));
             else
