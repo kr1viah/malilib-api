@@ -26,7 +26,11 @@ public class MalilibApi {
     }
 
     public static void registerTab(String modId, String tab, List<IConfigBase> options) {
-        InternalMalilibApi.registerTab(modId, tab, options, false);
+        registerTab(modId, tab, options, 1000);
+    }
+
+    public static void registerTab(String modId, String tab, List<IConfigBase> options, int order) {
+        InternalMalilibApi.registerTab(modId, tab, options, false, order);
     }
 
     public static void unregisterTab(String modId, String tabName) {

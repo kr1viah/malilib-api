@@ -73,7 +73,7 @@ public final class ConfigUtils {
                     InternalMalilibApi.setDefaultEnabled(klass.getAnnotation(PopupConfig.class).defaultEnabled());
                     InternalMalilibApi.cacheFor(modId).put(klass, generateOptions(klass, modId));
                     InternalMalilibApi.setDefaultEnabled(prev);
-                    InternalMalilibApi.registerTab(modId, AnnotationUtils.nameForConfig(klass), list, true);
+                    InternalMalilibApi.registerTab(modId, AnnotationUtils.nameForConfig(klass), list, true, 0); // order doesnt matter for popups
                     list.add(configButton);
                 }
                 case Label label ->

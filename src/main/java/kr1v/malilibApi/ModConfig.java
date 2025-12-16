@@ -15,5 +15,5 @@ public class ModConfig {
         this.modInfo = modInfo;
     }
 
-    public record Tab(String translationKey, List<IConfigBase> options, boolean isPopup) {}
+    public record Tab(String translationKey, List<IConfigBase> options, boolean isPopup, int order) {}
 }
