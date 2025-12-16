@@ -41,7 +41,8 @@ public class ConfigScreen  extends GuiConfigsBase {
         int x = 10;
         int y = 26;
 
-        for (ModConfig.Tab tab : MalilibApi.tabsFor(modId)) {
+        // TODO: sort this.
+        for (ModConfig.Tab tab : InternalMalilibApi.tabsFor(modId)) {
             if (!tab.isPopup()) {
                 x += this.createButton(x, y, -1, tab);
             }
