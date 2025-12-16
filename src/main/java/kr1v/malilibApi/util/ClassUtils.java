@@ -2,7 +2,6 @@ package kr1v.malilibApi.util;
 
 import kr1v.malilibApi.InternalMalilibApi;
 import kr1v.malilibApi.annotation.processor.ConfigProcessor;
-import net.fabricmc.loader.api.FabricLoader;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -27,15 +26,30 @@ public final class ClassUtils {
                     case "innerClass" -> klass = Class.forName(el.name);
                     case "method" -> {
                         if (el.name.contains("<")) continue;
-                        List<Class<?>> typeList = new ArrayList<>();
-                        for (String type : el.types) {
-                            if (!FabricLoader.getInstance().isDevelopmentEnvironment())
-                                type = MappingUtils.yarnToIntermediary(type);
-                            typeList.add(Class.forName(type));
-                        }
-                        Class<?>[] types = typeList.toArray(new Class[]{});
+                        try {
+                            List<Class<?>> typeList = new ArrayList<>();
+                            for (String type : el.types) {
+                                typeList.add(Class.forName(type));
+                            }
+                            Class<?>[] types = typeList.toArray(new Class[]{});
+                            m = clazz.getDeclaredMethod(el.name, types);
+                        } catch (ClassNotFoundException ignored) {
+                            // cant really do anything.... mapping issues, compare and method name and parameter names/length
+                            outer: for (Method method : clazz.getDeclaredMethods()) {
+                                if (method.getParameterCount() != el.types.size()) continue;
+                                if (!method.getName().equals(el.name)) continue;
 
-                        m = clazz.getDeclaredMethod(el.name, types);
+                                var params = method.getParameters();
+                                for (int i = 0; i < params.length; i++) {
+                                    if (!params[i].getName().equals(el.parameterNames.get(i))) {
+                                        continue outer;
+                                    }
+                                }
+
+                                m = method;
+                                break;
+                            }
+                        }
                     }
                     default -> {}
                 }

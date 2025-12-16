@@ -5,7 +5,6 @@ import com.google.gson.*;
 import com.sun.source.tree.*;
 import com.sun.source.util.TreePath;
 import com.sun.source.util.Trees;
-import kr1v.malilibApi.InternalMalilibApi;
 import kr1v.malilibApi.annotation.Config;
 import kr1v.malilibApi.annotation.PopupConfig;
 
@@ -25,11 +24,10 @@ import java.util.stream.Collectors;
 
 
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
-@SupportedAnnotationTypes({"kr1v.malilibApi.annotation.Config",
-                "kr1v.malilibApi.annotation.PopupConfig",
-                "kr1v.malilibApi.annotation.MainClass"})
+@SupportedAnnotationTypes({"kr1v.malilibApi.annotation.Config", "kr1v.malilibApi.annotation.PopupConfig"})
 @AutoService(Processor.class)
 public class ConfigProcessor extends AbstractProcessor {
+    public static final Gson GSON = new GsonBuilder().registerTypeAdapter(ConfigProcessor.ValueDTO.class, new ConfigProcessor.ValueDTODeserializer()).setPrettyPrinting().create();
 
     // fqcn -> class representation
     private static final Map<String, List<ElementRepresentation>> map = new HashMap<>();
@@ -93,6 +91,7 @@ public class ConfigProcessor extends AbstractProcessor {
                         for (VariableElement x : method.getParameters()) {
                             TypeMirror tm = x.asType();
                             TypeElement te =  (TypeElement) typeUtils.asElement(tm);
+                            representation.parameterNames.add(x.getSimpleName().toString());
                             representation.types.add(te.getQualifiedName().toString());
                         }
                         classRepresentation.add(representation);
@@ -117,7 +116,7 @@ public class ConfigProcessor extends AbstractProcessor {
                 Filer filer = processingEnv.getFiler();
                 FileObject file = filer.createResource(StandardLocation.CLASS_OUTPUT, "", "META-INF/kr1v/index.json");
                 try (Writer w = file.openWriter()) {
-                    InternalMalilibApi.GSON.toJson(map, w);
+                    GSON.toJson(map, w);
                 }
                 println("Written map. classes processed: " + map.size());
             }
@@ -270,6 +269,7 @@ public class ConfigProcessor extends AbstractProcessor {
         public String name;
         public List<AnnotationDTO> annotations = new ArrayList<>();
         public List<String> types = new ArrayList<>();
+        public List<String> parameterNames = new ArrayList<>();
 
         public ElementRepresentation(String type, String name) {
             this.type = type;

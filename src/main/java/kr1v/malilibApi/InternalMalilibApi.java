@@ -1,7 +1,6 @@
 package kr1v.malilibApi;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import fi.dy.masa.malilib.config.ConfigManager;
 import fi.dy.masa.malilib.config.IConfigBase;
@@ -15,9 +14,7 @@ import kr1v.malilibApi.annotation.processor.ConfigProcessor;
 import kr1v.malilibApi.screen.ConfigScreen;
 import kr1v.malilibApi.util.AnnotationUtils;
 import kr1v.malilibApi.util.ConfigUtils;
-import kr1v.malilibApi.util.MappingUtils;
 import net.minecraft.client.gui.screen.Screen;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.reflections.Reflections;
 
 import java.io.IOException;
@@ -37,7 +34,7 @@ public class InternalMalilibApi {
 
     /// this gets initialised in a mixin config plugin off thread
     public static Reflections reflections;
-    public static final Gson GSON = new GsonBuilder().registerTypeAdapter(ConfigProcessor.ValueDTO.class, new ConfigProcessor.ValueDTODeserializer()).setPrettyPrinting().create();
+    public static final Gson GSON = ConfigProcessor.GSON;
 
     public static void registerMod(String modId, String modName, ConfigHandler configHandler, InputHandler inputHandler) {
         if (isModRegistered(modId)) throw new IllegalStateException("Mod id is already registered!");
@@ -60,12 +57,6 @@ public class InternalMalilibApi {
     }
 
     public static void init() {
-        try {
-            Class.forName(MappingUtils.class.getName());
-        } catch (ClassNotFoundException e) {
-            throw ExceptionUtils.asRuntimeException(e);
-        }
-
         Type type = new TypeToken<Map<String, List<ConfigProcessor.ElementRepresentation>>>() {}.getType();
         try {
             ClassLoader cl = Thread.currentThread().getContextClassLoader();
@@ -166,7 +157,8 @@ public class InternalMalilibApi {
         return rawTabs(modId)
                 .stream()
                 .sorted(Comparator
-                        .comparingInt(ModConfig.Tab::order)
+                        .comparing(ModConfig.Tab::isPopup)
+                        .thenComparingInt(ModConfig.Tab::order)
                         .thenComparing(ModConfig.Tab::translationKey)
                 )
                 .toList();

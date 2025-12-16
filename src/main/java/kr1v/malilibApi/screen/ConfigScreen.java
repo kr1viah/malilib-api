@@ -51,7 +51,7 @@ public class ConfigScreen extends GuiConfigsBase {
     @SuppressWarnings("SameParameterValue")
     private int createButton(int x, int y, int width, ModConfig.Tab tab) {
         ButtonGeneric button = new ButtonGeneric(x, y, width, 20, tab.translationKey());
-        button.setEnabled(this.tab != tab);
+        button.setEnabled(!this.tab.equals(tab));
         final ModConfig.Tab tab2 = tab;
 
         this.addButton(button, (button1, mouseButton) -> {
