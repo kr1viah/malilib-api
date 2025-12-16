@@ -6,7 +6,7 @@ import fi.dy.masa.malilib.config.IConfigBase;
 import org.jetbrains.annotations.Nullable;
 
 public class ConfigLabel implements IConfigBase {
-    String label;
+    private String label;
 
     public ConfigLabel(String label) {
         this.label = label;

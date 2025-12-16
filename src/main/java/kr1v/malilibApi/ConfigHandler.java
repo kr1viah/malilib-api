@@ -10,19 +10,23 @@ import net.minecraft.client.MinecraftClient;
 import java.io.File;
 
 public class ConfigHandler implements IConfigHandler {
-    private final String MOD_ID;
-    private final String CONFIG_FILE_NAME;
+    private final String modId;
+    private final String configFileName;
 
     public ConfigHandler(String modId) {
-        this.MOD_ID = modId;
-        this.CONFIG_FILE_NAME = MOD_ID + ".json";
+        this(modId, modId + ".json");
+    }
+
+    public ConfigHandler(String modId, String configFileName) {
+        this.modId = modId;
+        this.configFileName = configFileName;
     }
 
     public void loadAdditionalData(JsonObject root) {}
 
     @Override
     public void load() {
-        File configFile = new File(MinecraftClient.getInstance().runDirectory, "config/" + CONFIG_FILE_NAME);
+        File configFile = new File(MinecraftClient.getInstance().runDirectory, "config/" + configFileName);
 
         if (configFile.exists() && configFile.isFile() && configFile.canRead()) {
             JsonElement element = JsonUtils.parseJsonFile(configFile);
@@ -32,8 +36,8 @@ public class ConfigHandler implements IConfigHandler {
 
                 if (root.has("configs") && root.get("configs").isJsonObject()) {
                     JsonObject configs = root.get("configs").getAsJsonObject();
-                    for (Class<?> configClass : InternalMalilibApi.classesFor(MOD_ID)) {
-                        ConfigUtils.readConfigBase(configs, configClass.getSimpleName(), InternalMalilibApi.configListFor(MOD_ID, configClass));
+                    for (Class<?> configClass : InternalMalilibApi.classesFor(modId)) {
+                        ConfigUtils.readConfigBase(configs, configClass.getSimpleName(), InternalMalilibApi.configListFor(modId, configClass));
                     }
                 }
 
@@ -57,12 +61,12 @@ public class ConfigHandler implements IConfigHandler {
             JsonObject configs = new JsonObject();
             JsonObject customData = new JsonObject();
             saveAdditionalData(customData);
-            for (Class<?> configClass : InternalMalilibApi.classesFor(MOD_ID)) {
-                ConfigUtils.writeConfigBase(configs, configClass.getSimpleName(), InternalMalilibApi.configListFor(MOD_ID, configClass));
+            for (Class<?> configClass : InternalMalilibApi.classesFor(modId)) {
+                ConfigUtils.writeConfigBase(configs, configClass.getSimpleName(), InternalMalilibApi.configListFor(modId, configClass));
             }
             root.add("configs", configs);
             root.add("custom_data", customData);
-            JsonUtils.writeJsonToFile(root, new File(dir, CONFIG_FILE_NAME));
+            JsonUtils.writeJsonToFile(root, new File(dir, configFileName));
         }
     }
 }
