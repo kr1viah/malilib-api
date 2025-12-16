@@ -15,7 +15,6 @@ import kr1v.malilibApi.annotation.processor.ConfigProcessor;
 import kr1v.malilibApi.screen.ConfigScreen;
 import kr1v.malilibApi.util.AnnotationUtils;
 import kr1v.malilibApi.util.ConfigUtils;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.minecraft.client.gui.screen.Screen;
 import org.reflections.Reflections;
 
@@ -43,8 +42,9 @@ public class InternalMalilibApi {
 
         Supplier<GuiBase> configScreenSupplier = () -> new ConfigScreen(modId, modName);
         ModInfo modInfo = new ModInfo(modId, modName, configScreenSupplier);
+        ModConfig modConfig = new ModConfig(modInfo, configHandler, inputHandler);
 
-        registerMod(modId, modInfo);
+        registerMod(modId, modConfig);
 
         InitializationHandler.getInstance().registerInitializationHandler(() -> {
             ConfigManager.getInstance().registerConfigHandler(modId, configHandler);
@@ -55,8 +55,6 @@ public class InternalMalilibApi {
             InputEventHandler.getInputManager().registerKeyboardInputHandler(inputHandler);
             InputEventHandler.getInputManager().registerMouseInputHandler(inputHandler);
         });
-
-        ClientLifecycleEvents.CLIENT_STOPPING.register(client -> configHandler.save());
     }
 
     public static void init() {
@@ -114,6 +112,10 @@ public class InternalMalilibApi {
         return modIdToModConfig.get(modId);
     }
 
+    public static Collection<ModConfig> getModConfigs() {
+        return modIdToModConfig.values();
+    }
+
     public static Map<Class<?>, List<IConfigBase>> cacheFor(String modId) {
         return modIdToModConfig.get(modId).configs;
     }
@@ -126,8 +128,8 @@ public class InternalMalilibApi {
         return modIdToModConfig.get(modId).configs.keySet();
     }
 
-    public static void registerMod(String modId, ModInfo modInfo) {
-        modIdToModConfig.put(modId, new ModConfig(modInfo));
+    public static void registerMod(String modId, ModConfig modConfig) {
+        modIdToModConfig.put(modId, modConfig);
     }
 
     public static boolean isModRegistered(String modId) {
