@@ -70,7 +70,7 @@ public class ConfigScreen extends GuiConfigsBase {
 
     @Override
     protected void closeGui(boolean showParent) {
-        super.closeGui(showParent);
+        super.closeGui(true);
     }
 
     @Override
