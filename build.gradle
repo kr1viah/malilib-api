@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.13-SNAPSHOT'
+    id 'fabric-loom' /*version '1.13-SNAPSHOT'*/
     id 'maven-publish'
 }
 
@@ -16,6 +16,13 @@ repositories {
         url = "https://jitpack.io"
     }
     mavenCentral()
+}
+
+loom {
+    runConfigs.all {
+        ideConfigGenerated = false
+        runDir "../../run"
+    }
 }
 
 dependencies {
