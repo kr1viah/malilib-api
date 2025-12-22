@@ -5,7 +5,6 @@ import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.gui.GuiBase;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
-import fi.dy.masa.malilib.render.RenderUtils;
 import fi.dy.masa.malilib.util.GuiUtils;
 import kr1v.malilibApi.InternalMalilibApi;
 import kr1v.malilibApi.annotation.PopupConfig;
@@ -64,7 +63,6 @@ public class ConfigPopupScreen extends GuiConfigsBase {
                 this.dialogWidth = ((WidgetListConfigOptionsBaseAccessor) listWidget).getMaxLabelWidth();
                 this.dialogWidth += 204 + 85;
                 if (this.dialogWidth < 400) this.dialogWidth = 400;
-                System.out.println(dialogWidth);
             }
             else {
                 this.dialogWidth = configWidth;
@@ -128,18 +126,20 @@ public class ConfigPopupScreen extends GuiConfigsBase {
             this.customParent.render(drawContext, mouseX, mouseY, partialTicks);
         }
 
-        drawContext.getMatrices().translate(0f, 0f, 1000f);
+        //? if <=1.21.5
+        drawContext.getMatrices().translate(0f, 0f, 1000f); // this got changed in 25w15a
 
         super.render(drawContext, mouseX, mouseY, partialTicks);
     }
 
     @Override
-    protected void drawScreenBackground(DrawContext drawContext, int mouseX, int mouseY) {
-        RenderUtils.drawOutlinedBox(this.dialogLeft, this.dialogTop, this.dialogWidth, this.dialogHeight, 0xFF000000, COLOR_HORIZONTAL_BAR);
+    protected void drawScreenBackground(/*? if >=1.21.11 {*//*fi.dy.masa.malilib.render.GuiContext*//*? } else {*/DrawContext/*? }*/ drawContext, int mouseX, int mouseY) {
+        drawContext.fill(this.dialogLeft, this.dialogTop, this.dialogLeft + this.dialogWidth, this.dialogTop + this.dialogHeight, COLOR_HORIZONTAL_BAR);
+        drawContext.fill(this.dialogLeft + 1, this.dialogTop + 1, this.dialogLeft + this.dialogWidth - 1, this.dialogTop + this.dialogHeight - 1, 0xFF000000);
     }
 
     @Override
-    protected void drawTitle(DrawContext drawContext, int mouseX, int mouseY, float partialTicks) {
+    protected void drawTitle(/*? if >=1.21.11 {*//*fi.dy.masa.malilib.render.GuiContext*//*? } else {*/DrawContext/*? }*/ drawContext, int mouseX, int mouseY, float partialTicks) {
         this.drawStringWithShadow(drawContext, this.title, this.dialogLeft + 10, this.dialogTop + 6, COLOR_WHITE);
     }
 

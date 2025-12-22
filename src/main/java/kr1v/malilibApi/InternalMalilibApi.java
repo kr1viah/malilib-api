@@ -104,7 +104,8 @@ public class InternalMalilibApi {
 
     public static void openScreenFor(String modId, Screen parent) {
         ModInfo modInfo = modIdToModConfig.get(modId).modInfo;
-        GuiBase.openGui(new ConfigScreen(modInfo.getModId(), modInfo.getModName(), parent));
+        String modName = /*? if >=1.21.11 {*//*modInfo.modName()*//*? } else {*/modInfo.getModName()/*? }*/;
+        GuiBase.openGui(new ConfigScreen(modId, modName, parent));
     }
 
     public static ModConfig getModConfig(String modId) {

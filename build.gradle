@@ -40,6 +40,24 @@ dependencies {
 }
 
 processResources {
+    // note: 25w17a is the 3rd snapshot for 1.21.6
+
+    // 1.21:    1.21   (inclusive) - 1.21.1  (inclusive)
+    // 1.21.5:  1.21.1 (exclusive) - 1.21.5  (inclusive)
+    // 1.21.8:  25w17a (inclusive) - 1.21.8  (inclusive)
+    // 1.21.10: 1.21.9 (inclusive) - 1.21.10 (inclusive)
+    // 1.21.11: 1.21.11
+    def versions = ""
+
+    switch (sc.active.version) {
+        case "1.21" ->    versions = ">=1.21 <=1.21.1"
+        case "1.21.5" ->  versions = ">1.21.1 <=1.21.5"
+        case "1.21.8" ->  versions = ">=25w17a <=1.21.8"
+        case "1.21.10" -> versions = ">=1.21.9 <=1.21.10"
+        case "1.21.11" -> versions = "1.21.11"
+    }
+
+    inputs.property "versions", versions
     inputs.property "version", project.version
     inputs.property "minecraft_version", project.minecraft_version
     inputs.property "loader_version", project.loader_version
@@ -48,7 +66,8 @@ processResources {
     filesMatching("fabric.mod.json") {
         expand "version": project.version,
                 "minecraft_version": project.minecraft_version,
-                "loader_version": project.loader_version
+                "loader_version": project.loader_version,
+                "versions": versions
     }
 }
 

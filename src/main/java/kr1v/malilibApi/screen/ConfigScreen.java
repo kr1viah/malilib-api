@@ -93,7 +93,13 @@ public class ConfigScreen extends GuiConfigsBase {
     @Override
     public void render(DrawContext drawContext, int mouseX, int mouseY, float partialTicks) {
         if (this.client != null && this.client.world == null) this.renderPanoramaBackground(drawContext, partialTicks);
+        //? if =1.21 {
+        /*this.applyBlur(partialTicks); // this arg was removed in 24w33a
+        *///? } else if =1.21.5 {
         this.applyBlur();
+        //? } else if >=1.21.8 {
+        /*this.applyBlur(drawContext); // this arg was added in 25w17a
+        *///? }
         super.render(drawContext, mouseX, mouseY, partialTicks);
     }
 
@@ -110,14 +116,24 @@ public class ConfigScreen extends GuiConfigsBase {
                 protected void setSelectedEntry(int index) {
                     super.setSelectedEntry(index);
 
+                    //? if >=1.21.11 {
+                    /*if (selectedEntry != null && selectedEntry.configScreenSupplier() != null) {
+                        GuiBase.openGui(selectedEntry.configScreenSupplier().get());
+                    }
+                    *///? } else {
                     if (selectedEntry != null && selectedEntry.getConfigScreenSupplier() != null) {
                         GuiBase.openGui(selectedEntry.getConfigScreenSupplier().get());
                     }
+                    //? }
                 }
 
                 @Override
                 protected String getDisplayString(ModInfo entry) {
+                    //? if >=1.21.11 {
+                    /*return entry.modName();
+                    *///? } else {
                     return entry.getModName();
+                    //? }
                 }
             };
 

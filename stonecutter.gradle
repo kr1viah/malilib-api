@@ -1,10 +1,20 @@
 plugins {
     id("dev.kikugie.stonecutter")
     id("net.fabricmc.fabric-loom-remap") version "1.14-SNAPSHOT" apply false
-    // id("me.modmuss50.mod-publish-plugin") version "1.0.+" apply false
 }
 
 stonecutter.active "1.21.5"
+
+tasks.register("runClient active version") {
+    group = 'activeVersion'
+    def wantedTask = 'runClient'
+    dependsOn(rootProject.findProject(sc.current.version).tasks.named(wantedTask))
+}
+tasks.register("build active version") {
+    group = 'activeVersion'
+    def wantedTask = 'build'
+    dependsOn(rootProject.findProject(sc.current.version).tasks.named(wantedTask))
+}
 
 /*
 // Make newer versions be published last

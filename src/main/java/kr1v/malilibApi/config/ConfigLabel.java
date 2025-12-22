@@ -53,4 +53,26 @@ public class ConfigLabel implements IConfigBase {
     public JsonElement getAsJsonElement() {
         return null;
     }
+
+    //? if >=1.21.10 {
+    /*@Override
+    public boolean isDirty() {
+        return false;
+    }
+
+    @Override
+    public void markDirty() {
+
+    }
+
+    @Override
+    public void markClean() {
+
+    }
+
+    @Override
+    public void checkIfClean() {
+
+    }
+    *///? }
 }
