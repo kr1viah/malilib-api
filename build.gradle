@@ -130,6 +130,7 @@ publishMods {
         github {
             accessToken = providers.environmentVariable("GITHUB_TOKEN")
             repository = providers.environmentVariable("GITHUB_REPO")
+            commitish = "master"
             tagName = version
             displayName = version
         }
