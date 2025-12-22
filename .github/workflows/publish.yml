@@ -1,0 +1,35 @@
+name: Publish Mod
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_github:
+        type: boolean
+        description: 'Github Release'
+        default: false
+      github_repo:
+        type: string
+        description: 'Github repo'
+        default: "kr1viah/malilib-api"
+#      release_modrinth:
+#        type: boolean
+#        description: 'Modrinth Release'
+#        default: false
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    container:
+      image: mcr.microsoft.com/openjdk/jdk:21-ubuntu
+      options: --user root
+    steps:
+      - uses: actions/checkout@v4
+      - run: ./gradlew build publishMods
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          RELEASE_GITHUB: ${{ inputs.release_github }}
+#          RELEASE_MODRINTH: ${{ inputs.release_modrinth }}
+          GITHUB_REPO: ${{ inputs.github_repo }}
