@@ -11,10 +11,10 @@ on:
         type: string
         description: 'Github repo'
         default: "kr1viah/malilib-api"
-#      release_modrinth:
-#        type: boolean
-#        description: 'Modrinth Release'
-#        default: false
+      release_modrinth:
+        type: boolean
+        description: 'Modrinth Release'
+        default: false
 permissions:
   contents: write
 
@@ -29,7 +29,7 @@ jobs:
       - run: ./gradlew build publishMods
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
           RELEASE_GITHUB: ${{ inputs.release_github }}
-#          RELEASE_MODRINTH: ${{ inputs.release_modrinth }}
+          RELEASE_MODRINTH: ${{ inputs.release_modrinth }}
           GITHUB_REPO: ${{ inputs.github_repo }}
