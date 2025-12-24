@@ -50,7 +50,7 @@ processResources {
     // 1.21.11: 1.21.11
     def versions = ""
 
-    switch (sc.active.version) {
+    switch (sc.current.version) {
         case "1.21" ->    versions = ">=1.21 <=1.21.1"
         case "1.21.5" ->  versions = ">1.21.1 <=1.21.5"
         case "1.21.8" ->  versions = ">=1.21.6 <=1.21.8" // I cant specify >=25w17a??
