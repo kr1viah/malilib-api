@@ -131,7 +131,7 @@ publishMods {
             accessToken = providers.environmentVariable("GITHUB_TOKEN")
             repository = providers.environmentVariable("GITHUB_REPO")
             commitish = "master"
-            tagName = version.toString().replace("+", "-")
+            tagName = version
             displayName = version
         }
     }
@@ -184,6 +184,7 @@ publishing {
             groupId = 'com.kr1v'
             artifactId = 'malilib-api'
             version = project.version
+
             from components.java
         }
     }
