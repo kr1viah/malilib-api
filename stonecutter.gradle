@@ -6,6 +6,8 @@ plugins {
 
 stonecutter.active "1.21.5"
 
+version = project.mod_version + "+" + sc.current.version
+
 tasks.register("runClient active version") {
     group = 'activeVersion'
     def wantedTask = 'runClient'
