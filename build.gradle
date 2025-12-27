@@ -123,23 +123,14 @@ publishMods {
     modLoaders.add("fabric")
 
     if (providers.environmentVariable("RELEASE_GITHUB").getOrElse("false").toBoolean()) {
-        if (!providers.environmentVariable("GITHUB_TOKEN").isPresent() || providers.environmentVariable("GITHUB_TOKEN").get() == "") {
-            throw new GradleException('Missing GITHUB_TOKEN')
-        }
-
         github {
             accessToken = providers.environmentVariable("GITHUB_TOKEN")
-            repository = providers.environmentVariable("GITHUB_REPO")
-            commitish = "master"
-            tagName = project.mod_version
-            displayName = version
+
+            parent.rootProject.tasks.named("publishGithub")
         }
     }
 
     if (providers.environmentVariable("RELEASE_MODRINTH").getOrElse("false").toBoolean()) {
-        if (!providers.environmentVariable("RELEASE_MODRINTH").isPresent() || providers.environmentVariable("RELEASE_MODRINTH").get() == "") {
-            throw new GradleException('Missing RELEASE_MODRINTH')
-        }
         modrinth {
             accessToken = providers.environmentVariable("MODRINTH_TOKEN")
             projectId = "Qppvg0Y6"
@@ -175,7 +166,6 @@ publishMods {
             requires("malilib")
         }
     }
-
 }
 
 publishing {

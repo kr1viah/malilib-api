@@ -15,6 +15,30 @@ tasks.register("build active version") {
     def wantedTask = 'build'
     dependsOn(rootProject.findProject(sc.current.version).tasks.named(wantedTask))
 }
+publishMods {
+    if (providers.environmentVariable("RELEASE_MODRINTH").getOrElse("false").toBoolean()) {
+        if (!providers.environmentVariable("MODRINTH_TOKEN").isPresent() || providers.environmentVariable("MODRINTH_TOKEN").get() == "") {
+            throw new GradleException('Missing MODRINTH_TOKEN')
+        }
+    }
+
+    if (providers.environmentVariable("RELEASE_GITHUB").getOrElse("false").toBoolean()) {
+        if (!providers.environmentVariable("GITHUB_TOKEN").isPresent() || providers.environmentVariable("GITHUB_TOKEN").get() == "") {
+            throw new GradleException('Missing GITHUB_TOKEN')
+        }
+
+        github {
+            accessToken = providers.environmentVariable("GITHUB_TOKEN")
+            repository = providers.environmentVariable("GITHUB_REPO")
+            commitish = "master"
+            changelog = ""
+            type = STABLE
+            tagName = "${rootProject.mod_version}"
+            displayName = "${rootProject.mod_version}"
+            allowEmptyFiles = true
+        }
+    }
+}
 
 /*
 // Make newer versions be published last
