@@ -82,6 +82,7 @@ public class ConfigScreen extends GuiConfigsBase {
     public List<ConfigOptionWrapper> getConfigs() {
         ImmutableList.Builder<ConfigOptionWrapper> builder = ImmutableList.builder();
         for (IConfigBase config : this.tab.options()) {
+            if (InternalMalilibApi.shouldHide(config)) continue;
             if (config instanceof ConfigLabel)
                 builder.add(new ConfigOptionWrapper(config.getComment()));
             else

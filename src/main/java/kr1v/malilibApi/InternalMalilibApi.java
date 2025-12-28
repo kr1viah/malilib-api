@@ -15,7 +15,6 @@ import kr1v.malilibApi.screen.ConfigScreen;
 import kr1v.malilibApi.util.AnnotationUtils;
 import kr1v.malilibApi.util.ConfigUtils;
 import net.minecraft.client.gui.screen.Screen;
-import org.reflections.Reflections;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -32,8 +31,6 @@ public class InternalMalilibApi {
 
     public static final Map<Class<?>, List<ConfigProcessor.ElementRepresentation>> classToRepresentation = new HashMap<>();
 
-    /// this gets initialised in a mixin config plugin off thread
-    public static Reflections reflections;
     public static final Gson GSON = ConfigProcessor.GSON;
 
     public static void registerMod(String modId, String modName, ConfigHandler configHandler, InputHandler inputHandler) {
@@ -167,5 +164,15 @@ public class InternalMalilibApi {
 
     private static List<ModConfig.Tab> rawTabs(String modId) {
         return getModConfig(modId).tabs;
+    }
+
+    private static final Set<Object> toHide = new HashSet<>();
+
+    public static void addHide(Object o) {
+        toHide.add(o);
+    }
+
+    public static boolean shouldHide(Object o) {
+        return toHide.contains(o);
     }
 }

@@ -3,10 +3,7 @@ package kr1v.malilibApi.util;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.util.GuiUtils;
 import kr1v.malilibApi.InternalMalilibApi;
-import kr1v.malilibApi.annotation.Extras;
-import kr1v.malilibApi.annotation.Label;
-import kr1v.malilibApi.annotation.Marker;
-import kr1v.malilibApi.annotation.PopupConfig;
+import kr1v.malilibApi.annotation.*;
 import kr1v.malilibApi.annotation.processor.ConfigProcessor;
 import kr1v.malilibApi.config.ConfigButton;
 import kr1v.malilibApi.config.ConfigLabel;
@@ -98,6 +95,8 @@ public final class ConfigUtils {
                         }
                     }
                 }
+                case Hide ignored ->
+                        InternalMalilibApi.addHide(element.field.get(null));
                 default -> {}
             }
         }

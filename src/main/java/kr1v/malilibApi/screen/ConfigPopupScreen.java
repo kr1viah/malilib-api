@@ -112,6 +112,7 @@ public class ConfigPopupScreen extends GuiConfigsBase {
     public List<ConfigOptionWrapper> getConfigs() {
         ImmutableList.Builder<ConfigOptionWrapper> builder = ImmutableList.builder();
         for (IConfigBase config : InternalMalilibApi.configListFor(modId, this.configClass)) {
+            if (InternalMalilibApi.shouldHide(config)) continue;
             if (config instanceof ConfigLabel)
                 builder.add(new ConfigOptionWrapper(config.getComment()));
             else
