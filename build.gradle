@@ -172,7 +172,11 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             groupId = 'com.kr1v'
-            artifactId = "${project.archives_base_name}-${sc.current.version}"
+            if (providers.environmentVariable("JITPACK").getOrElse("false").toBoolean()) {
+                artifactId = "${sc.current.version}"
+            } else {
+                artifactId = "${project.archives_base_name}-${sc.current.version}"
+            }
             version = project.mod_version
 
             from components.java
