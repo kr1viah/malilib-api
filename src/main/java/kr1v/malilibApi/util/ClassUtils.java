@@ -22,7 +22,7 @@ public final class ClassUtils {
                 Method m = null;
                 Class<?> klass = null;
                 switch (el.type) {
-                    case "field" -> f = clazz.getField(el.name);
+                    case "field" -> f = clazz.getDeclaredField(el.name);
                     case "innerClass" -> klass = Class.forName(el.name);
                     case "method" -> {
                         if (el.name.contains("<")) continue;
