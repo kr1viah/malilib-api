@@ -168,6 +168,10 @@ public class InternalMalilibApi {
 
     private static final Set<Object> toHide = new HashSet<>();
 
+    public static void removeHide(Object o) {
+        toHide.remove(o);
+    }
+
     public static void addHide(Object o) {
         toHide.add(o);
     }
