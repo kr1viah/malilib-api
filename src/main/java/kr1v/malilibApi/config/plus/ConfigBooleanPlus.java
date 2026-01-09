@@ -9,4 +9,20 @@ public class ConfigBooleanPlus extends ConfigBoolean implements Plus {
 	public ConfigBooleanPlus(String name) {
 		super(name, InternalMalilibApi.getDefaultEnabled(), " ");
 	}
+
+	public ConfigBooleanPlus(String name, boolean defaultValue) {
+		super(name, defaultValue, " ");
+	}
+
+	public ConfigBooleanPlus(String name, boolean defaultValue, String comment) {
+		super(name, defaultValue, comment);
+	}
+
+	public ConfigBooleanPlus(String name, boolean defaultValue, String comment, String prettyName) {
+		super(name, defaultValue, comment, prettyName);
+	}
+
+	public ConfigBooleanPlus(String name, boolean defaultValue, String comment, String prettyName, String translatedName) {
+		super(name, defaultValue, comment, prettyName, translatedName);
+	}
 }
