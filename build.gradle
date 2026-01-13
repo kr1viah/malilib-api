@@ -171,13 +171,9 @@ publishing {
         mavenJava(MavenPublication) {
             groupId = 'net.kr1v'
             artifactId = "${project.archives_base_name}"
-            version = project.mod_version
+            version = project.mod_version + "-" + project.minecraft_version
 
             from components.java
-
-            artifact(tasks.jar) {
-                classifier = project.minecraft_version
-            }
         }
     }
     repositories {
