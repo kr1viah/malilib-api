@@ -1,6 +1,8 @@
 package kr1v.malilibApi;
 
 import fi.dy.masa.malilib.config.IConfigBase;
+import kr1v.malilibApi.interfaces.IConfigScreenSupplier;
+import kr1v.malilibApi.screen.ConfigScreen;
 import net.minecraft.client.gui.screen.Screen;
 
 import java.util.List;
@@ -14,7 +16,27 @@ public class MalilibApi {
 
     /// Use if you want a custom ConfigHandler/InputHandler
     public static void registerMod(String modId, String modName, ConfigHandler configHandler, InputHandler inputHandler) {
-        InternalMalilibApi.registerMod(modId, modName, configHandler, inputHandler);
+        InternalMalilibApi.registerMod(modId, modName, configHandler, inputHandler, new IConfigScreenSupplier() {
+			@Override
+			public ConfigScreen get() {
+				return new ConfigScreen(modId, modName);
+			}
+
+			@Override
+			public ConfigScreen get(Screen parent) {
+				return new ConfigScreen(modId, modName, parent);
+			}
+		});
+    }
+
+    /// Use if you want a custom config screen
+    public static void registerMod(String modId, String modName, IConfigScreenSupplier configScreenSupplier) {
+        InternalMalilibApi.registerMod(modId, modName, new ConfigHandler(modId), new InputHandler(modId), configScreenSupplier);
+    }
+
+    /// Use if you want a custom config screen and a custom ConfigHandler/InputHandler
+    public static void registerMod(String modId, String modName, ConfigHandler configHandler, InputHandler inputHandler, IConfigScreenSupplier configScreenSupplier) {
+        InternalMalilibApi.registerMod(modId, modName, configHandler, inputHandler, configScreenSupplier);
     }
 
     public static void openScreenFor(String modId) {

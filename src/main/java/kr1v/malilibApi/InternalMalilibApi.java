@@ -11,6 +11,7 @@ import fi.dy.masa.malilib.registry.Registry;
 import fi.dy.masa.malilib.util.data.ModInfo;
 import kr1v.malilibApi.annotation.Config;
 import kr1v.malilibApi.annotation.processor.ConfigProcessor;
+import kr1v.malilibApi.interfaces.IConfigScreenSupplier;
 import kr1v.malilibApi.screen.ConfigScreen;
 import kr1v.malilibApi.util.AnnotationUtils;
 import kr1v.malilibApi.util.ConfigUtils;
@@ -33,12 +34,13 @@ public class InternalMalilibApi {
 
     public static final Gson GSON = ConfigProcessor.GSON;
 
-    public static void registerMod(String modId, String modName, ConfigHandler configHandler, InputHandler inputHandler) {
+    public static void registerMod(String modId, String modName, ConfigHandler configHandler, InputHandler inputHandler, IConfigScreenSupplier configScreenSupplier) {
         if (isModRegistered(modId)) throw new IllegalStateException("Mod id is already registered!");
 
-        Supplier<GuiBase> configScreenSupplier = () -> new ConfigScreen(modId, modName);
-        ModInfo modInfo = new ModInfo(modId, modName, configScreenSupplier);
-        ModConfig modConfig = new ModConfig(modInfo, configHandler, inputHandler);
+		Supplier<GuiBase> guiBaseSupplier = configScreenSupplier::get;
+
+        ModInfo modInfo = new ModInfo(modId, modName, guiBaseSupplier);
+        ModConfig modConfig = new ModConfig(modInfo, configHandler, inputHandler, configScreenSupplier);
 
         registerMod(modId, modConfig);
 
@@ -85,7 +87,17 @@ public class InternalMalilibApi {
         int order = annotation.order();
 
         if (!isModRegistered(modId)) {
-            registerMod(modId, modId, new ConfigHandler(modId), new InputHandler(modId));
+            registerMod(modId, modId, new ConfigHandler(modId), new InputHandler(modId), new IConfigScreenSupplier() {
+				@Override
+				public ConfigScreen get() {
+					return new ConfigScreen(modId, modId);
+				}
+
+				@Override
+				public ConfigScreen get(Screen parent) {
+					return new ConfigScreen(modId, modId, parent);
+				}
+			});
         }
 
         setDefaultEnabled(defaultEnabled);
@@ -100,9 +112,10 @@ public class InternalMalilibApi {
     }
 
     public static void openScreenFor(String modId, Screen parent) {
-        ModInfo modInfo = modIdToModConfig.get(modId).modInfo;
+        ModConfig modConfig = modIdToModConfig.get(modId);
+		ModInfo modInfo = modConfig.modInfo;
         String modName = /*? if >=1.21.11 {*//*modInfo.modName()*//*? } else {*/modInfo.getModName()/*? }*/;
-        GuiBase.openGui(new ConfigScreen(modId, modName, parent));
+        GuiBase.openGui(modConfig.configScreenSupplier.get());
     }
 
     public static ModConfig getModConfig(String modId) {
