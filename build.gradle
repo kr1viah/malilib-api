@@ -191,7 +191,7 @@ publishing {
             }
             maven {
                 name = "repsy"
-                url = uri("https://repo.repsy.io/mvn/user35153636/kr1v/")
+                url = uri("https://repo.repsy.io/kr1v/maven/")
                 credentials {
                     username = providers.environmentVariable("REPSY_USERNAME").get()
                     password = providers.environmentVariable("REPSY_TOKEN").get()
