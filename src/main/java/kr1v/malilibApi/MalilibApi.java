@@ -40,7 +40,7 @@ public class MalilibApi {
     }
 
     public static void openScreenFor(String modId) {
-        openScreenFor(modId, null);
+		InternalMalilibApi.openScreenFor(modId);
     }
 
     public static void openScreenFor(String modId, Screen parent) {

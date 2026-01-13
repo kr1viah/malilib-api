@@ -4,6 +4,13 @@ plugins {
     id "me.modmuss50.mod-publish-plugin" version "1.1.0"
 }
 
+sourceSets {
+    create("testmod") {
+        compileClasspath += main.output + main.compileClasspath
+        runtimeClasspath += main.output + main.runtimeClasspath
+    }
+}
+
 version = project.mod_version + "+" + sc.current.version
 group = project.maven_group
 
@@ -16,14 +23,8 @@ repositories {
         name = "JitPack"
         url = "https://jitpack.io"
     }
+    mavenLocal()
     mavenCentral()
-}
-
-loom {
-    runConfigs.all {
-        ideConfigGenerated = false
-        runDir "../../run"
-    }
 }
 
 dependencies {
@@ -36,6 +37,9 @@ dependencies {
     implementation "com.google.auto.service:auto-service-annotations:${project.auto_service_version}"
     implementation "com.google.code.gson:gson:${project.gson_version}"
     annotationProcessor "com.google.auto.service:auto-service:${project.auto_service_version}"
+
+    // cursed
+    testmodAnnotationProcessor "net.kr1v:malilib-api:0.2.2-1.21.5"
 }
 
 processResources {
@@ -98,6 +102,30 @@ tasks.withType(JavaCompile).configureEach {
     if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
         it.options.release.set(targetJavaVersion)
     }
+}
+
+loom {
+    runConfigs.all {
+        ideConfigGenerated = false
+        runDir "../../run"
+    }
+    runs {
+        create("testmodClient") {
+            client()
+            configName = "Testmod Client"
+            source(sourceSets["testmod"])
+        }
+    }
+    mods {
+        create("malilib-api") {
+            sourceSet(sourceSets.main)
+        }
+        create("malilib-api-test") {
+            sourceSet("testmod")
+        }
+    }
+
+    fabricModJsonPath = rootProject.file("src/main/resources/fabric.mod.json")
 }
 
 java {

@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "malilib-api-test",
+  "version": "0.0.0",
+  "name": "MaLiLib API test mod",
+  "description": "Test mod for MaLiLib API",
+  "authors": ["kr1v"],
+  "contact": {},
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["kr1v.malilibApiTest.Init"]
+  },
+  "mixins": [],
+  "depends": {
+    "fabricloader": "*",
+    "minecraft": "*",
+    "malilib": "*",
+    "malilib-api": "*"
+  }
+}
