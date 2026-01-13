@@ -9,24 +9,6 @@ public class ArrayBackedCycleConfig<T> extends ConfigCycle<T> {
 		super(name, new ArrayBackedCycleEntry<>(initialValue, displayNameProvider, values), comment, prettyName, translatedName);
 	}
 
-	@Override
-	public T getValue() {
-		ArrayBackedCycleEntry<T> entry = this.getOptionListValue();
-		return entry.value;
-	}
-
-	@Override
-	public void setValue(T value) {
-		ArrayBackedCycleEntry<T> entry = this.getOptionListValue();
-		entry.value = value;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public ArrayBackedCycleEntry<T> getOptionListValue() {
-		return (ArrayBackedCycleEntry<T>) super.getOptionListValue();
-	}
-
 	public static class Builder<T> {
 		@SafeVarargs
 		public Builder(String name, T... values) {
@@ -97,40 +79,39 @@ public class ArrayBackedCycleConfig<T> extends ConfigCycle<T> {
 		}
 	}
 
-	public static class ArrayBackedCycleEntry<T> implements IConfigOptionListEntry {
+	public static class ArrayBackedCycleEntry<T> extends ConfigCycle.CycleConfigEntry<T> {
 		private final T[] options;
-		private final Function<T, String> displayNameProvider;
-		private T value;
-		private int currentIndex;
+		final Function<T, String> displayNameProvider;
 
-		private ArrayBackedCycleEntry(T initial, Function<T, String> displayNameProvider, T[] options) {
+		public ArrayBackedCycleEntry(T initial, Function<T, String> displayNameProvider, T[] options) {
 			if (options == null) throw new IllegalArgumentException("options must not be null");
 			this.options = options;
-			this.value = initial;
+			this.setValue(initial);
 			this.displayNameProvider = displayNameProvider == null ? (t -> t == null ? "null" : t.toString()) : displayNameProvider;
-			if (this.value == null && this.options.length > 0) {
-				this.value = this.options[0];
+			if (initial == null && this.options.length > 0) {
+				this.setValue(this.options[0]);
 			}
 		}
 
 		@Override
 		public String getStringValue() {
-			return value == null ? "" : value.toString();
+			return getValue() == null ? "" : getValue().toString();
 		}
 
 		@Override
 		public String getDisplayName() {
-			return displayNameProvider.apply(value);
+			return displayNameProvider.apply(getValue());
 		}
 
 		@Override
 		public IConfigOptionListEntry cycle(boolean forward) {
-			if (forward) {
-				currentIndex = (currentIndex + 1) % options.length;
-			} else {
-				currentIndex = (currentIndex - 1 + options.length) % options.length;
+			int idx = -1;
+			for (int i = 0; i < options.length; i++) {
+				if (options[i].equals(getValue())) idx = i;
 			}
-			value = options[currentIndex];
+			if (idx == -1) return this;
+			int next = forward ? (idx + 1) % options.length : (idx - 1 + options.length) % options.length;
+			setValue(options[next]);
 			return this;
 		}
 
@@ -140,18 +121,28 @@ public class ArrayBackedCycleConfig<T> extends ConfigCycle<T> {
 			for (T opt : options) {
 				if (opt == null) {
 					if (valueStr.isEmpty()) {
-						this.value = null;
+						this.setValue(null);
 						return this;
 					}
 					continue;
 				}
 				String s = opt.toString();
 				if (valueStr.equalsIgnoreCase(s)) {
-					this.value = opt;
+					this.setValue(opt);
 					return this;
 				}
 			}
 			return null;
+		}
+
+		@Override
+		public void setValue(T value) {
+			super.setValue(value);
+		}
+
+		@Override
+		public CycleConfigEntry<T> clone() {
+			return new ArrayBackedCycleEntry<>(getValue(), displayNameProvider, options);
 		}
 	}
 }
