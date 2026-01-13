@@ -169,18 +169,34 @@ publishMods {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            groupId = 'com.kr1v'
-            if (providers.environmentVariable("JITPACK").getOrElse("false").toBoolean()) {
-                artifactId = "${sc.current.version}"
-            } else {
-                artifactId = "${project.archives_base_name}-${sc.current.version}"
-            }
+            groupId = 'net.kr1v'
+            artifactId = "${project.archives_base_name}"
             version = project.mod_version
 
             from components.java
+
+            artifact(tasks.jar) {
+                classifier = project.minecraft_version
+            }
         }
     }
     repositories {
         mavenLocal()
+        if (providers.environmentVariable("RELEASE_MAVEN").getOrElse("false").toBoolean()) {
+            if (!providers.environmentVariable("REPSY_TOKEN").isPresent() || providers.environmentVariable("REPSY_TOKEN").get() == "") {
+                throw new GradleException('Missing REPSY_TOKEN')
+            }
+            if (!providers.environmentVariable("REPSY_USERNAME").isPresent() || providers.environmentVariable("REPSY_USERNAME").get() == "") {
+                throw new GradleException('Missing REPSY_USERNAME')
+            }
+            maven {
+                name = "repsy"
+                url = uri("https://repo.repsy.io/mvn/user35153636/kr1v/")
+                credentials {
+                    username = providers.environmentVariable("REPSY_USERNAME").get()
+                    password = providers.environmentVariable("REPSY_TOKEN").get()
+                }
+            }
+        }
     }
 }
