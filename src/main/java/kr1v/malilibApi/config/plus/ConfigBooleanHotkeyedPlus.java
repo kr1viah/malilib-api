@@ -24,11 +24,11 @@ public class ConfigBooleanHotkeyedPlus extends ConfigBooleanHotkeyed implements 
     }
 
     public ConfigBooleanHotkeyedPlus(String name, boolean defaultValue, String defaultHotkey) {
-        this(name, defaultValue, defaultHotkey, "");
+        this(name, defaultValue, defaultHotkey.replaceAll("\\s+", ""), "");
     }
 
     public ConfigBooleanHotkeyedPlus(String name, boolean defaultValue, String defaultHotkey, String comment) {
-        super(name, defaultValue, defaultHotkey, comment.isEmpty() ? " " : comment);
+        super(name, defaultValue, defaultHotkey.replaceAll("\\s+", ""), comment.isEmpty() ? " " : comment);
     }
 
     public ConfigBooleanHotkeyedPlus(String name, IHotkeyCallback callback) {
@@ -42,17 +42,17 @@ public class ConfigBooleanHotkeyedPlus extends ConfigBooleanHotkeyed implements 
     }
 
     public ConfigBooleanHotkeyedPlus(String name, boolean defaultValue, String defaultHotkey, IHotkeyCallback callback) {
-        this(name, defaultValue, defaultHotkey, "");
+        this(name, defaultValue, defaultHotkey.replaceAll("\\s+", ""), "");
         getKeybind().setCallback(callback);
     }
 
     public ConfigBooleanHotkeyedPlus(String name, boolean defaultValue, String defaultHotkey, String comment, IHotkeyCallback callback) {
-        super(name, defaultValue, defaultHotkey, comment.isEmpty() ? " " : comment);
+        super(name, defaultValue, defaultHotkey.replaceAll("\\s+", ""), comment.isEmpty() ? " " : comment);
         getKeybind().setCallback(callback);
     }
 
     public ConfigBooleanHotkeyedPlus(String name, boolean defaultValue, String defaultHotkey, KeybindSettings settings, String comment, String prettyName, String translatedName) {
-        super(name, defaultValue, defaultHotkey, settings, comment.isEmpty() ? " " : comment, prettyName, translatedName);
+        super(name, defaultValue, defaultHotkey.replaceAll("\\s+", ""), settings, comment.isEmpty() ? " " : comment, prettyName, translatedName);
     }
 
     public ConfigBooleanHotkeyedPlus(String name, IValueChangeCallback<ConfigBoolean> callback) {
@@ -66,12 +66,12 @@ public class ConfigBooleanHotkeyedPlus extends ConfigBooleanHotkeyed implements 
     }
 
     public ConfigBooleanHotkeyedPlus(String name, boolean defaultValue, String defaultHotkey, IValueChangeCallback<ConfigBoolean> callback) {
-        this(name, defaultValue, defaultHotkey, "");
+        this(name, defaultValue, defaultHotkey.replaceAll("\\s+", ""), "");
         setValueChangeCallback(callback);
     }
 
     public ConfigBooleanHotkeyedPlus(String name, boolean defaultValue, String defaultHotkey, String comment, IValueChangeCallback<ConfigBoolean> callback) {
-        super(name, defaultValue, defaultHotkey, comment.isEmpty() ? " " : comment);
+        super(name, defaultValue, defaultHotkey.replaceAll("\\s+", ""), comment.isEmpty() ? " " : comment);
         setValueChangeCallback(callback);
     }
 }
