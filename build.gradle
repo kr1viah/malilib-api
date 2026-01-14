@@ -144,9 +144,6 @@ jar {
 
 publishMods {
     file = remapJar.archiveFile
-    changelog = " "
-    type = STABLE
-    modLoaders.add("fabric")
 
     if (providers.environmentVariable("RELEASE_GITHUB").getOrElse("false").toBoolean()) {
         github {
