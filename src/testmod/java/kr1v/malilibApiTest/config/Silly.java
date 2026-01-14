@@ -19,12 +19,17 @@ public class Silly {
 	@Marker("Two")
 	@Label("Label :3")
 
-	@Extras(runAt = "One")
+	@Extras
 	static void wawa1(List<IConfigBase> existing) {
+		existing.add(new ConfigLabel("meow :3"));
+	}
+
+	@Extras(runAt = "One")
+	static void wawa2(List<IConfigBase> existing) {
 		existing.add(new ConfigLabel("meow 1"));
 	}
-	@Extras(runAt = "Two")
-	static void wawa2(List<IConfigBase> existing) {
+	@Extras(runAt = {"One", "Two"})
+	static void wawa3(List<IConfigBase> existing) {
 		existing.add(new ConfigLabel("meow 2"));
 	}
 }

@@ -76,7 +76,7 @@ public final class ConfigUtils {
                 case Label label ->
                         list.add(new ConfigLabel(label.value()));
                 case Extras extras -> {
-                    if (extras.runAt().isEmpty()) {
+                    if (extras.runAt().length == 0) {
                         element.method.setAccessible(true);
                         element.method.invoke(null, list);
                     }
@@ -88,10 +88,12 @@ public final class ConfigUtils {
                     for (Method m : declaringClass.getDeclaredMethods()) {
                         if (m.isAnnotationPresent(Extras.class)) {
                             Extras extras = m.getAnnotation(Extras.class);
-                            if (marker.value().equals(extras.runAt())) {
-                                m.setAccessible(true);
-                                m.invoke(null, list);
-                            }
+							for (String value : extras.runAt()) {
+								if (marker.value().equals(value)) {
+									m.setAccessible(true);
+									m.invoke(null, list);
+								}
+							}
                         }
                     }
                 }
