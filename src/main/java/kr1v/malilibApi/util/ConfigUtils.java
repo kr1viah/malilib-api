@@ -15,6 +15,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public final class ConfigUtils {
@@ -76,7 +77,8 @@ public final class ConfigUtils {
                 case Label label ->
                         list.add(new ConfigLabel(label.value()));
                 case Extras extras -> {
-                    if (extras.runAt().length == 0) {
+					// if is @Extras or any is "" (e.g. @Extras {"One", ""}) run here
+                    if (extras.runAt().length == 0 || Arrays.stream(extras.runAt()).anyMatch(String::isEmpty)) {
                         element.method.setAccessible(true);
                         element.method.invoke(null, list);
                     }

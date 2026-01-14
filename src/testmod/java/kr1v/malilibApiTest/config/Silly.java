@@ -32,4 +32,14 @@ public class Silly {
 	static void wawa3(List<IConfigBase> existing) {
 		existing.add(new ConfigLabel("meow 2"));
 	}
+
+	@Label
+
+	@Marker("Three")
+	@Label("wawawa mrppp :33")
+
+	@Extras(runAt = {"Three", ""})
+	static void wawa4(List<IConfigBase> existing) {
+		existing.add(new ConfigLabel("I am at 2 places"));
+	}
 }
