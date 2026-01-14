@@ -158,6 +158,8 @@ publishMods {
             accessToken = providers.environmentVariable("MODRINTH_TOKEN")
             projectId = "Qppvg0Y6"
             changelog = rootProject.file("changelog.md").text
+            type = STABLE
+            modLoaders.add("fabric")
 
             def currentV = sc.current.version
             if (currentV != "1.21.11") {
