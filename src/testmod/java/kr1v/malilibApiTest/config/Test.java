@@ -1,4 +1,4 @@
-package kr1v.malilibApiTest;
+package kr1v.malilibApiTest.config;
 
 import fi.dy.masa.malilib.config.*;
 import kr1v.malilibApi.InternalMalilibApi;
@@ -12,7 +12,7 @@ import java.util.List;
 import static kr1v.malilibApiTest.Init.MOD_ID;
 
 @SuppressWarnings("unused")
-@Config(MOD_ID)
+@Config(value = MOD_ID, name = "A Test")
 public class Test {
 	public static final ConfigStringPlus TEST = new ConfigStringPlus("Hiii");
 

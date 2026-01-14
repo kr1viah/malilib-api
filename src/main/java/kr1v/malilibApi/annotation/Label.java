@@ -1,5 +1,7 @@
 package kr1v.malilibApi.annotation;
 
+import kr1v.malilibApi.annotation.containers.Labels;
+
 import java.lang.annotation.*;
 
 /**

@@ -1,5 +1,6 @@
-package kr1v.malilibApi.annotation;
+package kr1v.malilibApi.annotation.containers;
 
+import kr1v.malilibApi.annotation.Label;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.lang.annotation.ElementType;

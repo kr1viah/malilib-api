@@ -1,15 +1,15 @@
 package kr1v.malilibApi.annotation;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import kr1v.malilibApi.annotation.containers.Markers;
+
+import java.lang.annotation.*;
 
 /**
  * Marks a point in the config. See {@link Extras}
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD, ElementType.TYPE})
+@Repeatable(Markers.class)
 public @interface Marker {
     String value() default "";
 }
