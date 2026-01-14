@@ -6,6 +6,29 @@ plugins {
 
 stonecutter.active "1.21.5"
 
+boolean releaseGithub() {
+    return providers.environmentVariable("RELEASE_GITHUB").getOrElse("false").toBoolean()
+}
+
+boolean releaseModrinth() {
+    return providers.environmentVariable("RELEASE_MODRINTH").getOrElse("false").toBoolean()
+}
+
+boolean releaseMaven() {
+    return providers.environmentVariable("RELEASE_MAVEN").getOrElse("false").toBoolean()
+}
+
+//noinspection GroovyAssignabilityCheck
+stonecutter.tasks {
+    if (releaseModrinth()) {
+        order("publishModrinth")
+    }
+    if (releaseGithub()) {
+        order("publishGithub")
+    }
+//    order("publishCurseforge")
+}
+
 version = project.mod_version + "+" + sc.current.version
 
 tasks.register("runClient active version") {
@@ -24,13 +47,12 @@ publishMods {
     changelog = file("changelog.md").text
     type = STABLE
 
-    if (providers.environmentVariable("RELEASE_MODRINTH").getOrElse("false").toBoolean()) {
+    if (releaseModrinth()) {
         if (!providers.environmentVariable("MODRINTH_TOKEN").isPresent() || providers.environmentVariable("MODRINTH_TOKEN").get() == "") {
             throw new GradleException('Missing MODRINTH_TOKEN')
         }
     }
-
-    if (providers.environmentVariable("RELEASE_GITHUB").getOrElse("false").toBoolean()) {
+    if (releaseGithub()) {
         if (!providers.environmentVariable("GITHUB_TOKEN").isPresent() || providers.environmentVariable("GITHUB_TOKEN").get() == "") {
             throw new GradleException('Missing GITHUB_TOKEN')
         }
@@ -45,11 +67,3 @@ publishMods {
         }
     }
 }
-
-/*
-// Make newer versions be published last
-stonecutter tasks {
-    order("publishModrinth")
-    order("publishCurseforge")
-}
- */

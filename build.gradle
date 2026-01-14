@@ -5,7 +5,7 @@ plugins {
 }
 
 sourceSets {
-    create("testmod") {
+    register("testmod") {
         compileClasspath += main.output + main.compileClasspath
         runtimeClasspath += main.output + main.runtimeClasspath
     }
@@ -110,17 +110,17 @@ loom {
         runDir "../../run"
     }
     runs {
-        create("testmodClient") {
+        register("testmodClient") {
             client()
             configName = "Testmod Client"
             source(sourceSets["testmod"])
         }
     }
     mods {
-        create("malilib-api") {
+        register("malilib-api") {
             sourceSet(sourceSets.main)
         }
-        create("malilib-api-test") {
+        register("malilib-api-test") {
             sourceSet("testmod")
         }
     }
@@ -145,7 +145,7 @@ jar {
 publishMods {
     file = remapJar.archiveFile
 
-    if (providers.environmentVariable("RELEASE_GITHUB").getOrElse("false").toBoolean()) {
+    if (releaseGithub()) {
         github {
             accessToken = providers.environmentVariable("GITHUB_TOKEN")
 
@@ -153,7 +153,7 @@ publishMods {
         }
     }
 
-    if (providers.environmentVariable("RELEASE_MODRINTH").getOrElse("false").toBoolean()) {
+    if (releaseModrinth()) {
         modrinth {
             accessToken = providers.environmentVariable("MODRINTH_TOKEN")
             projectId = "Qppvg0Y6"
@@ -203,7 +203,7 @@ publishing {
     }
     repositories {
         mavenLocal()
-        if (providers.environmentVariable("RELEASE_MAVEN").getOrElse("false").toBoolean()) {
+        if (releaseMaven()) {
             if (!providers.environmentVariable("REPSY_TOKEN").isPresent() || providers.environmentVariable("REPSY_TOKEN").get() == "") {
                 throw new GradleException('Missing REPSY_TOKEN')
             }
