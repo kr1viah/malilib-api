@@ -44,7 +44,6 @@ tasks.register("build active version") {
 
 publishMods {
     modLoaders.add("fabric")
-    changelog = file("changelog.md").text
     type = STABLE
 
     if (releaseModrinth()) {
@@ -63,6 +62,7 @@ publishMods {
             commitish = "master"
             tagName = "${rootProject.mod_version}"
             displayName = "${rootProject.mod_version}"
+            changelog = file("changelog.md").text
             allowEmptyFiles = true
         }
     }
