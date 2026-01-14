@@ -157,7 +157,7 @@ publishMods {
         modrinth {
             accessToken = providers.environmentVariable("MODRINTH_TOKEN")
             projectId = "Qppvg0Y6"
-            changelog = rootProject.file("changelog.md")
+            changelog = rootProject.file("changelog.md").text
 
             def currentV = sc.current.version
             if (currentV != "1.21.11") {
