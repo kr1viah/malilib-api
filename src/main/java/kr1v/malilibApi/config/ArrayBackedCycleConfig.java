@@ -64,8 +64,8 @@ public class ArrayBackedCycleConfig<T> extends ConfigCycle<T> {
 
 		public ArrayBackedCycleConfig<T> build() {
 			if (translatedName == null) translatedName = name;
-			if (prettyName 	   == null) prettyName     = name;
-			if (comment        == null) comment        = "";
+			if (prettyName == null) prettyName = name;
+			if (comment == null) comment = "";
 
 			return new ArrayBackedCycleConfig<>(
 					name,

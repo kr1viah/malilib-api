@@ -5,5 +5,6 @@ import net.minecraft.client.gui.screen.Screen;
 
 public interface IConfigScreenSupplier {
 	ConfigScreen get();
+
 	ConfigScreen get(Screen parent);
 }

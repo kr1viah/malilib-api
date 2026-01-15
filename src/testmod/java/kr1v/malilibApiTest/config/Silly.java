@@ -28,6 +28,7 @@ public class Silly {
 	static void wawa2(List<IConfigBase> existing) {
 		existing.add(new ConfigLabel("meow 1"));
 	}
+
 	@Extras(runAt = {"One", "Two"})
 	static void wawa3(List<IConfigBase> existing) {
 		existing.add(new ConfigLabel("meow 2"));

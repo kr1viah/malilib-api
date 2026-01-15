@@ -6,6 +6,9 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(WidgetListConfigOptionsBase.class)
 public interface WidgetListConfigOptionsBaseAccessor {
-    @Accessor int getMaxLabelWidth();
-    @Accessor void setConfigWidth(int configWidth);
+	@Accessor
+	int getMaxLabelWidth();
+
+	@Accessor
+	void setConfigWidth(int configWidth);
 }

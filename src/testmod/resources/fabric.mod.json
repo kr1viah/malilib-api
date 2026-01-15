@@ -4,12 +4,16 @@
   "version": "0.0.0",
   "name": "MaLiLib API test mod",
   "description": "Test mod for MaLiLib API",
-  "authors": ["kr1v"],
+  "authors": [
+    "kr1v"
+  ],
   "contact": {},
   "license": "MIT",
   "environment": "client",
   "entrypoints": {
-    "client": ["kr1v.malilibApiTest.Init"]
+    "client": [
+      "kr1v.malilibApiTest.Init"
+    ]
   },
   "mixins": [],
   "depends": {

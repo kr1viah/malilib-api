@@ -12,17 +12,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Debug(export = true)
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
-    // handle before malilib, but after mod init
-    @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Ljava/lang/Thread;currentThread()Ljava/lang/Thread;"))
-    private static void init(CallbackInfo ci) {
-        InternalMalilibApi.init();
-    }
+	// handle before malilib, but after mod init
+	@Inject(method = "<init>", at = @At(value = "INVOKE", target = "Ljava/lang/Thread;currentThread()Ljava/lang/Thread;"))
+	private static void init(CallbackInfo ci) {
+		InternalMalilibApi.init();
+	}
 
-    // save
-    @Inject(method = "stop", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;info(Ljava/lang/String;)V"))
-    private void onStopping(CallbackInfo ci) {
-        for (ModRepresentation modRepresentation : InternalMalilibApi.getModConfigs()) {
-            modRepresentation.configHandler.save();
-        }
-    }
+	// save
+	@Inject(method = "stop", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;info(Ljava/lang/String;)V"))
+	private void onStopping(CallbackInfo ci) {
+		for (ModRepresentation modRepresentation : InternalMalilibApi.getModConfigs()) {
+			modRepresentation.configHandler.save();
+		}
+	}
 }

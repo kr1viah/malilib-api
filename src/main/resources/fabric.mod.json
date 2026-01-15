@@ -4,7 +4,9 @@
   "version": "${version}",
   "name": "MaLiLib API",
   "description": "API for MaLiLib",
-  "authors": ["kr1v"],
+  "authors": [
+    "kr1v"
+  ],
   "contact": {},
   "license": "MIT",
   "icon": "assets/malilib-api/icon.png",

@@ -12,5 +12,5 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.TYPE})
 @ApiStatus.Internal
 public @interface Labels {
-    Label[] value();
+	Label[] value();
 }

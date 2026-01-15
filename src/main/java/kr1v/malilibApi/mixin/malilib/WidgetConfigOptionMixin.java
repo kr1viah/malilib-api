@@ -17,33 +17,33 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(WidgetConfigOption.class)
 public class WidgetConfigOptionMixin {
-    @Definition(id = "BOOLEAN", field = "Lfi/dy/masa/malilib/config/ConfigType;BOOLEAN:Lfi/dy/masa/malilib/config/ConfigType;")
-    @Definition(id = "type", local = @Local(type = ConfigType.class, name = "type"))
-    @Expression("type == BOOLEAN")
-    @ModifyExpressionValue(method = "addConfigOption", at = @At("MIXINEXTRAS:EXPRESSION"))
-    private boolean injected(boolean original, @Local(name = "config") IConfigBase config) {
-        return original || config instanceof ConfigButton;
-    }
+	@Definition(id = "BOOLEAN", field = "Lfi/dy/masa/malilib/config/ConfigType;BOOLEAN:Lfi/dy/masa/malilib/config/ConfigType;")
+	@Definition(id = "type", local = @Local(type = ConfigType.class, name = "type"))
+	@Expression("type == BOOLEAN")
+	@ModifyExpressionValue(method = "addConfigOption", at = @At("MIXINEXTRAS:EXPRESSION"))
+	private boolean injected(boolean original, @Local(name = "config") IConfigBase config) {
+		return original || config instanceof ConfigButton;
+	}
 
-    @Definition(id = "ConfigButtonBoolean", type = ConfigButtonBoolean.class)
-    @Expression("new ConfigButtonBoolean(?, ?, ?, ?, ?)")
-    @WrapOperation(method = "addConfigOption", at = @At("MIXINEXTRAS:EXPRESSION"))
-    private ConfigButtonBoolean injected2(int x, int y, int width, int height, IConfigBoolean config, Operation<ConfigButtonBoolean> original) {
-        if (config instanceof ConfigButton<?> configButton) {
-            return new ConfigButtonBoolean(x, y, width, height, config) {
-                // got added in 1.21.9
-                @Override
-                protected boolean onMouseClickedImpl(/*? if >=1.21.10 {*//*net.minecraft.client.gui.Click click, boolean doubleClick*//*? } else {*/int mouseX, int mouseY, int mouseButton/*? }*/) {
-                    configButton.execute();
-                    return true;
-                }
+	@Definition(id = "ConfigButtonBoolean", type = ConfigButtonBoolean.class)
+	@Expression("new ConfigButtonBoolean(?, ?, ?, ?, ?)")
+	@WrapOperation(method = "addConfigOption", at = @At("MIXINEXTRAS:EXPRESSION"))
+	private ConfigButtonBoolean injected2(int x, int y, int width, int height, IConfigBoolean config, Operation<ConfigButtonBoolean> original) {
+		if (config instanceof ConfigButton<?> configButton) {
+			return new ConfigButtonBoolean(x, y, width, height, config) {
+				// got added in 1.21.9
+				@Override
+				protected boolean onMouseClickedImpl(/*? if >=1.21.10 {*//*net.minecraft.client.gui.Click click, boolean doubleClick*//*? } else {*/int mouseX, int mouseY, int mouseButton/*? }*/) {
+					configButton.execute();
+					return true;
+				}
 
-                @Override
-                public void updateDisplayString() {
-                    this.displayString = configButton.displayName;
-                }
-            };
-        }
-        return original.call(x, y, width, height, config);
-    }
+				@Override
+				public void updateDisplayString() {
+					this.displayString = configButton.displayName;
+				}
+			};
+		}
+		return original.call(x, y, width, height, config);
+	}
 }

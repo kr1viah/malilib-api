@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
  * public static void addTests(List<IConfigBase> existingList) {
  * 	for (int i = 0; i < 6; i++) {
  * 		existingList.add(new ConfigBooleanPlus("Test! " + i));
- * 	}
+ *    }
  * }
  * public static final ConfigDouble TEST_DOUBLE = new ConfigDouble("Test double");
  * }</pre>
@@ -28,5 +28,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Extras {
-    String[] runAt() default {};
+	String[] runAt() default {};
 }

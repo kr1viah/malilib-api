@@ -9,14 +9,14 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 public class MalilibApi {
-    /// Use if you want a different internal ID than mod name.
-    public static void registerMod(String modId, String modName) {
-        registerMod(modId, modName, new ConfigHandler(modId), new InputHandler(modId));
-    }
+	/// Use if you want a different internal ID than mod name.
+	public static void registerMod(String modId, String modName) {
+		registerMod(modId, modName, new ConfigHandler(modId), new InputHandler(modId));
+	}
 
-    /// Use if you want a custom ConfigHandler/InputHandler
-    public static void registerMod(String modId, String modName, ConfigHandler configHandler, InputHandler inputHandler) {
-        InternalMalilibApi.registerMod(modId, modName, configHandler, inputHandler, new IConfigScreenSupplier() {
+	/// Use if you want a custom ConfigHandler/InputHandler
+	public static void registerMod(String modId, String modName, ConfigHandler configHandler, InputHandler inputHandler) {
+		InternalMalilibApi.registerMod(modId, modName, configHandler, inputHandler, new IConfigScreenSupplier() {
 			@Override
 			public ConfigScreen get() {
 				return new ConfigScreen(modId, modName);
@@ -27,35 +27,35 @@ public class MalilibApi {
 				return new ConfigScreen(modId, modName, parent);
 			}
 		});
-    }
+	}
 
-    /// Use if you want a custom config screen
-    public static void registerMod(String modId, String modName, IConfigScreenSupplier configScreenSupplier) {
-        InternalMalilibApi.registerMod(modId, modName, new ConfigHandler(modId), new InputHandler(modId), configScreenSupplier);
-    }
+	/// Use if you want a custom config screen
+	public static void registerMod(String modId, String modName, IConfigScreenSupplier configScreenSupplier) {
+		InternalMalilibApi.registerMod(modId, modName, new ConfigHandler(modId), new InputHandler(modId), configScreenSupplier);
+	}
 
-    /// Use if you want a custom config screen and a custom ConfigHandler/InputHandler
-    public static void registerMod(String modId, String modName, ConfigHandler configHandler, InputHandler inputHandler, IConfigScreenSupplier configScreenSupplier) {
-        InternalMalilibApi.registerMod(modId, modName, configHandler, inputHandler, configScreenSupplier);
-    }
+	/// Use if you want a custom config screen and a custom ConfigHandler/InputHandler
+	public static void registerMod(String modId, String modName, ConfigHandler configHandler, InputHandler inputHandler, IConfigScreenSupplier configScreenSupplier) {
+		InternalMalilibApi.registerMod(modId, modName, configHandler, inputHandler, configScreenSupplier);
+	}
 
-    public static void openScreenFor(String modId) {
+	public static void openScreenFor(String modId) {
 		InternalMalilibApi.openScreenFor(modId);
-    }
+	}
 
-    public static void openScreenFor(String modId, Screen parent) {
-        InternalMalilibApi.openScreenFor(modId, parent);
-    }
+	public static void openScreenFor(String modId, Screen parent) {
+		InternalMalilibApi.openScreenFor(modId, parent);
+	}
 
-    public static void registerTab(String modId, String tab, List<IConfigBase> options) {
-        registerTab(modId, tab, options, 1000);
-    }
+	public static void registerTab(String modId, String tab, List<IConfigBase> options) {
+		registerTab(modId, tab, options, 1000);
+	}
 
-    public static void registerTab(String modId, String tab, List<IConfigBase> options, int order) {
-        InternalMalilibApi.registerTab(modId, tab, options, false, order);
-    }
+	public static void registerTab(String modId, String tab, List<IConfigBase> options, int order) {
+		InternalMalilibApi.registerTab(modId, tab, options, false, order);
+	}
 
-    public static void unregisterTab(String modId, String tabName) {
-        InternalMalilibApi.unregisterTab(modId, tabName);
-    }
+	public static void unregisterTab(String modId, String tabName) {
+		InternalMalilibApi.unregisterTab(modId, tabName);
+	}
 }

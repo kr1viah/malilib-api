@@ -3,9 +3,9 @@ package kr1v.malilibApi.config;
 import java.util.function.Function;
 
 public class EnumBackedCycleConfig<T extends Enum<T>> extends ArrayBackedCycleConfig<T> {
-    public EnumBackedCycleConfig(String name, T initialValue, Class<T> enumClass, String comment, String prettyName, String translatedName, Function<T, String> displayNameProvider) {
-        super(name, initialValue, comment, prettyName, displayNameProvider, translatedName, enumClass.getEnumConstants());
-    }
+	public EnumBackedCycleConfig(String name, T initialValue, Class<T> enumClass, String comment, String prettyName, String translatedName, Function<T, String> displayNameProvider) {
+		super(name, initialValue, comment, prettyName, displayNameProvider, translatedName, enumClass.getEnumConstants());
+	}
 
 	public static class Builder<T extends Enum<T>> {
 		private String name;
@@ -74,8 +74,8 @@ public class EnumBackedCycleConfig<T extends Enum<T>> extends ArrayBackedCycleCo
 			}
 
 			if (translatedName == null) translatedName = name;
-			if (prettyName    == null) prettyName     = name;
-			if (comment       == null) comment        = "";
+			if (prettyName == null) prettyName = name;
+			if (comment == null) comment = "";
 
 			return new EnumBackedCycleConfig<>(
 					name,

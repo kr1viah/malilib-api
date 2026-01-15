@@ -11,5 +11,5 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.TYPE})
 @Repeatable(Labels.class)
 public @interface Label {
-    String value() default "";
+	String value() default "";
 }

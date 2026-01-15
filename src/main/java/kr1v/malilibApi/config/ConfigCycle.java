@@ -6,16 +6,16 @@ import fi.dy.masa.malilib.config.options.ConfigOptionList;
 public abstract class ConfigCycle<T> extends ConfigOptionList {
 	T defaultValue;
 
-    public ConfigCycle(String name, CycleConfigEntry<T> defaultValue, String comment, String prettyName, String translatedName) {
-        super(name, defaultValue, comment, prettyName, translatedName);
+	public ConfigCycle(String name, CycleConfigEntry<T> defaultValue, String comment, String prettyName, String translatedName) {
+		super(name, defaultValue, comment, prettyName, translatedName);
 		this.defaultValue = defaultValue.value;
-    }
+	}
 
-    public T getValue() {
+	public T getValue() {
 		return this.getOptionListValue().value;
 	}
 
-    public void setValue(T value) {
+	public void setValue(T value) {
 		this.getOptionListValue().value = value;
 	}
 
@@ -28,7 +28,8 @@ public abstract class ConfigCycle<T> extends ConfigOptionList {
 	public boolean isModified(String newValue) {
 		try {
 			return !this.defaultValue.equals(this.getOptionListValue().fromString(newValue));
-		} catch (Exception ignored) {}
+		} catch (Exception ignored) {
+		}
 
 		return true;
 	}

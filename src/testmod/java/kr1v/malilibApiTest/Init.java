@@ -19,36 +19,36 @@ public class Init implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		MalilibApi.registerMod(
-			MOD_ID,
-			MOD_NAME,
-			new ConfigHandler(MOD_ID) {
-				int timesSaved = 0;
+				MOD_ID,
+				MOD_NAME,
+				new ConfigHandler(MOD_ID) {
+					int timesSaved = 0;
 
-				@Override
-				public void loadAdditionalData(JsonObject root) {
-					if (root.has("timesSaved")) {
-						timesSaved = root.get("timesSaved").getAsInt();
+					@Override
+					public void loadAdditionalData(JsonObject root) {
+						if (root.has("timesSaved")) {
+							timesSaved = root.get("timesSaved").getAsInt();
+						}
+					}
+
+					@Override
+					public void saveAdditionalData(JsonObject root) {
+						root.addProperty("timesSaved", ++timesSaved);
+						LOGGER.info("Times saved: {}", timesSaved);
+					}
+				},
+				new InputHandler(MOD_ID),
+				new IConfigScreenSupplier() {
+					@Override
+					public ConfigScreen get() {
+						return new ConfigScreenn(MOD_ID, MOD_NAME);
+					}
+
+					@Override
+					public ConfigScreen get(Screen parent) {
+						return new ConfigScreenn(MOD_ID, MOD_NAME, parent);
 					}
 				}
-
-				@Override
-				public void saveAdditionalData(JsonObject root) {
-					root.addProperty("timesSaved", ++timesSaved);
-					LOGGER.info("Times saved: {}", timesSaved);
-				}
-			},
-			new InputHandler(MOD_ID),
-			new IConfigScreenSupplier() {
-				@Override
-				public ConfigScreen get() {
-					return new ConfigScreenn(MOD_ID, MOD_NAME);
-				}
-
-				@Override
-				public ConfigScreen get(Screen parent) {
-					return new ConfigScreenn(MOD_ID, MOD_NAME, parent);
-				}
-			}
 		);
 	}
 }

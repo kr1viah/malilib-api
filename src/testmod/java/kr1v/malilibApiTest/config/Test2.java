@@ -16,8 +16,8 @@ public class Test2 {
 	static void name(List<IConfigBase> existing) {
 		for (int i = 1; i <= 25; i++) {
 			String str = i + ": ";
-			if (i%3 == 0) str += "Fizz";
-			if (i%5 == 0) str += "Buzz";
+			if (i % 3 == 0) str += "Fizz";
+			if (i % 5 == 0) str += "Buzz";
 
 			ConfigLabel label = new ConfigLabel(str);
 			existing.add(label);
