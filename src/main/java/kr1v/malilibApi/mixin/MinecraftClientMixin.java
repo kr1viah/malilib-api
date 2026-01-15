@@ -1,7 +1,7 @@
 package kr1v.malilibApi.mixin;
 
 import kr1v.malilibApi.InternalMalilibApi;
-import kr1v.malilibApi.ModConfig;
+import kr1v.malilibApi.ModRepresentation;
 import net.minecraft.client.MinecraftClient;
 import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,8 +21,8 @@ public class MinecraftClientMixin {
     // save
     @Inject(method = "stop", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;info(Ljava/lang/String;)V"))
     private void onStopping(CallbackInfo ci) {
-        for (ModConfig modConfig : InternalMalilibApi.getModConfigs()) {
-            modConfig.configHandler.save();
+        for (ModRepresentation modRepresentation : InternalMalilibApi.getModConfigs()) {
+            modRepresentation.configHandler.save();
         }
     }
 }

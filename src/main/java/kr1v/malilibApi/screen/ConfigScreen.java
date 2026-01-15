@@ -11,7 +11,7 @@ import fi.dy.masa.malilib.registry.Registry;
 import fi.dy.masa.malilib.util.GuiUtils;
 import fi.dy.masa.malilib.util.data.ModInfo;
 import kr1v.malilibApi.InternalMalilibApi;
-import kr1v.malilibApi.ModConfig;
+import kr1v.malilibApi.ModRepresentation;
 import kr1v.malilibApi.config.ConfigLabel;
 import kr1v.malilibApi.mixin.accessor.WidgetListConfigOptionsBaseAccessor;
 import net.minecraft.client.gui.DrawContext;
@@ -19,127 +19,131 @@ import net.minecraft.client.gui.screen.Screen;
 
 import java.util.*;
 
+// TODO: check other versions
 public class ConfigScreen extends GuiConfigsBase {
-    public ModConfig.Tab tab = InternalMalilibApi.tabsFor(modId).getFirst();
+	public ModRepresentation.Tab tab = InternalMalilibApi.getActiveTabFor(modId);
 
-    public ConfigScreen(String modId, String titleKey) {
-        this(modId, titleKey, null);
-    }
+	public ConfigScreen(String modId, String titleKey) {
+		this(modId, titleKey, null);
+	}
 
-    public ConfigScreen(String modId, String titleKey, Screen parent) {
-        super(10, 50, modId, parent, titleKey);
-    }
+	public ConfigScreen(String modId, String titleKey, Screen parent) {
+		super(10, 50, modId, parent, titleKey);
+	}
 
-    @Override
-    public void initGui() {
-        super.initGui();
-        this.clearOptions();
-        this.configWidth = ((WidgetListConfigOptionsBaseAccessor) Objects.requireNonNull(getListWidget())).getMaxLabelWidth();
-        this.configWidth = this.width - this.configWidth - 94;
-        ((WidgetListConfigOptionsBaseAccessor) getListWidget()).setConfigWidth(this.configWidth);
+	@Override
+	public void initGui() {
+		super.initGui();
+		this.clearOptions();
+		this.configWidth = ((WidgetListConfigOptionsBaseAccessor) Objects.requireNonNull(getListWidget())).getMaxLabelWidth();
+		this.configWidth = this.width - this.configWidth - 94;
+		((WidgetListConfigOptionsBaseAccessor) getListWidget()).setConfigWidth(this.configWidth);
 
-        int x = 10;
-        int y = 26;
+		getListWidget().getScrollbar().setValue(InternalMalilibApi.getScrollValueFor(modId));
 
-        for (ModConfig.Tab tab : InternalMalilibApi.tabsFor(modId)) {
-            if (!tab.isPopup()) {
-                x += this.createButton(x, y, -1, tab);
-            }
-        }
-    }
+		int x = 10;
+		int y = 26;
 
-    @SuppressWarnings("SameParameterValue")
-    private int createButton(int x, int y, int width, ModConfig.Tab tab) {
-        ButtonGeneric button = new ButtonGeneric(x, y, width, 20, tab.translationKey());
-        button.setEnabled(!this.tab.equals(tab));
-        final ModConfig.Tab tab2 = tab;
+		for (ModRepresentation.Tab tab : InternalMalilibApi.tabsFor(modId)) {
+			if (!tab.isPopup()) {
+				x += this.createButton(x, y, -1, tab);
+			}
+		}
+	}
 
-        this.addButton(button, (button1, mouseButton) -> {
-            this.tab = tab2;
-            reCreateListWidget(); // apply the new config width
-            initGui();
-        });
+	@SuppressWarnings("SameParameterValue")
+	private int createButton(int x, int y, int width, ModRepresentation.Tab tab) {
+		ButtonGeneric button = new ButtonGeneric(x, y, width, 20, tab.translationKey());
+		button.setEnabled(!this.tab.equals(tab));
+		final ModRepresentation.Tab tab2 = tab;
 
-        return button.getWidth() + 2;
-    }
+		this.addButton(button, (button1, mouseButton) -> {
+			this.tab = tab2;
+			reCreateListWidget(); // apply the new config width
+			initGui();
+		});
 
-    @Override
-    protected void reCreateListWidget() {
-        super.reCreateListWidget();
-    }
+		return button.getWidth() + 2;
+	}
 
-    @Override
-    protected void closeGui(boolean showParent) {
-        super.closeGui(true);
-    }
+	@Override
+	protected void reCreateListWidget() {
+		super.reCreateListWidget();
+	}
 
-    @Override
-    protected int getConfigWidth() {
-        return this.width / 2;
-    }
+	@Override
+	protected void closeGui(boolean showParent) {
+		InternalMalilibApi.setActiveTabFor(modId, tab);
+		super.closeGui(true);
+	}
 
-    @Override
-    public List<ConfigOptionWrapper> getConfigs() {
-        ImmutableList.Builder<ConfigOptionWrapper> builder = ImmutableList.builder();
-        for (IConfigBase config : this.tab.options()) {
-            if (InternalMalilibApi.shouldHide(config)) continue;
-            if (config instanceof ConfigLabel)
-                builder.add(new ConfigOptionWrapper(config.getComment()));
-            else
-                builder.add(new ConfigOptionWrapper(config));
-        }
-        return builder.build();
-    }
+	@Override
+	protected int getConfigWidth() {
+		return this.width / 2;
+	}
 
-    @Override
-    public void render(DrawContext drawContext, int mouseX, int mouseY, float partialTicks) {
-        if (this.client != null && this.client.world == null) this.renderPanoramaBackground(drawContext, partialTicks);
-        //? if =1.21 {
-        /*this.applyBlur(partialTicks); // this arg was removed in 24w33a
-        *///? } else if =1.21.5 {
-        this.applyBlur();
-        //? } else if >=1.21.8 {
-        /*this.applyBlur(drawContext); // this arg was added in 25w17a
-        *///? }
-        super.render(drawContext, mouseX, mouseY, partialTicks);
-    }
+	@Override
+	public List<ConfigOptionWrapper> getConfigs() {
+		ImmutableList.Builder<ConfigOptionWrapper> builder = ImmutableList.builder();
+		for (IConfigBase config : this.tab.options()) {
+			if (InternalMalilibApi.shouldHide(config)) continue;
+			if (config instanceof ConfigLabel)
+				builder.add(new ConfigOptionWrapper(config.getComment()));
+			else
+				builder.add(new ConfigOptionWrapper(config));
+		}
+		return builder.build();
+	}
 
-    // why was it using the class :sob: that's so brittle
-    @Override
-    protected void buildConfigSwitcher() {
-        if (MaLiLibConfigs.Generic.ENABLE_CONFIG_SWITCHER.getBooleanValue()) {
-            this.modSwitchWidget = new WidgetDropDownList<>(GuiUtils.getScaledWindowWidth() - 155, 6, 130, 18, 200, 10, Registry.CONFIG_SCREEN.getAllModsWithConfigScreens()) {
-                {
-                    selectedEntry = InternalMalilibApi.modInfoFor(modId);
-                }
+	@Override
+	public void render(DrawContext drawContext, int mouseX, int mouseY, float partialTicks) {
+		if (this.client != null && this.client.world == null) this.renderPanoramaBackground(drawContext, partialTicks);
+		//? if =1.21 {
+		/*this.applyBlur(partialTicks); // this arg was removed in 24w33a
+		 *///? } else if =1.21.5 {
+		this.applyBlur();
+		//? } else if >=1.21.8 {
+		/*this.applyBlur(drawContext); // this arg was added in 25w17a
+		 *///? }
+		super.render(drawContext, mouseX, mouseY, partialTicks);
+	}
 
-                @Override
-                protected void setSelectedEntry(int index) {
-                    super.setSelectedEntry(index);
+	// why was it using the class :sob: that's so brittle
+	@Override
+	protected void buildConfigSwitcher() {
+		if (MaLiLibConfigs.Generic.ENABLE_CONFIG_SWITCHER.getBooleanValue()) {
+			this.modSwitchWidget = new WidgetDropDownList<>(GuiUtils.getScaledWindowWidth() - 155, 6, 130, 18, 200, 10, Registry.CONFIG_SCREEN.getAllModsWithConfigScreens()) {
+				{
+					selectedEntry = InternalMalilibApi.modInfoFor(modId);
+				}
 
-                    //? if >=1.21.11 {
-                    /*if (selectedEntry != null && selectedEntry.configScreenSupplier() != null) {
-                        GuiBase.openGui(selectedEntry.configScreenSupplier().get());
-                    }
-                    *///? } else {
-                    if (selectedEntry != null && selectedEntry.getConfigScreenSupplier() != null) {
-                        GuiBase.openGui(selectedEntry.getConfigScreenSupplier().get());
-                    }
-                    //? }
-                }
+				@Override
+				protected void setSelectedEntry(int index) {
+					super.setSelectedEntry(index);
 
-                @Override
-                protected String getDisplayString(ModInfo entry) {
-                    //? if >=1.21.11 {
-                    /*return entry.modName();
-                    *///? } else {
-                    return entry.getModName();
-                    //? }
-                }
-            };
+					//? if >=1.21.11 {
+					/*if (selectedEntry != null && selectedEntry.configScreenSupplier() != null) {
+						GuiBase.openGui(selectedEntry.configScreenSupplier().get());
+					}
+					*///? } else {
+					if (selectedEntry != null && selectedEntry.getConfigScreenSupplier() != null) {
+						GuiBase.openGui(selectedEntry.getConfigScreenSupplier().get());
+					}
+					//? }
+				}
 
-            addWidget(this.modSwitchWidget);
-        }
-    }
+				@Override
+				protected String getDisplayString(ModInfo entry) {
+					//? if >=1.21.11 {
+					/*return entry.modName();
+					 *///? } else {
+					return entry.getModName();
+					//? }
+				}
+			};
+
+			addWidget(this.modSwitchWidget);
+		}
+	}
 }
 
