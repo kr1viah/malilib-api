@@ -19,7 +19,6 @@ import net.minecraft.client.gui.screen.Screen;
 
 import java.util.*;
 
-// TODO: check other versions
 public class ConfigScreen extends GuiConfigsBase {
 	public ModRepresentation.Tab tab = InternalMalilibApi.getActiveTabFor(modId);
 
