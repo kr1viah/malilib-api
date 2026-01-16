@@ -18,5 +18,8 @@
     "fabricloader": ">=${loader_version}",
     "minecraft": "${versions}",
     "malilib": "*"
+  },
+  "entrypoints": {
+    "modmenu": ["kr1v.malilibApi.ModMenu"]
   }
 }

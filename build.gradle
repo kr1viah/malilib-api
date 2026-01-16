@@ -20,6 +20,10 @@ base {
 
 repositories {
     maven {
+        name = "Terraformers"
+        url = "https://maven.terraformersmc.com/"
+    }
+    maven {
         name = "JitPack"
         url = "https://jitpack.io"
     }
@@ -33,6 +37,7 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     modImplementation "com.github.sakura-ryoko:malilib:${project.malilib_version}"
+    modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 
     implementation "com.google.auto.service:auto-service-annotations:${project.auto_service_version}"
     implementation "com.google.code.gson:gson:${project.gson_version}"

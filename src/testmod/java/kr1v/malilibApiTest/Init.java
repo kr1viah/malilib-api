@@ -12,7 +12,7 @@ import net.minecraft.client.gui.screen.Screen;
 import org.slf4j.Logger;
 
 public class Init implements ClientModInitializer {
-	public static final String MOD_ID = "test-mod";
+	public static final String MOD_ID = "malilib-api-test";
 	public static final String MOD_NAME = "Test mod";
 	public static final Logger LOGGER = LogUtils.getLogger();
 

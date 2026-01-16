@@ -10,3 +10,4 @@
 - Rename `ModConfig` to `ModRepresentation`
 - Test mod
 - Allow for custom config screen tabs
+- Automatic mod menu integration

@@ -28,7 +28,7 @@ import java.util.function.Supplier;
 
 /// this exists in order to not bloat MalilibApi with methods that need to be public but aren't ""supposed"" to be used by others
 public class InternalMalilibApi {
-	private static final Map<String, ModRepresentation> registeredMods = new HashMap<>();
+	static final Map<String, ModRepresentation> registeredMods = new HashMap<>();
 	public static final Map<Class<?>, List<ConfigProcessor.ElementRepresentation>> classToRepresentation = new HashMap<>();
 	public static final Gson GSON = ConfigProcessor.GSON;
 
