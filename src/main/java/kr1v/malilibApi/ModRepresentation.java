@@ -9,6 +9,8 @@ import kr1v.malilibApi.util.AnnotationUtils;
 
 import java.util.*;
 
+// TODO: maybe move some of the methods from InternalMalilibApi
+//  (like getActiveTabFor()) here and instead of it  being ...For(modId) it just gives it immediately
 public class ModRepresentation {
 	public final Map<Class<?>, List<IConfigBase>> configs = new TreeMap<>(Comparator.comparing((Class<?> x) -> AnnotationUtils.nameForConfig(x) + x.getName()));
 	public final List<Tab> tabs = new ArrayList<>();
