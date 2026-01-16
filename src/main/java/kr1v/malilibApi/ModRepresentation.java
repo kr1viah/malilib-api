@@ -2,6 +2,8 @@ package kr1v.malilibApi;
 
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.util.data.ModInfo;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import kr1v.malilibApi.interfaces.IConfigScreenSupplier;
 import kr1v.malilibApi.util.AnnotationUtils;
 
@@ -15,6 +17,9 @@ public class ModRepresentation {
 	public final ConfigHandler configHandler;
 	public final IConfigScreenSupplier configScreenSupplier;
 	public final String modId;
+	// hehe silly :3 way to default getting 0
+	public final Object2IntMap<Tab> tabToScrollValue = new Object2IntOpenHashMap<>();
+	public Tab activeTab;
 
 	public ModRepresentation(String modId, ModInfo modInfo, ConfigHandler configHandler, InputHandler inputHandler, IConfigScreenSupplier configScreenSupplier) {
 		this.modInfo = modInfo;

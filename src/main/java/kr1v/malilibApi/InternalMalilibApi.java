@@ -16,7 +16,6 @@ import kr1v.malilibApi.screen.ConfigScreen;
 import kr1v.malilibApi.util.AnnotationUtils;
 import kr1v.malilibApi.util.ConfigUtils;
 import net.minecraft.client.gui.screen.Screen;
-import org.apache.commons.lang3.NotImplementedException;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -108,20 +107,18 @@ public class InternalMalilibApi {
 	}
 
 	public static ModInfo modInfoFor(String modId) {
-		return registeredMods.get(modId).modInfo;
+		return getMod(modId).modInfo;
 	}
 
 	public static void openScreenFor(String modId, Screen parent) {
-		ModRepresentation modRepresentation = registeredMods.get(modId);
-		GuiBase.openGui(modRepresentation.configScreenSupplier.get(parent));
+		GuiBase.openGui(getMod(modId).configScreenSupplier.get(parent));
 	}
 
 	public static void openScreenFor(String modId) {
-		ModRepresentation modRepresentation = registeredMods.get(modId);
-		GuiBase.openGui(modRepresentation.configScreenSupplier.get());
+		GuiBase.openGui(getMod(modId).configScreenSupplier.get());
 	}
 
-	public static ModRepresentation getModConfig(String modId) {
+	public static ModRepresentation getMod(String modId) {
 		return registeredMods.get(modId);
 	}
 
@@ -130,15 +127,15 @@ public class InternalMalilibApi {
 	}
 
 	public static Map<Class<?>, List<IConfigBase>> cacheFor(String modId) {
-		return registeredMods.get(modId).configs;
+		return getMod(modId).configs;
 	}
 
 	public static List<IConfigBase> configListFor(String modId, Class<?> configClass) {
-		return registeredMods.get(modId).configs.get(configClass);
+		return getMod(modId).configs.get(configClass);
 	}
 
 	public static Set<Class<?>> classesFor(String modId) {
-		return registeredMods.get(modId).configs.keySet();
+		return getMod(modId).configs.keySet();
 	}
 
 	public static void registerMod(String modId, ModRepresentation modRepresentation) {
@@ -160,14 +157,14 @@ public class InternalMalilibApi {
 	}
 
 	public static void registerTab(String modId, String tab, List<IConfigBase> options, boolean isPopup, int order) {
-		getModConfig(modId).tabs.add(new ModRepresentation.Tab(tab, options, isPopup, order));
+		getMod(modId).tabs.add(new ModRepresentation.Tab(tab, options, isPopup, order));
 	}
 
 	public static void unregisterTab(String modId, String tabName) {
-		getModConfig(modId).tabs.removeIf(tab -> tab.translationKey().equals(tabName));
+		getMod(modId).tabs.removeIf(tab -> tab.translationKey().equals(tabName));
 	}
 
-	public static List<ModRepresentation.Tab> tabsFor(String modId) {
+	public static List<ModRepresentation.Tab> getTabsFor(String modId) {
 		return rawTabs(modId)
 				.stream()
 				.sorted(Comparator
@@ -179,7 +176,9 @@ public class InternalMalilibApi {
 	}
 
 	public static ModRepresentation.Tab getActiveTabFor(String modId) {
-		throw new NotImplementedException("TODO");
+		ModRepresentation.Tab tab = getMod(modId).activeTab;
+		if (tab == null) tab = getTabsFor(modId).getFirst();
+		return tab;
 	}
 
 	public static int getScrollValueFor(String modId) {
@@ -187,23 +186,23 @@ public class InternalMalilibApi {
 	}
 
 	public static int getScrollValueFor(String modId, ModRepresentation.Tab tab) {
-		throw new NotImplementedException("TODO");
+		return getMod(modId).tabToScrollValue.getInt(tab);
+	}
+
+	public static void setActiveTabFor(String modId, ModRepresentation.Tab tab) {
+		getMod(modId).activeTab = tab;
 	}
 
 	public static void setScrollValueFor(String modId, int value) {
 		setScrollValueFor(modId, getActiveTabFor(modId), value);
 	}
 
-	public static void setActiveTabFor(String modId, ModRepresentation.Tab tab) {
-		throw new NotImplementedException("TODO");
-	}
-
 	public static void setScrollValueFor(String modId, ModRepresentation.Tab tab, int value) {
-		throw new NotImplementedException("TODO");
+		getMod(modId).tabToScrollValue.put(tab, value);
 	}
 
 	private static List<ModRepresentation.Tab> rawTabs(String modId) {
-		return getModConfig(modId).tabs;
+		return getMod(modId).tabs;
 	}
 
 	private static final Set<Object> toHide = new HashSet<>();

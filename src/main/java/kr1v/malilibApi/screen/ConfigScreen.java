@@ -39,12 +39,12 @@ public class ConfigScreen extends GuiConfigsBase {
 		this.configWidth = this.width - this.configWidth - 94;
 		((WidgetListConfigOptionsBaseAccessor) getListWidget()).setConfigWidth(this.configWidth);
 
-		getListWidget().getScrollbar().setValue(InternalMalilibApi.getScrollValueFor(modId));
+		getListWidget().getScrollbar().setValue(InternalMalilibApi.getScrollValueFor(this.modId));
 
 		int x = 10;
 		int y = 26;
 
-		for (ModRepresentation.Tab tab : InternalMalilibApi.tabsFor(modId)) {
+		for (ModRepresentation.Tab tab : InternalMalilibApi.getTabsFor(modId)) {
 			if (!tab.isPopup()) {
 				x += this.createButton(x, y, -1, tab);
 			}
@@ -53,12 +53,15 @@ public class ConfigScreen extends GuiConfigsBase {
 
 	@SuppressWarnings("SameParameterValue")
 	private int createButton(int x, int y, int width, ModRepresentation.Tab tab) {
+		// I need to be sent to jail for this method
 		ButtonGeneric button = new ButtonGeneric(x, y, width, 20, tab.translationKey());
 		button.setEnabled(!this.tab.equals(tab));
 		final ModRepresentation.Tab tab2 = tab;
 
 		this.addButton(button, (button1, mouseButton) -> {
+			InternalMalilibApi.setScrollValueFor(modId, this.tab, getListWidget().getScrollbar().getValue());
 			this.tab = tab2;
+			InternalMalilibApi.setActiveTabFor(modId, this.tab);
 			reCreateListWidget(); // apply the new config width
 			initGui();
 		});
@@ -67,13 +70,9 @@ public class ConfigScreen extends GuiConfigsBase {
 	}
 
 	@Override
-	protected void reCreateListWidget() {
-		super.reCreateListWidget();
-	}
-
-	@Override
 	protected void closeGui(boolean showParent) {
-		InternalMalilibApi.setActiveTabFor(modId, tab);
+		InternalMalilibApi.setActiveTabFor(modId, this.tab);
+		InternalMalilibApi.setScrollValueFor(modId, this.tab, getListWidget().getScrollbar().getValue());
 		super.closeGui(true);
 	}
 
