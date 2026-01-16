@@ -51,6 +51,12 @@ public class ConfigHandler implements IConfigHandler {
 					String lastTab = root.get("last_tab").getAsString();
 					ModRepresentation.Tab tab = InternalMalilibApi.getTabForTranslationKey(modId, lastTab);
 					InternalMalilibApi.setActiveTabFor(modId, tab);
+
+					// is in here, because don't set scroll if last tab is unknown
+					if (root.has("last_scroll") && root.get("last_scroll").isJsonPrimitive() && root.getAsJsonPrimitive("last_scroll").isNumber()) {
+						int lastScroll = root.get("last_scroll").getAsInt();
+						InternalMalilibApi.setScrollValueFor(modId, lastScroll);
+					}
 				}
 			}
 		}
@@ -74,6 +80,7 @@ public class ConfigHandler implements IConfigHandler {
 			root.add("configs", configs);
 			root.add("custom_data", customData);
 			root.addProperty("last_tab", InternalMalilibApi.getActiveTabFor(modId).translationKey());
+			root.addProperty("last_scroll", InternalMalilibApi.getScrollValueFor(modId));
 
 			JsonUtils.writeJsonToFile(root, new File(dir, configFileName));
 		}
