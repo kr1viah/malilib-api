@@ -47,6 +47,11 @@ public class ConfigHandler implements IConfigHandler {
 					loadAdditionalData(customData);
 				}
 
+				if (root.has("last_tab") && root.get("last_tab").isJsonPrimitive() && root.getAsJsonPrimitive("last_tab").isString()) {
+					String lastTab = root.get("last_tab").getAsString();
+					ModRepresentation.Tab tab = InternalMalilibApi.getTabForTranslationKey(modId, lastTab);
+					InternalMalilibApi.setActiveTabFor(modId, tab);
+				}
 			}
 		}
 	}
@@ -68,6 +73,8 @@ public class ConfigHandler implements IConfigHandler {
 			}
 			root.add("configs", configs);
 			root.add("custom_data", customData);
+			root.addProperty("last_tab", InternalMalilibApi.getActiveTabFor(modId).translationKey());
+
 			JsonUtils.writeJsonToFile(root, new File(dir, configFileName));
 		}
 	}

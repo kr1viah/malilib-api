@@ -181,6 +181,15 @@ public class InternalMalilibApi {
 		return tab;
 	}
 
+	public static ModRepresentation.Tab getTabForTranslationKey(String modId, String translationKey) {
+		for (ModRepresentation.Tab tab : getTabsFor(modId)) {
+			if (tab.translationKey().equals(translationKey)) {
+				return tab;
+			}
+		}
+		return null;
+	}
+
 	public static int getScrollValueFor(String modId) {
 		return getScrollValueFor(modId, getActiveTabFor(modId));
 	}
