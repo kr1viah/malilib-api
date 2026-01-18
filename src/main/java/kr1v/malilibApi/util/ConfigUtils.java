@@ -62,11 +62,11 @@ public final class ConfigUtils {
 						buttonName = "Edit " + name;
 					}
 
-					ConfigButton<Class<?>> configButton = new ConfigButton<>(name, buttonName, () ->
+					ConfigButton configButton = new ConfigButton(name, buttonName, () ->
 							MinecraftClient.getInstance().setScreen(
 									new ConfigPopupScreen(klass, GuiUtils.getCurrentScreen(), modId)
-							),
-							klass);
+							)
+					);
 
 					boolean prev = InternalMalilibApi.getDefaultEnabled();
 					InternalMalilibApi.setDefaultEnabled(klass.getAnnotation(PopupConfig.class).defaultEnabled());

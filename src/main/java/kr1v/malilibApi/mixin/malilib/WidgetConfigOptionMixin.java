@@ -29,7 +29,7 @@ public class WidgetConfigOptionMixin {
 	@Expression("new ConfigButtonBoolean(?, ?, ?, ?, ?)")
 	@WrapOperation(method = "addConfigOption", at = @At("MIXINEXTRAS:EXPRESSION"))
 	private ConfigButtonBoolean injected2(int x, int y, int width, int height, IConfigBoolean config, Operation<ConfigButtonBoolean> original) {
-		if (config instanceof ConfigButton<?> configButton) {
+		if (config instanceof ConfigButton configButton) {
 			return new ConfigButtonBoolean(x, y, width, height, config) {
 				// got added in 1.21.9
 				@Override
