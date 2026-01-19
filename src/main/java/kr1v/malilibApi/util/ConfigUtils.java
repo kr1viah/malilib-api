@@ -1,6 +1,8 @@
 package kr1v.malilibApi.util;
 
+import com.google.common.collect.ImmutableList;
 import fi.dy.masa.malilib.config.IConfigBase;
+import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.util.GuiUtils;
 import kr1v.malilibApi.InternalMalilibApi;
 import kr1v.malilibApi.annotation.*;
@@ -104,5 +106,17 @@ public final class ConfigUtils {
 				}
 			}
 		}
+	}
+
+	public static ImmutableList<GuiConfigsBase.ConfigOptionWrapper> getConfigOptions(List<? extends IConfigBase> configs) {
+		ImmutableList.Builder<GuiConfigsBase.ConfigOptionWrapper> builder = ImmutableList.builder();
+		for (IConfigBase config : configs) {
+			if (InternalMalilibApi.shouldHide(config)) continue;
+			if (config instanceof ConfigLabel)
+				builder.add(new GuiConfigsBase.ConfigOptionWrapper(config.getComment()));
+			else
+				builder.add(new GuiConfigsBase.ConfigOptionWrapper(config));
+		}
+		return builder.build();
 	}
 }

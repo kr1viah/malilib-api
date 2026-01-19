@@ -1,6 +1,7 @@
 package kr1v.malilibApi.config;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
 import fi.dy.masa.malilib.config.ConfigType;
 import fi.dy.masa.malilib.config.IConfigBase;
 import org.jetbrains.annotations.Nullable;
@@ -51,7 +52,7 @@ public class ConfigLabel implements IConfigBase {
 
 	@Override
 	public JsonElement getAsJsonElement() {
-		return null;
+		return JsonNull.INSTANCE;
 	}
 
 	//? if >=1.21.10 {

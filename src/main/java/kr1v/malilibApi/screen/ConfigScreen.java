@@ -1,23 +1,24 @@
 package kr1v.malilibApi.screen;
 
-import com.google.common.collect.ImmutableList;
 import fi.dy.masa.malilib.MaLiLibConfigs;
-import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.gui.GuiBase;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
 import fi.dy.masa.malilib.gui.widgets.WidgetDropDownList;
+import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
 import fi.dy.masa.malilib.registry.Registry;
 import fi.dy.masa.malilib.util.GuiUtils;
 import fi.dy.masa.malilib.util.data.ModInfo;
 import kr1v.malilibApi.InternalMalilibApi;
 import kr1v.malilibApi.ModRepresentation;
-import kr1v.malilibApi.config.ConfigLabel;
 import kr1v.malilibApi.mixin.accessor.WidgetListConfigOptionsBaseAccessor;
+import kr1v.malilibApi.util.ConfigUtils;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
 
 public class ConfigScreen extends GuiConfigsBase {
 	public ModRepresentation.Tab tab = InternalMalilibApi.getActiveTabFor(modId);
@@ -82,15 +83,7 @@ public class ConfigScreen extends GuiConfigsBase {
 
 	@Override
 	public List<ConfigOptionWrapper> getConfigs() {
-		ImmutableList.Builder<ConfigOptionWrapper> builder = ImmutableList.builder();
-		for (IConfigBase config : this.tab.options()) {
-			if (InternalMalilibApi.shouldHide(config)) continue;
-			if (config instanceof ConfigLabel)
-				builder.add(new ConfigOptionWrapper(config.getComment()));
-			else
-				builder.add(new ConfigOptionWrapper(config));
-		}
-		return builder.build();
+		return ConfigUtils.getConfigOptions(this.tab.options());
 	}
 
 	@Override
@@ -103,6 +96,8 @@ public class ConfigScreen extends GuiConfigsBase {
 		//? } else if >=1.21.8 {
 		/*this.applyBlur(drawContext); // this arg was added in 25w17a
 		 *///? }
+		InternalMalilibApi.setActiveTabFor(modId, this.tab);
+		InternalMalilibApi.setScrollValueFor(modId, this.tab, getListWidget().getScrollbar().getValue());
 		super.render(drawContext, mouseX, mouseY, partialTicks);
 	}
 
@@ -142,6 +137,12 @@ public class ConfigScreen extends GuiConfigsBase {
 
 			addWidget(this.modSwitchWidget);
 		}
+	}
+
+	@Override
+	@NotNull
+	protected WidgetListConfigOptions getListWidget() {
+		return Objects.requireNonNull(super.getListWidget());
 	}
 }
 

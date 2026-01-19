@@ -1,10 +1,10 @@
 package kr1v.malilibApi.config;
 
 import com.google.gson.JsonElement;
-import fi.dy.masa.malilib.config.IConfigBoolean;
+import com.google.gson.JsonNull;
 import fi.dy.masa.malilib.config.options.ConfigBase;
 
-public class ConfigButton extends ConfigBase<ConfigButton> implements IConfigBoolean {
+public class ConfigButton extends ConfigBase<ConfigButton> {
 	private final Runnable onPressed;
 	public final String displayName;
 
@@ -24,7 +24,7 @@ public class ConfigButton extends ConfigBase<ConfigButton> implements IConfigBoo
 
 	@Override
 	public JsonElement getAsJsonElement() {
-		return null;
+		return JsonNull.INSTANCE;
 	}
 
 	@Override
@@ -39,40 +39,5 @@ public class ConfigButton extends ConfigBase<ConfigButton> implements IConfigBoo
 
 	public void execute() {
 		this.onPressed.run();
-	}
-
-	@Override
-	public boolean getBooleanValue() {
-		return false;
-	}
-
-	@Override
-	public boolean getDefaultBooleanValue() {
-		return false;
-	}
-
-	@Override
-	public void setBooleanValue(boolean value) {
-
-	}
-
-	@Override
-	public String getDefaultStringValue() {
-		return "";
-	}
-
-	@Override
-	public void setValueFromString(String value) {
-
-	}
-
-	@Override
-	public boolean isModified(String newValue) {
-		return false;
-	}
-
-	@Override
-	public String getStringValue() {
-		return "";
 	}
 }
