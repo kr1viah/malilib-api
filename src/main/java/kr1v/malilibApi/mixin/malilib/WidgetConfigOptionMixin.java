@@ -7,22 +7,36 @@ import com.llamalad7.mixinextras.sugar.Local;
 import fi.dy.masa.malilib.config.ConfigType;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.IConfigResettable;
+import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.button.ButtonBase;
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
+import fi.dy.masa.malilib.gui.interfaces.IKeybindConfigGui;
 import fi.dy.masa.malilib.gui.widgets.WidgetConfigOption;
-import fi.dy.masa.malilib.util.StringUtils;
+import fi.dy.masa.malilib.gui.widgets.WidgetConfigOptionBase;
+import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptionsBase;
 import kr1v.malilibApi.config.ConfigButton;
 import kr1v.malilibApi.config.ConfigList;
-import kr1v.malilibApi.screen.ConfigListScreen;
-import net.minecraft.client.MinecraftClient;
+import kr1v.malilibApi.config.ConfigPair;
+import kr1v.malilibApi.widget.ConfigButtonButton;
+import kr1v.malilibApi.widget.ConfigListButton;
+import kr1v.malilibApi.widget.WidgetPair;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(WidgetConfigOption.class)
-public abstract class WidgetConfigOptionMixin {
+public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<GuiConfigsBase.ConfigOptionWrapper> {
+	public WidgetConfigOptionMixin(int x, int y, int width, int height, WidgetListConfigOptionsBase<?, ?> parent, GuiConfigsBase.ConfigOptionWrapper entry, int listIndex) {
+		super(x, y, width, height, parent, entry, listIndex);
+	}
+
 	@Shadow
 	protected abstract void addConfigButtonEntry(int xReset, int yReset, IConfigResettable config, ButtonBase optionButton);
+
+	@Shadow
+	@Final
+	protected IKeybindConfigGui host;
 
 	@Definition(id = "BOOLEAN", field = "Lfi/dy/masa/malilib/config/ConfigType;BOOLEAN:Lfi/dy/masa/malilib/config/ConfigType;")
 	@Definition(id = "type", local = @Local(type = ConfigType.class, name = "type"))
@@ -34,68 +48,25 @@ public abstract class WidgetConfigOptionMixin {
 							 @Local(name = "y") int y,
 							 @Local(name = "configWidth") int configWidth,
 							 @Local(name = "configHeight") int configHeight) {
+		IConfigResettable resettable = null;
+		if (config instanceof IConfigResettable) resettable = (IConfigResettable) config;
+
 		if (config instanceof ConfigList<?> list) {
-			var button = new ButtonGeneric(x, y, configWidth, configHeight, list.toString()) {
-				@Override
-				protected boolean onMouseClickedImpl(/*? if >=1.21.10 {*//*net.minecraft.client.gui.Click click, boolean doubleClick*//*? } else {*/int mouseX, int mouseY, int mouseButton/*? }*/) {
-					super.onMouseClickedImpl(/*? if >=1.21.10 {*//*click, doubleClick*//*? } else {*/mouseX, mouseY, mouseButton/*? }*/);
-					MinecraftClient.getInstance().setScreen(new ConfigListScreen(list, null, MinecraftClient.getInstance().currentScreen));
-					return true;
-				}
-				//? if <= 1.21.5 {
-				@Override
-				public void render(int mouseX, int mouseY, boolean selected, net.minecraft.client.gui.DrawContext drawContext) {
-					setDisplay();
-					super.render(mouseX, mouseY, selected, drawContext);
-				}
-				//? } else if <=1.21.10 {
-				/*@Override
-				public void render(net.minecraft.client.gui.DrawContext drawContext, int mouseX, int mouseY, boolean selected) {
-					setDisplay();
-					super.render(drawContext, mouseX, mouseY, selected);
-				}
-				*///? } else {
-				/*@Override
-				public void render(fi.dy.masa.malilib.render.GuiContext ctx, int mouseX, int mouseY, boolean selected) {
-					setDisplay();
-					super.render(ctx, mouseX, mouseY, selected);
-				}
-				*///? }
-
-				private void setDisplay() {
-					String str = list.toString();
-					int len = 0;
-					StringBuilder builder = new StringBuilder();
-					for (String c : str.codePoints()
-							.mapToObj(cp -> new String(Character.toChars(cp)))
-							.toArray(String[]::new)) {
-						len += StringUtils.getStringWidth(c);
-						if (len > this.width - 10 - StringUtils.getStringWidth(" ...")) {
-							builder.append(" ...");
-							break;
-						} else {
-							builder.append(c);
-						}
-					}
-					this.setDisplayString(builder.toString());
-				}
-			};
-			this.addConfigButtonEntry(x + configWidth + 2, y, (IConfigResettable) config, button);
-		} else if (config instanceof ConfigButton configButton) {
-			var button = new ButtonGeneric(x, y, configWidth, configHeight, configButton.displayName) {
-				@Override
-				protected boolean onMouseClickedImpl(/*? if >=1.21.10 {*//*net.minecraft.client.gui.Click click, boolean doubleClick*//*? } else {*/int mouseX, int mouseY, int mouseButton/*? }*/) {
-					super.onMouseClickedImpl(/*? if >=1.21.10 {*//*click, doubleClick*//*? } else {*/mouseX, mouseY, mouseButton/*? }*/);
-					configButton.execute();
-					return true;
-				}
-
-				@Override
-				public void updateDisplayString() {
-					this.displayString = configButton.displayName;
-				}
-			};
-			this.addConfigButtonEntry(x + configWidth + 2, y, (IConfigResettable) config, button);
+			this.addConfigButtonEntry(x + configWidth + 2, y, resettable, new ConfigListButton(x, y, configWidth, configHeight, list, list.toString()));
+		} else if (config instanceof ConfigButton button) {
+			this.addConfigButtonEntry(x + configWidth + 2, y, resettable, new ConfigButtonButton(x, y, configWidth, configHeight, button.displayName, button));
+		} else if (config instanceof ConfigPair<?,?> pair) {
+			if ((Object) this instanceof WidgetPair.WidgetConfigOptionPair pair1) {
+				WidgetPair pair2 = pair1.getEnclosing();
+				ButtonGeneric resetButton = pair2.resetButton;
+				WidgetPair.MultipleReset listenerReset = pair2.multipleListenerReset;
+				this.addWidget(new WidgetPair(x, y, width, height, pair, listIndex, configWidth, this.host, this.parent, resetButton, listenerReset));
+			} else {
+				ButtonGeneric resetButton = this.createResetButton(x + configWidth + 2, y, resettable);
+				WidgetPair.MultipleReset listenerReset = new WidgetPair.MultipleReset(resettable, null, resetButton, null);
+				this.addWidget(new WidgetPair(x, y, width, height, pair, listIndex, configWidth, this.host, this.parent, resetButton, listenerReset));
+				this.addButton(resetButton, listenerReset);
+			}
 		}
 		return original;
 	}
