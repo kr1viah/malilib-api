@@ -63,7 +63,7 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
 				this.addWidget(new WidgetPair(x, y, width, height, pair, listIndex, configWidth, this.host, this.parent, resetButton, listenerReset));
 			} else {
 				ButtonGeneric resetButton = this.createResetButton(x + configWidth + 2, y, resettable);
-				WidgetPair.MultipleReset listenerReset = new WidgetPair.MultipleReset(resettable, null, resetButton, null);
+				WidgetPair.MultipleReset listenerReset = new WidgetPair.MultipleReset();
 				this.addWidget(new WidgetPair(x, y, width, height, pair, listIndex, configWidth, this.host, this.parent, resetButton, listenerReset));
 				this.addButton(resetButton, listenerReset);
 			}

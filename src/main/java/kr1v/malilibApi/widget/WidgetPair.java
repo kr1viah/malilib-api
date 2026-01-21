@@ -135,12 +135,8 @@ public class WidgetPair extends WidgetContainer {
 		public WidgetPair getEnclosing() { return WidgetPair.this; }
 	}
 
-	public static class MultipleReset extends ConfigOptionListenerResetConfig {
+	public static class MultipleReset implements IButtonActionListener {
 		private final List<IButtonActionListener> list = new ArrayList<>();
-
-		public MultipleReset(IConfigResettable config, ConfigResetterBase reset, ButtonGeneric buttonReset, ButtonPressDirtyListenerSimple dirtyListener) {
-			super(config, reset, buttonReset, dirtyListener);
-		}
 
 		public void add(IButtonActionListener configOptionListenerResetConfig) {
 			list.add(configOptionListenerResetConfig);

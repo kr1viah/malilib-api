@@ -23,7 +23,6 @@ public class Test5 {
 					new ConfigBoolean("", false)
 			)
 	);
-	/*
 	public static final ConfigPair<ConfigPair<ConfigPair<ConfigBoolean, ConfigBoolean>, ConfigPair<ConfigBoolean, ConfigBoolean>>, ConfigPair<ConfigPair<ConfigBoolean, ConfigBoolean>, ConfigPair<ConfigBoolean, ConfigBoolean>>> TEST_8 = new ConfigPair<>(
 			"8",
 			new ConfigPair<>(
@@ -103,7 +102,6 @@ public class Test5 {
 					)
 			)
 	);
-	 */
 
 	@Label
 	@Label("MaLiLib")
