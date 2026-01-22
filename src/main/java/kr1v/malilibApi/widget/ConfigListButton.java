@@ -44,6 +44,9 @@ public class ConfigListButton extends ButtonGeneric {
 	private void setDisplay() {
 		String str = list.toString();
 		int len = 0;
+		if (str.length() > 10000) {
+			str = str.substring(0, 10000);
+		}
 		StringBuilder builder = new StringBuilder();
 		for (String c : str.codePoints()
 				.mapToObj(cp -> new String(Character.toChars(cp)))
