@@ -3,6 +3,8 @@ package kr1v.malilibApi.mixin.malilib;
 import com.llamalad7.mixinextras.expression.Definition;
 import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import fi.dy.masa.malilib.config.ConfigType;
 import fi.dy.masa.malilib.config.IConfigBase;
@@ -20,6 +22,7 @@ import kr1v.malilibApi.config.ConfigPair;
 import kr1v.malilibApi.widget.ConfigButtonButton;
 import kr1v.malilibApi.widget.ConfigListButton;
 import kr1v.malilibApi.widget.WidgetPair;
+import net.minecraft.client.gui.DrawContext;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -70,4 +73,19 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
 		}
 		return original;
 	}
+
+	//? if =1.21.5 {
+	@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lfi/dy/masa/malilib/gui/widgets/WidgetConfigOption;drawSubWidgets(IILnet/minecraft/client/gui/DrawContext;)V"))
+	private void preventRedraw(WidgetConfigOption instance, int mouseX, int mouseY, DrawContext drawContext, Operation<Void> original) {
+	}
+	//? } else if >=1.21.8 <= 1.21.10 {
+	/*@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lfi/dy/masa/malilib/gui/widgets/WidgetConfigOption;drawSubWidgets(Lnet/minecraft/client/gui/DrawContext;II)V"))
+	private void preventRedraw(WidgetConfigOption instance, DrawContext drawContext, int mouseX, int mouseY, Operation<Void> original) {
+	}
+	*///? } else if >=1.21.11 {
+	/*@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lfi/dy/masa/malilib/gui/widgets/WidgetConfigOption;drawSubWidgets(Lfi/dy/masa/malilib/render/GuiContext;II)V"))
+	private void preventRedraw(WidgetConfigOption instance, fi.dy.masa.malilib.render.GuiContext guiContext, int mouseX, int mouseY, Operation<Void> original) {
+
+	}
+	*///? }
 }
