@@ -3,6 +3,8 @@ package kr1v.malilibApi.config;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import fi.dy.masa.malilib.config.options.ConfigBase;
+import kr1v.malilibApi.InternalMalilibApi;
+import kr1v.malilibApi.widget.ConfigButtonButton;
 
 public class ConfigButton extends ConfigBase<ConfigButton> {
 	private final Runnable onPressed;
@@ -39,5 +41,9 @@ public class ConfigButton extends ConfigBase<ConfigButton> {
 
 	public void execute() {
 		this.onPressed.run();
+	}
+
+	static {
+		InternalMalilibApi.registerButtonBasedConfigType(ConfigButton.class, (widgetConfigOption, button, x, y, configWidth, configHeight) -> new ConfigButtonButton(x, y, configWidth, configHeight, button.displayName, button));
 	}
 }

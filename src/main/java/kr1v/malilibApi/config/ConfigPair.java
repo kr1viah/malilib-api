@@ -4,6 +4,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.IConfigResettable;
+import fi.dy.masa.malilib.gui.button.ButtonGeneric;
+import fi.dy.masa.malilib.gui.widgets.WidgetBase;
+import fi.dy.masa.malilib.util.StringUtils;
+import kr1v.malilibApi.InternalMalilibApi;
+import kr1v.malilibApi.interfaces.IWidgetResettableSupplier;
+import kr1v.malilibApi.mixin.accessor.WidgetConfigOptionAccessor;
+import kr1v.malilibApi.mixin.accessor.WidgetConfigOptionBaseAccessor;
+import kr1v.malilibApi.widget.WidgetPair;
 
 public class ConfigPair<L extends IConfigBase & IConfigResettable, R extends IConfigBase & IConfigResettable> extends CustomConfigBase<ConfigPair<L, R>> {
 	private final L left;
@@ -55,5 +63,31 @@ public class ConfigPair<L extends IConfigBase & IConfigResettable, R extends ICo
 
 	public R getRight() {
 		return right;
+	}
+
+	static {
+		InternalMalilibApi.registerWidgetBasedConfigType(ConfigPair.class, (IWidgetResettableSupplier<ConfigPair<?, ?>>) (widgetConfigOption, pair, x, y, configWidth, configHeight) -> {
+			var accessor1 = (WidgetConfigOptionAccessor) widgetConfigOption;
+			var accessor2 = (WidgetConfigOptionBaseAccessor) widgetConfigOption;
+
+			if (widgetConfigOption instanceof WidgetPair.WidgetConfigOptionPair pair1) {
+				WidgetPair pair2 = pair1.getEnclosing();
+				ButtonGeneric resetButton = pair2.resetButton;
+				WidgetPair.MultipleReset listenerReset = pair2.multipleListenerReset;
+				return new WidgetBase[]{new WidgetPair(x, y, configWidth, configHeight, pair, widgetConfigOption.getListIndex(), configWidth, accessor1.getHost(), accessor2.getParent(), resetButton, listenerReset)};
+			} else {
+				WidgetBase[] widgets = new WidgetBase[2];
+
+				String labelReset = StringUtils.translate("malilib.gui.button.reset.caps");
+				ButtonGeneric resetButton = new ButtonGeneric(x + configWidth + 2, y, -1, 20, labelReset);
+				resetButton.setEnabled(pair.isModified());
+
+				WidgetPair.MultipleReset listenerReset = new WidgetPair.MultipleReset();
+				resetButton.setActionListener(listenerReset);
+				widgets[0] = new WidgetPair(x, y, configWidth, configHeight, pair, widgetConfigOption.getListIndex(), configWidth, accessor1.getHost(), accessor2.getParent(), resetButton, listenerReset);
+				widgets[1] = resetButton;
+				return widgets;
+			}
+		});
 	}
 }

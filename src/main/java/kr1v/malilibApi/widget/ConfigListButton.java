@@ -9,8 +9,8 @@ import net.minecraft.client.MinecraftClient;
 public class ConfigListButton extends ButtonGeneric {
 	private final ConfigList<?> list;
 
-	public ConfigListButton(int x, int y, int width, int height, ConfigList<?> list, String text) {
-		super(x, y, width, height, text);
+	public ConfigListButton(int x, int y, int width, int height, ConfigList<?> list) {
+		super(x, y, width, height, list.toString());
 		this.list = list;
 	}
 

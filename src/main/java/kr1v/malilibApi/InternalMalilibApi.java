@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import fi.dy.masa.malilib.config.ConfigManager;
 import fi.dy.masa.malilib.config.IConfigBase;
+import fi.dy.masa.malilib.config.IConfigResettable;
 import fi.dy.masa.malilib.event.InitializationHandler;
 import fi.dy.masa.malilib.event.InputEventHandler;
 import fi.dy.masa.malilib.gui.GuiBase;
@@ -11,7 +12,10 @@ import fi.dy.masa.malilib.registry.Registry;
 import fi.dy.masa.malilib.util.data.ModInfo;
 import kr1v.malilibApi.annotation.Config;
 import kr1v.malilibApi.annotation.processor.ConfigProcessor;
+import kr1v.malilibApi.interfaces.IButtonBasedResettableWidgetSupplier;
 import kr1v.malilibApi.interfaces.IConfigScreenSupplier;
+import kr1v.malilibApi.interfaces.IWidgetResettableSupplier;
+import kr1v.malilibApi.interfaces.IWidgetSupplier;
 import kr1v.malilibApi.screen.ConfigScreen;
 import kr1v.malilibApi.util.AnnotationUtils;
 import kr1v.malilibApi.util.ConfigUtils;
@@ -212,6 +216,16 @@ public class InternalMalilibApi {
 
 	private static List<ModRepresentation.Tab> rawTabs(String modId) {
 		return getMod(modId).tabs;
+	}
+
+	public static Map<Class<?>, IWidgetSupplier<?>> customConfigMap = new HashMap<>();
+
+	public static <T extends IConfigBase & IConfigResettable> void registerWidgetBasedConfigType(Class<?> configClass, IWidgetResettableSupplier<T> widgetSupplier) {
+		customConfigMap.put(configClass, widgetSupplier);
+	}
+
+	public static <T extends IConfigBase & IConfigResettable> void registerButtonBasedConfigType(Class<T> configClass, IButtonBasedResettableWidgetSupplier<T> buttonSupplier) {
+		customConfigMap.put(configClass, buttonSupplier);
 	}
 
 	private static final Set<Object> toHide = new HashSet<>();

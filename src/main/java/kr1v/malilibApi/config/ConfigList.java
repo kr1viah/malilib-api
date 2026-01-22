@@ -6,6 +6,8 @@ import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.options.ConfigBooleanHotkeyed;
 import fi.dy.masa.malilib.config.options.ConfigHotkey;
 import fi.dy.masa.malilib.interfaces.IStringValue;
+import kr1v.malilibApi.InternalMalilibApi;
+import kr1v.malilibApi.widget.ConfigListButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,5 +106,9 @@ public class ConfigList<T extends IConfigBase> extends CustomConfigBase<ConfigLi
 		builder.append("]");
 
 		return builder.toString();
+	}
+
+	static {
+		InternalMalilibApi.registerButtonBasedConfigType(ConfigList.class, (widgetConfigOption, list, x, y, configWidth, configHeight) -> new ConfigListButton(x, y, configWidth, configHeight, list));
 	}
 }

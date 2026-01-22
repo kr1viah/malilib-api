@@ -11,19 +11,15 @@ import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.IConfigResettable;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.button.ButtonBase;
-import fi.dy.masa.malilib.gui.button.ButtonGeneric;
-import fi.dy.masa.malilib.gui.interfaces.IKeybindConfigGui;
+import fi.dy.masa.malilib.gui.widgets.WidgetBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetConfigOption;
 import fi.dy.masa.malilib.gui.widgets.WidgetConfigOptionBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptionsBase;
-import kr1v.malilibApi.config.ConfigButton;
-import kr1v.malilibApi.config.ConfigList;
-import kr1v.malilibApi.config.ConfigPair;
-import kr1v.malilibApi.widget.ConfigButtonButton;
-import kr1v.malilibApi.widget.ConfigListButton;
-import kr1v.malilibApi.widget.WidgetPair;
+import kr1v.malilibApi.InternalMalilibApi;
+import kr1v.malilibApi.interfaces.IButtonBasedResettableWidgetSupplier;
+import kr1v.malilibApi.interfaces.IWidgetResettableSupplier;
+import kr1v.malilibApi.interfaces.IWidgetSupplier;
 import net.minecraft.client.gui.DrawContext;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,10 +33,6 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
 	@Shadow
 	protected abstract void addConfigButtonEntry(int xReset, int yReset, IConfigResettable config, ButtonBase optionButton);
 
-	@Shadow
-	@Final
-	protected IKeybindConfigGui host;
-
 	@Definition(id = "BOOLEAN", field = "Lfi/dy/masa/malilib/config/ConfigType;BOOLEAN:Lfi/dy/masa/malilib/config/ConfigType;")
 	@Definition(id = "type", local = @Local(type = ConfigType.class, name = "type"))
 	@Expression("type == BOOLEAN")
@@ -51,24 +43,24 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
 							 @Local(name = "y") int y,
 							 @Local(name = "configWidth") int configWidth,
 							 @Local(name = "configHeight") int configHeight) {
-		IConfigResettable resettable = null;
-		if (config instanceof IConfigResettable) resettable = (IConfigResettable) config;
+		for (var entry : InternalMalilibApi.customConfigMap.entrySet()) {
+			Class<?> configClass = entry.getKey();
+			IWidgetSupplier<?> widgetSupplier = entry.getValue();
 
-		if (config instanceof ConfigList<?> list) {
-			this.addConfigButtonEntry(x + configWidth + 2, y, resettable, new ConfigListButton(x, y, configWidth, configHeight, list, list.toString()));
-		} else if (config instanceof ConfigButton button) {
-			this.addConfigButtonEntry(x + configWidth + 2, y, resettable, new ConfigButtonButton(x, y, configWidth, configHeight, button.displayName, button));
-		} else if (config instanceof ConfigPair<?,?> pair) {
-			if ((Object) this instanceof WidgetPair.WidgetConfigOptionPair pair1) {
-				WidgetPair pair2 = pair1.getEnclosing();
-				ButtonGeneric resetButton = pair2.resetButton;
-				WidgetPair.MultipleReset listenerReset = pair2.multipleListenerReset;
-				this.addWidget(new WidgetPair(x, y, width, height, pair, listIndex, configWidth, this.host, this.parent, resetButton, listenerReset));
-			} else {
-				ButtonGeneric resetButton = this.createResetButton(x + configWidth + 2, y, resettable);
-				WidgetPair.MultipleReset listenerReset = new WidgetPair.MultipleReset();
-				this.addWidget(new WidgetPair(x, y, width, height, pair, listIndex, configWidth, this.host, this.parent, resetButton, listenerReset));
-				this.addButton(resetButton, listenerReset);
+			if (configClass.isInstance(config)){
+				//noinspection rawtypes
+				if (widgetSupplier instanceof IButtonBasedResettableWidgetSupplier buttonGiver) {
+					//noinspection unchecked
+					ButtonBase button = buttonGiver.getButton((WidgetConfigOption) (Object) this, config, x, y, configWidth, configHeight);
+					this.addConfigButtonEntry(x + configWidth + 2, y, (IConfigResettable) config, button);
+				} else if (widgetSupplier instanceof @SuppressWarnings("rawtypes")IWidgetResettableSupplier widgetGiver) {
+					//noinspection unchecked
+					WidgetBase[] widgetsToAdd = widgetGiver.getWidget((WidgetConfigOption) (Object) this, config, x, y, configWidth, configHeight);
+					for (WidgetBase widget : widgetsToAdd) {
+						this.addWidget(widget);
+					}
+				}
+				return original;
 			}
 		}
 		return original;
