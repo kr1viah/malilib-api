@@ -5,6 +5,7 @@ import fi.dy.masa.malilib.config.IConfigResettable;
 import kr1v.malilibApi.interfaces.IButtonBasedResettableWidgetSupplier;
 import kr1v.malilibApi.interfaces.IConfigScreenSupplier;
 import kr1v.malilibApi.interfaces.IWidgetResettableSupplier;
+import kr1v.malilibApi.interfaces.IWidgetSupplier;
 import kr1v.malilibApi.screen.ConfigScreen;
 import net.minecraft.client.gui.screen.Screen;
 
@@ -68,5 +69,9 @@ public class MalilibApi {
 
 	public static <T extends IConfigBase & IConfigResettable> void registerButtonBasedConfigType(Class<T> configClass, IButtonBasedResettableWidgetSupplier<T> buttonSupplier) {
 		InternalMalilibApi.registerButtonBasedConfigType(configClass, buttonSupplier);
+	}
+
+	public static <T extends IConfigBase & IConfigResettable> IWidgetSupplier<?> unregisterCustomWidget(Class<T> configClass) {
+		return InternalMalilibApi.unregisterCustomWidget(configClass);
 	}
 }
