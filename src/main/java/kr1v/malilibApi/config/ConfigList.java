@@ -26,9 +26,20 @@ public class ConfigList<T extends IConfigBase> extends CustomConfigBase<ConfigLi
 		this(name, defaultValue, supplier, "", name, name);
 	}
 
+	public ConfigList(String name, Supplier<T> supplier, String comment) {
+		this(name, List.of(), supplier, comment);
+	}
+
+	public ConfigList(String name, List<T> defaultValue, Supplier<T> supplier, String comment) {
+		this(name, defaultValue, supplier, comment, name, name);
+	}
+
 	public ConfigList(String name, List<T> defaultValue, Supplier<T> supplier, String comment, String translatedName, String prettyName) {
 		super(name, comment, translatedName, prettyName);
 		this.supplier = supplier;
+		if (!supplier.get().getName().isEmpty()) {
+			throw new IllegalStateException("Please make the supplier supply with empty names!");
+		}
 		this.list = new ArrayList<>(defaultValue);
 		this.defaultValue = defaultValue;
 	}
@@ -40,6 +51,7 @@ public class ConfigList<T extends IConfigBase> extends CustomConfigBase<ConfigLi
 			for (JsonElement element1 : array) {
 				T newInstance = supplier.get();
 				newInstance.setTranslatedName("");
+				newInstance.setPrettyName("");
 				newInstance.setValueFromJsonElement(element1);
 				list.add(newInstance);
 			}
@@ -60,7 +72,10 @@ public class ConfigList<T extends IConfigBase> extends CustomConfigBase<ConfigLi
 	}
 
 	public void addNewAfter(int index) {
-		list.add(index, supplier.get());
+		T newInstance = supplier.get();
+		newInstance.setTranslatedName("");
+		newInstance.setPrettyName("");
+		list.add(index, newInstance);
 	}
 
 	@Override

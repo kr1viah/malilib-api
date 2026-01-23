@@ -21,10 +21,20 @@ public class ConfigPair<L extends IConfigBase & IConfigResettable, R extends ICo
 		this(name, left, right, "", name, name);
 	}
 
+	public ConfigPair(String name, L left, R right, String comment) {
+		this(name, left, right, comment, name, name);
+	}
+
 	public ConfigPair(String name, L left, R right, String comment, String translatedName, String prettyName) {
 		super(name, comment, translatedName, prettyName);
 		this.left = left;
 		this.right = right;
+		if (!right.getName().isEmpty()) {
+			throw new IllegalStateException("Please make right have an empty name! " + this);
+		}
+		if (!left.getName().isEmpty()) {
+			throw new IllegalStateException("Please make left have an empty name! " + this);
+		}
 	}
 
 	@Override
@@ -89,5 +99,10 @@ public class ConfigPair<L extends IConfigBase & IConfigResettable, R extends ICo
 				return widgets;
 			}
 		});
+	}
+
+	@Override
+	public String toString() {
+		return left.toString() + " | " + right.toString();
 	}
 }
