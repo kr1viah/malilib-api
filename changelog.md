@@ -1,13 +1,19 @@
-## 0.2.4 changelog
+## 0.2.5 changelog
 
 ### Users
 
-- Saves tab/scroll location
-  * Tab persists through restarts, scroll location of only the active tab persists through restarts
+No new things for users
 
 ### Mod developers
 
-- Rename `ModConfig` to `ModRepresentation`
-- Test mod
-- Allow for custom config screen tabs
-- Automatic mod menu integration
+* Remove data from `ConfigButton`
+  - Is now not a generic anymore
+* `ConfigList`
+  - A config type that is a List of `IConfigBase`. Yes, that can be another ConfigList
+* `ConfigPair`
+  - A config type that is a Pair of 2 `IConfigBase`s. They will show up next to each other in game, each taking up half the width of the config. Yes, they both can be another `ConfigPair`
+* Custom config option support
+  - See `MalilibApi#registerWidgetBasedConfigType` and `MalilibApi#registerButtonBasedConfigType`, or these for examples:
+    - (Button based) `kr1v.malilibApi.config.ConfigButton` + `kr1v.malilibApi.widget.ConfigButtonButton`
+    - (Button based) `kr1v.malilibApi.config.ConfigList` + `kr1v.malilibApi.widget.ConfigListButton`
+    - (Widget based) `kr1v.malilibApi.config.ConfigPair` + `kr1v.malilibApi.widget.WidgetPair`
