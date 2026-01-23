@@ -2,11 +2,13 @@ package kr1v.malilibApiTest;
 
 import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
+import fi.dy.masa.malilib.gui.button.ButtonGeneric;
 import kr1v.malilibApi.ConfigHandler;
 import kr1v.malilibApi.InputHandler;
 import kr1v.malilibApi.MalilibApi;
 import kr1v.malilibApi.interfaces.IConfigScreenSupplier;
 import kr1v.malilibApi.screen.ConfigScreen;
+import kr1v.malilibApiTest.custo.ConfigClass;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.gui.screen.Screen;
 import org.slf4j.Logger;
@@ -18,6 +20,14 @@ public class Init implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
+		MalilibApi.registerButtonBasedConfigType(ConfigClass.class, (widgetConfigOption, config, x, y, configWidth, configHeight) -> new ButtonGeneric(x, y, configWidth, configHeight, config.getName()) {
+            @Override
+            protected boolean onMouseClickedImpl(int mouseX, int mouseY, int mouseButton) {
+                System.out.println("Custom button!");
+                return super.onMouseClickedImpl(mouseX, mouseY, mouseButton);
+            }
+        });
+
 		MalilibApi.registerMod(
 				MOD_ID,
 				MOD_NAME,

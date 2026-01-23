@@ -44,7 +44,7 @@ dependencies {
     annotationProcessor "com.google.auto.service:auto-service:${project.auto_service_version}"
 
     // cursed
-    testmodAnnotationProcessor "net.kr1v:malilib-api:0.2.2-1.21.5"
+    testmodAnnotationProcessor "net.kr1v:malilib-api:${project.mod_version}-1.21.5"
 }
 
 processResources {

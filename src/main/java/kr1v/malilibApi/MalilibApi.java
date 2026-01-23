@@ -1,7 +1,10 @@
 package kr1v.malilibApi;
 
 import fi.dy.masa.malilib.config.IConfigBase;
+import fi.dy.masa.malilib.config.IConfigResettable;
+import kr1v.malilibApi.interfaces.IButtonBasedResettableWidgetSupplier;
 import kr1v.malilibApi.interfaces.IConfigScreenSupplier;
+import kr1v.malilibApi.interfaces.IWidgetResettableSupplier;
 import kr1v.malilibApi.screen.ConfigScreen;
 import net.minecraft.client.gui.screen.Screen;
 
@@ -57,5 +60,13 @@ public class MalilibApi {
 
 	public static void unregisterTab(String modId, String tabName) {
 		InternalMalilibApi.unregisterTab(modId, tabName);
+	}
+
+	public static <T extends IConfigBase & IConfigResettable> void registerWidgetBasedConfigType(Class<?> configClass, IWidgetResettableSupplier<T> widgetSupplier) {
+		InternalMalilibApi.registerWidgetBasedConfigType(configClass, widgetSupplier);
+	}
+
+	public static <T extends IConfigBase & IConfigResettable> void registerButtonBasedConfigType(Class<T> configClass, IButtonBasedResettableWidgetSupplier<T> buttonSupplier) {
+		InternalMalilibApi.registerButtonBasedConfigType(configClass, buttonSupplier);
 	}
 }

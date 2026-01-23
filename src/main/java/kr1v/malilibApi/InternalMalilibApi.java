@@ -221,11 +221,18 @@ public class InternalMalilibApi {
 	public static Map<Class<?>, IWidgetSupplier<?>> customConfigMap = new HashMap<>();
 
 	public static <T extends IConfigBase & IConfigResettable> void registerWidgetBasedConfigType(Class<?> configClass, IWidgetResettableSupplier<T> widgetSupplier) {
+		if (customConfigMap.containsKey(configClass)) throw new IllegalStateException("Config class already registered! " + configClass);
 		customConfigMap.put(configClass, widgetSupplier);
 	}
 
 	public static <T extends IConfigBase & IConfigResettable> void registerButtonBasedConfigType(Class<T> configClass, IButtonBasedResettableWidgetSupplier<T> buttonSupplier) {
+		if (customConfigMap.containsKey(configClass)) throw new IllegalStateException("Config class already registered! " + configClass);
 		customConfigMap.put(configClass, buttonSupplier);
+	}
+
+	public static <T extends IConfigBase & IConfigResettable> IWidgetSupplier<?> unregisterCustomWidget(Class<T> configClass) {
+		if (!customConfigMap.containsKey(configClass)) throw new IllegalStateException("Config class is not registered! " + configClass);
+		return customConfigMap.remove(configClass);
 	}
 
 	private static final Set<Object> toHide = new HashSet<>();
