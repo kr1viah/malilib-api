@@ -130,9 +130,6 @@ public class ConfigPopupScreen extends GuiConfigsBase {
 			this.customParent.render(drawContext, mouseX, mouseY, partialTicks);
 		}
 
-		//? if <=1.21.5
-		drawContext.getMatrices().translate(0f, 0f, 1000f); // this got changed in 25w15a
-
 		super.render(drawContext, mouseX, mouseY, partialTicks);
 	}
 
