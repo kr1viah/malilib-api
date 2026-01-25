@@ -113,7 +113,13 @@ public class ConfigList<T extends IConfigBase> extends CustomConfigBase<ConfigLi
 				}
 				case IStringValue representable -> builder.append(representable.getStringValue());
 				case ConfigList<?> configList -> builder.append(configList);
-				default -> builder.append(item.getAsJsonElement().toString());
+				default -> {
+					if (item.toString().equals(Objects.toIdentityString(item))) {
+						builder.append(item.getAsJsonElement().toString());
+					} else {
+						builder.append(item);
+					}
+				}
 			}
 			isFirst = false;
 		}
