@@ -1,0 +1,28 @@
+package kr1v.malilibApi.widget;
+
+import fi.dy.masa.malilib.gui.button.ButtonGeneric;
+import fi.dy.masa.malilib.util.GuiUtils;
+import kr1v.malilibApi.config.ConfigObject;
+import kr1v.malilibApi.screen.ConfigPopupScreen;
+import net.minecraft.client.MinecraftClient;
+
+public class ConfigObjectButton extends ButtonGeneric {
+	private final ConfigObject<?> configObject;
+
+	public ConfigObjectButton(int x, int y, int width, int height, ConfigObject<?> configObject) {
+		super(x, y, width, height, configObject.toString());
+		this.configObject = configObject;
+	}
+
+	@Override
+	protected boolean onMouseClickedImpl(/*? if >=1.21.10 {*//*net.minecraft.client.gui.Click click, boolean doubleClick*//*? } else {*/int mouseX, int mouseY, int mouseButton/*? }*/) {
+		super.onMouseClickedImpl(/*? if >=1.21.10 {*//*click, doubleClick*//*? } else {*/mouseX, mouseY, mouseButton/*? }*/);
+		MinecraftClient.getInstance().setScreen(new ConfigPopupScreen(configObject, GuiUtils.getCurrentScreen()));
+		return true;
+	}
+
+	@Override
+	public void updateDisplayString() {
+		this.displayString = configObject.toString();
+	}
+}

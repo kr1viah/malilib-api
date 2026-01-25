@@ -1,11 +1,12 @@
 package kr1v.malilibApi.screen;
 
+import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.gui.GuiBase;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
 import fi.dy.masa.malilib.util.GuiUtils;
-import kr1v.malilibApi.InternalMalilibApi;
 import kr1v.malilibApi.annotation.PopupConfig;
+import kr1v.malilibApi.config.ConfigObject;
 import kr1v.malilibApi.mixin.accessor.WidgetListConfigOptionsBaseAccessor;
 import kr1v.malilibApi.util.ConfigUtils;
 import net.minecraft.client.gui.DrawContext;
@@ -24,10 +25,22 @@ public class ConfigPopupScreen extends GuiConfigsBase {
 	private final int configDistanceFromSides;
 	private final int configDistanceFromTops;
 
-	private final Class<?> configClass;
-	private final String modId;
+	private final List<IConfigBase> configs;
 
 	private final Screen customParent;
+
+	public ConfigPopupScreen(ConfigObject<?> configObject, Screen parent) {
+		super(0, 0, "", parent, "", configObject.getName());
+
+		this.setParent(parent);
+		this.customParent = parent;
+		configDistanceFromTops = -1;
+		configDistanceFromSides = -1;
+		configWidth = -1;
+		configHeight = 300;
+
+		this.configs = configObject.configs;
+	}
 
 	public ConfigPopupScreen(Class<?> configClass, Screen parent, String modId) {
 		super(0, 0, "", parent, configClass.getAnnotation(PopupConfig.class).name().isEmpty() ? configClass.getSimpleName() : configClass.getAnnotation(PopupConfig.class).name());
@@ -35,13 +48,13 @@ public class ConfigPopupScreen extends GuiConfigsBase {
 		this.setParent(parent);
 		this.customParent = parent;
 
-		this.modId = modId;
 		PopupConfig popupConfig = configClass.getAnnotation(PopupConfig.class);
 		configDistanceFromTops = popupConfig.distanceFromTops();
 		configDistanceFromSides = popupConfig.distanceFromSides();
 		configWidth = popupConfig.width();
 		configHeight = popupConfig.height();
-		this.configClass = configClass;
+
+		this.configs = ConfigUtils.generateOptions(configClass, modId);
 	}
 
 	protected void centerOnScreen() {
@@ -108,7 +121,7 @@ public class ConfigPopupScreen extends GuiConfigsBase {
 
 	@Override
 	public List<ConfigOptionWrapper> getConfigs() {
-		return ConfigUtils.getConfigOptions(InternalMalilibApi.configListFor(modId, this.configClass));
+		return ConfigUtils.getConfigOptions(configs);
 	}
 
 	@Override
