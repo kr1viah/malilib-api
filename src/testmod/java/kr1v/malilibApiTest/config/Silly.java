@@ -5,7 +5,7 @@ import kr1v.malilibApi.annotation.Config;
 import kr1v.malilibApi.annotation.Extras;
 import kr1v.malilibApi.annotation.Label;
 import kr1v.malilibApi.annotation.Marker;
-import kr1v.malilibApi.config.ConfigLabel;
+import kr1v.malilibApi.config._new.ConfigLabel;
 
 import java.util.List;
 

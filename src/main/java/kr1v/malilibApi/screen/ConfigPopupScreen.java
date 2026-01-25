@@ -6,7 +6,7 @@ import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
 import fi.dy.masa.malilib.util.GuiUtils;
 import kr1v.malilibApi.annotation.PopupConfig;
-import kr1v.malilibApi.config.ConfigObject;
+import kr1v.malilibApi.config._new.ConfigObject;
 import kr1v.malilibApi.mixin.accessor.WidgetListConfigOptionsBaseAccessor;
 import kr1v.malilibApi.util.ConfigUtils;
 import net.minecraft.client.gui.DrawContext;

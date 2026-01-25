@@ -1,4 +1,4 @@
-package kr1v.malilibApi.config;
+package kr1v.malilibApi.config._new;
 
 import fi.dy.masa.malilib.config.ConfigType;
 import fi.dy.masa.malilib.config.IConfigBase;

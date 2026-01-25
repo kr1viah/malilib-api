@@ -4,7 +4,7 @@ import fi.dy.masa.malilib.config.IConfigBase;
 import kr1v.malilibApi.InternalMalilibApi;
 import kr1v.malilibApi.annotation.Config;
 import kr1v.malilibApi.annotation.Extras;
-import kr1v.malilibApi.config.ConfigLabel;
+import kr1v.malilibApi.config._new.ConfigLabel;
 
 import java.util.List;
 

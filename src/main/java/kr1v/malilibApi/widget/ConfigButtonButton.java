@@ -1,7 +1,7 @@
 package kr1v.malilibApi.widget;
 
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
-import kr1v.malilibApi.config.ConfigButton;
+import kr1v.malilibApi.config._new.ConfigButton;
 
 public class ConfigButtonButton extends ButtonGeneric {
 	private final ConfigButton configButton;

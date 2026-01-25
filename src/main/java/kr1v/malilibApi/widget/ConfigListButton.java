@@ -2,7 +2,7 @@ package kr1v.malilibApi.widget;
 
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
 import fi.dy.masa.malilib.util.StringUtils;
-import kr1v.malilibApi.config.ConfigList;
+import kr1v.malilibApi.config._new.ConfigList;
 import kr1v.malilibApi.screen.ConfigListScreen;
 import net.minecraft.client.MinecraftClient;
 

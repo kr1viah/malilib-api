@@ -1,4 +1,4 @@
-package kr1v.malilibApi.config;
+package kr1v.malilibApi.config._new;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -11,6 +11,7 @@ import kr1v.malilibApi.widget.ConfigListButton;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 public class ConfigList<T extends IConfigBase> extends CustomConfigBase<ConfigList<T>> {

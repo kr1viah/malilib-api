@@ -13,7 +13,7 @@ import fi.dy.masa.malilib.gui.widgets.WidgetConfigOption;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
 import fi.dy.masa.malilib.util.GuiUtils;
 import fi.dy.masa.malilib.util.StringUtils;
-import kr1v.malilibApi.config.ConfigList;
+import kr1v.malilibApi.config._new.ConfigList;
 import kr1v.malilibApi.util.ConfigUtils;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;

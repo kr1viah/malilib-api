@@ -7,8 +7,8 @@ import fi.dy.masa.malilib.util.GuiUtils;
 import kr1v.malilibApi.InternalMalilibApi;
 import kr1v.malilibApi.annotation.*;
 import kr1v.malilibApi.annotation.processor.ConfigProcessor;
-import kr1v.malilibApi.config.ConfigButton;
-import kr1v.malilibApi.config.ConfigLabel;
+import kr1v.malilibApi.config._new.ConfigButton;
+import kr1v.malilibApi.config._new.ConfigLabel;
 import kr1v.malilibApi.screen.ConfigPopupScreen;
 import net.minecraft.client.MinecraftClient;
 

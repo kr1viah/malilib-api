@@ -4,7 +4,10 @@ import com.google.common.collect.ImmutableList;
 import fi.dy.masa.malilib.config.options.*;
 import kr1v.malilibApi.annotation.Config;
 import kr1v.malilibApi.annotation.Label;
-import kr1v.malilibApi.config.*;
+import kr1v.malilibApi.config._new.ConfigList;
+import kr1v.malilibApi.config.custom.ArrayBackedCycleConfig;
+import kr1v.malilibApi.config.custom.ConfigCycle;
+import kr1v.malilibApi.config.custom.EnumBackedCycleConfig;
 import kr1v.malilibApiTest.Init;
 import net.minecraft.world.GameMode;
 

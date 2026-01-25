@@ -10,7 +10,7 @@ import fi.dy.masa.malilib.gui.interfaces.ISliderCallback;
 import fi.dy.masa.malilib.gui.widgets.*;
 import fi.dy.masa.malilib.hotkeys.IHotkey;
 import fi.dy.masa.malilib.hotkeys.IKeybind;
-import kr1v.malilibApi.config.ConfigPair;
+import kr1v.malilibApi.config._new.ConfigPair;
 
 import java.util.ArrayList;
 import java.util.List;

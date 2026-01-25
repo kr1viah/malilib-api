@@ -1,4 +1,4 @@
-package kr1v.malilibApi.config;
+package kr1v.malilibApi.config.custom;
 
 import java.util.function.Function;
 

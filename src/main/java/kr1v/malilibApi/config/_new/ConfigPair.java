@@ -1,4 +1,4 @@
-package kr1v.malilibApi.config;
+package kr1v.malilibApi.config._new;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

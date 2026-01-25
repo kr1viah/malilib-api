@@ -1,8 +1,8 @@
 package kr1v.malilibApiTest.config;
 
 import kr1v.malilibApi.annotation.Config;
-import kr1v.malilibApi.config.ConfigList;
-import kr1v.malilibApi.config.ConfigObject;
+import kr1v.malilibApi.config._new.ConfigList;
+import kr1v.malilibApi.config._new.ConfigObject;
 import kr1v.malilibApi.config.plus.ConfigHotkeyPlus;
 import kr1v.malilibApi.config.plus.ConfigIntegerPlus;
 import kr1v.malilibApiTest.Init;
