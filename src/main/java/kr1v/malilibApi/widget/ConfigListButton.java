@@ -12,6 +12,7 @@ public class ConfigListButton extends ButtonGeneric {
 	public ConfigListButton(int x, int y, int width, int height, ConfigList<?> list) {
 		super(x, y, width, height, list.toString());
 		this.list = list;
+		setDisplay();
 	}
 
 
@@ -42,6 +43,9 @@ public class ConfigListButton extends ButtonGeneric {
 	*///? }
 
 	private void setDisplay() {
+		if (!this.list.getButtonDisplayName().isEmpty()) {
+			this.setDisplayString(this.list.getButtonDisplayName());
+		}
 		String str = list.toString();
 		int len = 0;
 		if (str.length() > 10000) {

@@ -16,14 +16,25 @@ public class ConfigObject<T> extends CustomConfigBase<ConfigObject<T>> {
 	public final ImmutableList<IConfigBase> configs;
 	public final ImmutableList<IConfigResettable> resettables;
 	private final T instance;
+	private final String buttonDisplayName;
+
+	static {
+		InternalMalilibApi.registerButtonBasedConfigType(ConfigObject.class, (widgetConfigOption, config, x, y, configWidth, configHeight) -> new ConfigObjectButton(x, y, configWidth, configHeight, config));
+	}
 
 	public ConfigObject(String name, T instance, String comment) {
-		this(name, instance, comment, name, name);
+		this(name, instance, comment, name, name, name);
 	}
-	public ConfigObject(String name, T instance, String comment, String translatedName, String prettyName) {
+
+	public ConfigObject(String name, T instance, String comment, String buttonDisplayName) {
+		this(name, instance, comment, buttonDisplayName, name, name);
+	}
+
+	public ConfigObject(String name, T instance, String comment, String buttonDisplayName, String translatedName, String prettyName) {
 		super(name, comment, translatedName, prettyName);
 
 		this.instance = instance;
+		this.buttonDisplayName = buttonDisplayName;
 
 		ImmutableList.Builder<IConfigBase> configsBuilder = new ImmutableList.Builder<>();
 		ImmutableList.Builder<IConfigResettable> resettablesBuilder = new ImmutableList.Builder<>();
@@ -85,7 +96,7 @@ public class ConfigObject<T> extends CustomConfigBase<ConfigObject<T>> {
 		return instance.toString();
 	}
 
-	static {
-		InternalMalilibApi.registerButtonBasedConfigType(ConfigObject.class, (widgetConfigOption, config, x, y, configWidth, configHeight) -> new ConfigObjectButton(x, y, configWidth, configHeight, config));
+	public String getButtonDisplayName() {
+		return buttonDisplayName;
 	}
 }

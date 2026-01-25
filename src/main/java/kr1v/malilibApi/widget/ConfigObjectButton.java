@@ -10,8 +10,11 @@ public class ConfigObjectButton extends ButtonGeneric {
 	private final ConfigObject<?> configObject;
 
 	public ConfigObjectButton(int x, int y, int width, int height, ConfigObject<?> configObject) {
-		super(x, y, width, height, configObject.toString());
+		super(x, y, width, height, configObject.getButtonDisplayName());
 		this.configObject = configObject;
+		if (this.displayString.isEmpty()) {
+			this.displayString = configObject.toString();
+		}
 	}
 
 	@Override
@@ -23,6 +26,9 @@ public class ConfigObjectButton extends ButtonGeneric {
 
 	@Override
 	public void updateDisplayString() {
-		this.displayString = configObject.toString();
+		this.displayString = this.configObject.getButtonDisplayName();
+		if (this.displayString.isEmpty()) {
+			this.displayString = this.configObject.toString();
+		}
 	}
 }

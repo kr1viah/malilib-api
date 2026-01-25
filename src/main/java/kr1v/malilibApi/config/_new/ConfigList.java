@@ -17,27 +17,37 @@ import java.util.function.Supplier;
 public class ConfigList<T extends IConfigBase> extends CustomConfigBase<ConfigList<T>> {
 	private final List<T> defaultValue;
 	private final Supplier<T> supplier;
+	private final String buttonDisplayName;
 	private final List<T> list;
 
+	static {
+		InternalMalilibApi.registerButtonBasedConfigType(ConfigList.class, (widgetConfigOption, list, x, y, configWidth, configHeight) -> new ConfigListButton(x, y, configWidth, configHeight, list));
+	}
+
 	public ConfigList(String name, Supplier<T> supplier) {
-		this(name, List.of(), supplier);
+		this(name, List.of(), supplier, "");
 	}
 
-	public ConfigList(String name, List<T> defaultValue, Supplier<T> supplier) {
-		this(name, defaultValue, supplier, "", name, name);
+	public ConfigList(String name, Supplier<T> supplier, String buttonDisplayName) {
+		this(name, List.of(), supplier, buttonDisplayName);
 	}
 
-	public ConfigList(String name, Supplier<T> supplier, String comment) {
-		this(name, List.of(), supplier, comment);
+	public ConfigList(String name, List<T> defaultValue, Supplier<T> supplier, String buttonDisplayName) {
+		this(name, defaultValue, supplier, "", buttonDisplayName, name, name);
 	}
 
-	public ConfigList(String name, List<T> defaultValue, Supplier<T> supplier, String comment) {
-		this(name, defaultValue, supplier, comment, name, name);
+	public ConfigList(String name, Supplier<T> supplier, String comment, String buttonDisplayName) {
+		this(name, List.of(), supplier, comment, buttonDisplayName);
 	}
 
-	public ConfigList(String name, List<T> defaultValue, Supplier<T> supplier, String comment, String translatedName, String prettyName) {
+	public ConfigList(String name, List<T> defaultValue, Supplier<T> supplier, String comment, String buttonDisplayName) {
+		this(name, defaultValue, supplier, comment, buttonDisplayName, name, name);
+	}
+
+	public ConfigList(String name, List<T> defaultValue, Supplier<T> supplier, String comment, String buttonDisplayName, String translatedName, String prettyName) {
 		super(name, comment, translatedName, prettyName);
 		this.supplier = supplier;
+		this.buttonDisplayName = buttonDisplayName;
 		if (!supplier.get().getName().isEmpty()) {
 			throw new IllegalStateException("Please make the supplier supply with empty names!");
 		}
@@ -130,7 +140,7 @@ public class ConfigList<T extends IConfigBase> extends CustomConfigBase<ConfigLi
 		return builder.toString();
 	}
 
-	static {
-		InternalMalilibApi.registerButtonBasedConfigType(ConfigList.class, (widgetConfigOption, list, x, y, configWidth, configHeight) -> new ConfigListButton(x, y, configWidth, configHeight, list));
+	public String getButtonDisplayName() {
+		return buttonDisplayName;
 	}
 }

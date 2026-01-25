@@ -26,7 +26,7 @@ public class ConfigObjectTest {
 		}
 	}
 
-	static final ConfigList<ConfigObject<BlockPosConfig>> BLOCKS = new ConfigList<>("Block positions", () -> new ConfigObject<>("", new BlockPosConfig(), ""));
+	static final ConfigList<ConfigObject<BlockPosConfig>> BLOCKS = new ConfigList<>("Block positions", () -> new ConfigObject<>("", new BlockPosConfig(), "", "Edit block pos"));
 
 	static final ConfigHotkeyPlus PRINT_KEY = new ConfigHotkeyPlus("Print blocks", (action, key) -> {
 		StringBuilder s = new StringBuilder();
