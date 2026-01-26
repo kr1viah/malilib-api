@@ -52,6 +52,11 @@ public abstract class ConfigCycle<T> extends ConfigOptionList {
 		return (CycleConfigEntry<T>) super.getOptionListValue();
 	}
 
+	@Override
+	public String toString() {
+		return getValue().toString();
+	}
+
 	public static abstract class CycleConfigEntry<T> implements IConfigOptionListEntry {
 		private T value;
 
