@@ -1,9 +1,9 @@
-## 0.3.1 changelog
+## 0.3.2 changelog
 
 ### Users
 
-* No duplication of list elements anymore
+* Lists now properly always save
 
 ### Mod developers
 
-* ConfigList clears before adding new ones
+* Don't compare the same list, instead check isModified

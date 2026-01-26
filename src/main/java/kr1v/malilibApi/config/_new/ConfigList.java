@@ -3,6 +3,7 @@ package kr1v.malilibApi.config._new;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import fi.dy.masa.malilib.config.IConfigBase;
+import fi.dy.masa.malilib.config.IConfigResettable;
 import fi.dy.masa.malilib.config.options.ConfigBooleanHotkeyed;
 import fi.dy.masa.malilib.config.options.ConfigHotkey;
 import fi.dy.masa.malilib.interfaces.IStringValue;
@@ -14,8 +15,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-public class ConfigList<T extends IConfigBase> extends CustomConfigBase<ConfigList<T>> {
-	private final List<T> defaultValue;
+public class ConfigList<T extends IConfigBase & IConfigResettable> extends CustomConfigBase<ConfigList<T>> {
 	private final Supplier<T> supplier;
 	private final String buttonDisplayName;
 	private final List<T> list;
@@ -52,7 +52,6 @@ public class ConfigList<T extends IConfigBase> extends CustomConfigBase<ConfigLi
 			throw new IllegalStateException("Please make the supplier supply with empty names!");
 		}
 		this.list = new ArrayList<>(defaultValue);
-		this.defaultValue = defaultValue;
 	}
 
 	@Override
@@ -92,14 +91,19 @@ public class ConfigList<T extends IConfigBase> extends CustomConfigBase<ConfigLi
 
 	@Override
 	public boolean isModified() {
-		return !defaultValue.equals(list);
+		for (IConfigResettable config : list) {
+			if (config.isModified()) return true;
+		}
+		return false;
 	}
 
 	@Override
 	public void resetToDefault() {
-		list.clear();
-		list.addAll(defaultValue);
+		for (IConfigResettable config : list) {
+			config.resetToDefault();
+		}
 	}
+
 
 	@Override
 	public String toString() {
