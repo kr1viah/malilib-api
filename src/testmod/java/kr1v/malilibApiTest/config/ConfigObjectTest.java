@@ -5,6 +5,8 @@ import kr1v.malilibApi.config._new.ConfigList;
 import kr1v.malilibApi.config._new.ConfigObject;
 import kr1v.malilibApi.config.plus.ConfigHotkeyPlus;
 import kr1v.malilibApi.config.plus.ConfigIntegerPlus;
+import kr1v.malilibApi.config.plus.ConfigStringListPlus;
+import kr1v.malilibApi.config.plus.ConfigStringPlus;
 import kr1v.malilibApiTest.Init;
 import net.minecraft.util.math.BlockPos;
 
@@ -27,6 +29,8 @@ public class ConfigObjectTest {
 	}
 
 	static final ConfigList<ConfigObject<BlockPosConfig>> BLOCKS = new ConfigList<>("Block positions", () -> new ConfigObject<>("", new BlockPosConfig(), "", "Edit block pos"));
+	public static final ConfigStringListPlus STRING_LIST_PLUS = new ConfigStringListPlus("Test");
+	public static final ConfigStringPlus STRING_PLUS = new ConfigStringPlus("S");
 
 	static final ConfigHotkeyPlus PRINT_KEY = new ConfigHotkeyPlus("Print blocks", (action, key) -> {
 		StringBuilder s = new StringBuilder();
