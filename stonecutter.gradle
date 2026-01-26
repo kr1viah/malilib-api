@@ -26,6 +26,7 @@ stonecutter.tasks {
     if (releaseGithub()) {
         order("publishGithub")
     }
+    order("runTestmodClient")
 //    order("publishCurseforge")
 }
 
