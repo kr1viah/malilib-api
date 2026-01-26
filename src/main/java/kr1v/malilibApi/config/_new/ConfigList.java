@@ -57,6 +57,7 @@ public class ConfigList<T extends IConfigBase> extends CustomConfigBase<ConfigLi
 
 	@Override
 	public void setValueFromJsonElement(JsonElement element) {
+		list.clear();
 		if (element.isJsonArray()) {
 			JsonArray array = element.getAsJsonArray();
 			for (JsonElement element1 : array) {
