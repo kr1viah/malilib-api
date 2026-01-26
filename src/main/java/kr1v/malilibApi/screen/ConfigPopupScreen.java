@@ -4,6 +4,7 @@ import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.gui.GuiBase;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
+import fi.dy.masa.malilib.render.RenderUtils;
 import fi.dy.masa.malilib.util.GuiUtils;
 import kr1v.malilibApi.annotation.PopupConfig;
 import kr1v.malilibApi.config._new.ConfigObject;
@@ -30,11 +31,11 @@ public class ConfigPopupScreen extends GuiConfigsBase {
 	private final Screen customParent;
 
 	public ConfigPopupScreen(ConfigObject<?> configObject, Screen parent) {
-		super(0, 0, "", parent, "", configObject.getName());
+		super(0, 0, "", parent, "", configObject.getButtonDisplayName());
 
 		this.setParent(parent);
 		this.customParent = parent;
-		configDistanceFromTops = -1;
+		configDistanceFromTops = 110;
 		configDistanceFromSides = -1;
 		configWidth = -1;
 		configHeight = 300;
@@ -135,8 +136,7 @@ public class ConfigPopupScreen extends GuiConfigsBase {
 
 	@Override
 	protected void drawScreenBackground(/*? if >=1.21.11 {*//*fi.dy.masa.malilib.render.GuiContext*//*? } else {*/DrawContext/*? }*/ drawContext, int mouseX, int mouseY) {
-		drawContext.fill(this.dialogLeft, this.dialogTop, this.dialogLeft + this.dialogWidth, this.dialogTop + this.dialogHeight, COLOR_HORIZONTAL_BAR);
-		drawContext.fill(this.dialogLeft + 1, this.dialogTop + 1, this.dialogLeft + this.dialogWidth - 1, this.dialogTop + this.dialogHeight - 1, 0xFF000000);
+		RenderUtils.drawOutlinedBox(/*? if >=1.21.8 {*//*drawContext, *//*? }*/this.dialogLeft, this.dialogTop, this.dialogWidth, this.dialogHeight, 0xFF000000, COLOR_HORIZONTAL_BAR);
 	}
 
 	@Override

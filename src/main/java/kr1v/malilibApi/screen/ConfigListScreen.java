@@ -11,6 +11,7 @@ import fi.dy.masa.malilib.gui.interfaces.IConfigGui;
 import fi.dy.masa.malilib.gui.interfaces.IGuiIcon;
 import fi.dy.masa.malilib.gui.widgets.WidgetConfigOption;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
+import fi.dy.masa.malilib.render.RenderUtils;
 import fi.dy.masa.malilib.util.GuiUtils;
 import fi.dy.masa.malilib.util.StringUtils;
 import kr1v.malilibApi.config._new.ConfigList;
@@ -101,16 +102,12 @@ public class ConfigListScreen extends GuiConfigsBase {
 			this.customParent.render(drawContext, mouseX, mouseY, partialTicks);
 		}
 
-		//? if <=1.21.5
-		drawContext.getMatrices().translate(0f, 0f, 1000f); // this got changed in 25w15a
-
 		super.render(drawContext, mouseX, mouseY, partialTicks);
 	}
 
 	@Override
 	protected void drawScreenBackground(/*? if >=1.21.11 {*//*fi.dy.masa.malilib.render.GuiContext*//*? } else {*/DrawContext/*? }*/ drawContext, int mouseX, int mouseY) {
-		drawContext.fill(this.dialogLeft, this.dialogTop, this.dialogLeft + this.dialogWidth, this.dialogTop + this.dialogHeight, COLOR_HORIZONTAL_BAR);
-		drawContext.fill(this.dialogLeft + 1, this.dialogTop + 1, this.dialogLeft + this.dialogWidth - 1, this.dialogTop + this.dialogHeight - 1, 0xFF000000);
+		RenderUtils.drawOutlinedBox(/*? if >=1.21.8 {*//*drawContext, *//*? }*/this.dialogLeft, this.dialogTop, this.dialogWidth, this.dialogHeight, 0xFF000000, COLOR_HORIZONTAL_BAR);
 	}
 
 	@Override
