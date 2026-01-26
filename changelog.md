@@ -1,12 +1,9 @@
-## 0.3.0 changelog
+## 0.3.1 changelog
 
 ### Users
 
-* No text leaking through popups anymore
+* No duplication of list elements anymore
 
 ### Mod developers
-* Move config classes
-* Better ConfigList#toString
-* ConfigObject
-  * See the wiki page: https://github.com/kr1viah/malilib-api/wiki/ConfigObject
-* Customise the display name of ConfigLists
+
+* ConfigList clears before adding new ones
