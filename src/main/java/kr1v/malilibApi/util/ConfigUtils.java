@@ -34,7 +34,7 @@ public final class ConfigUtils {
 				handleAnnotations(element, list, clazz, modId);
 				if (element.field != null) {
 					Field f = element.field;
-					if (IConfigBase.class.isAssignableFrom(f.getType())) {
+					if (IConfigBase.class.isAssignableFrom(f.getType()) && Modifier.isStatic(f.getModifiers())) {
 						f.setAccessible(true);
 						IConfigBase value = (IConfigBase) f.get(null);
 						if (value != null) {
