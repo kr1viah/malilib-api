@@ -9,6 +9,8 @@ import com.sun.source.util.Trees;
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.*;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
@@ -94,9 +96,19 @@ public class ConfigProcessor extends AbstractProcessor {
 						representation.annotations = annotationStrings;
 						for (VariableElement x : method.getParameters()) {
 							TypeMirror tm = x.asType();
-							TypeElement te = (TypeElement) typeUtils.asElement(tm);
 							representation.parameterNames.add(x.getSimpleName().toString());
-							representation.types.add(te.getQualifiedName().toString());
+
+							if (tm.getKind() == TypeKind.DECLARED) {
+								DeclaredType dt = (DeclaredType) tm;
+								TypeElement te = (TypeElement) dt.asElement();
+								if (te != null) {
+									representation.types.add(elementUtils.getBinaryName(te).toString());
+								} else {
+									representation.types.add(tm.toString());
+								}
+							} else {
+								representation.types.add(tm.toString());
+							}
 						}
 						classRepresentation.add(representation);
 					}
@@ -160,11 +172,14 @@ public class ConfigProcessor extends AbstractProcessor {
 
 			for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> ev : am.getElementValues().entrySet()) {
 				Object val = ev.getValue().getValue();
-				if (val instanceof List<?>) {
-					for (Object inner : (List<?>) val) {
-						if (inner instanceof AnnotationMirror innerAm) {
-							String innerType = innerAm.getAnnotationType().toString();
-							mirrorsByType.computeIfAbsent(innerType, k -> new ArrayDeque<>()).addLast(innerAm);
+				if (val instanceof List<?> listVal) {
+					for (Object innerObj : listVal) {
+						if (innerObj instanceof AnnotationValue innerAv) {
+							Object innerVal = innerAv.getValue();
+							if (innerVal instanceof AnnotationMirror innerAm) {
+								String innerType = innerAm.getAnnotationType().toString();
+								mirrorsByType.computeIfAbsent(innerType, k -> new ArrayDeque<>()).addLast(innerAm);
+							}
 						}
 					}
 				}
@@ -650,11 +665,18 @@ public class ConfigProcessor extends AbstractProcessor {
 			dto.kind = "enum";
 			dto.value = e;
 		} else if (v instanceof TypeMirror tm) {
-			TypeElement type = (TypeElement) tm;
-			ClassDTO c = new ClassDTO();
-			c.className = elements.getBinaryName(type).toString();
-			dto.kind = "class";
-			dto.value = c;
+			var el = typeUtils.asElement(tm);
+			if (el instanceof TypeElement te) {
+				ClassDTO c = new ClassDTO();
+				c.className = elements.getBinaryName(te).toString();
+				dto.kind = "class";
+				dto.value = c;
+			} else {
+				ClassDTO c = new ClassDTO();
+				c.className = tm.toString();
+				dto.kind = "class";
+				dto.value = c;
+			}
 		} else if (v instanceof AnnotationMirror nested) {
 			dto.kind = "annotation";
 			dto.value = toDTO(nested, elements);
