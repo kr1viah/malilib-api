@@ -1,6 +1,10 @@
 package kr1v.malilibApiTest.config;
 
+import fi.dy.masa.malilib.config.IConfigBase;
 import kr1v.malilibApi.annotation.Config;
+import kr1v.malilibApi.annotation.Extras;
+import kr1v.malilibApi.annotation.PopupConfig;
+import kr1v.malilibApi.config._new.ConfigLabel;
 import kr1v.malilibApi.config._new.ConfigList;
 import kr1v.malilibApi.config._new.ConfigObject;
 import kr1v.malilibApi.config.plus.ConfigHotkeyPlus;
@@ -10,6 +14,8 @@ import kr1v.malilibApi.config.plus.ConfigStringPlus;
 import kr1v.malilibApiTest.Init;
 import net.minecraft.util.math.BlockPos;
 
+import java.util.List;
+
 @SuppressWarnings("unused")
 @Config(Init.MOD_ID)
 public class ConfigObjectTest {
@@ -17,6 +23,16 @@ public class ConfigObjectTest {
 		public final ConfigIntegerPlus x = new ConfigIntegerPlus("x");
 		public final ConfigIntegerPlus y = new ConfigIntegerPlus("y");
 		public final ConfigIntegerPlus z = new ConfigIntegerPlus("z");
+
+		@Extras
+		void add(List<IConfigBase> existing) {
+			existing.add(new ConfigLabel("Hi"));
+		}
+
+		@PopupConfig
+		public static class Test {
+			public final ConfigStringPlus HI = new ConfigStringPlus("G");
+		}
 
 		public BlockPos get() {
 			return new BlockPos(x.getIntegerValue(), y.getIntegerValue(), z.getIntegerValue());
@@ -28,7 +44,7 @@ public class ConfigObjectTest {
 		}
 	}
 
-	static final ConfigList<ConfigObject<BlockPosConfig>> BLOCKS = new ConfigList<>("Block positions", () -> new ConfigObject<>("", new BlockPosConfig(), "", "Edit block pos"));
+	static final ConfigList<ConfigObject<BlockPosConfig>> BLOCKS = new ConfigList<>("Block positions", () -> new ConfigObject<>("", new BlockPosConfig(), Init.MOD_ID, "Edit block pos"));
 	public static final ConfigStringListPlus STRING_LIST_PLUS = new ConfigStringListPlus("Test");
 	public static final ConfigStringPlus STRING_PLUS = new ConfigStringPlus("S");
 

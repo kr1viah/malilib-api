@@ -35,6 +35,7 @@ public class ConfigPopupScreen extends GuiConfigsBase {
 
 		this.setParent(parent);
 		this.customParent = parent;
+
 		configDistanceFromTops = 110;
 		configDistanceFromSides = -1;
 		configWidth = -1;
@@ -43,19 +44,18 @@ public class ConfigPopupScreen extends GuiConfigsBase {
 		this.configs = configObject.configs;
 	}
 
-	public ConfigPopupScreen(Class<?> configClass, Screen parent, String modId) {
-		super(0, 0, "", parent, configClass.getAnnotation(PopupConfig.class).name().isEmpty() ? configClass.getSimpleName() : configClass.getAnnotation(PopupConfig.class).name());
+	public ConfigPopupScreen(List<IConfigBase> configs, Screen parent, String name, PopupConfig popupConfig) {
+		super(0, 0, "", parent, "", name);
 
 		this.setParent(parent);
 		this.customParent = parent;
 
-		PopupConfig popupConfig = configClass.getAnnotation(PopupConfig.class);
 		configDistanceFromTops = popupConfig.distanceFromTops();
 		configDistanceFromSides = popupConfig.distanceFromSides();
 		configWidth = popupConfig.width();
 		configHeight = popupConfig.height();
 
-		this.configs = ConfigUtils.generateOptions(configClass, modId);
+		this.configs = configs;
 	}
 
 	protected void centerOnScreen() {

@@ -22,15 +22,15 @@ public class ConfigObject<T> extends CustomConfigBase<ConfigObject<T>> {
 		InternalMalilibApi.registerButtonBasedConfigType(ConfigObject.class, (widgetConfigOption, config, x, y, configWidth, configHeight) -> new ConfigObjectButton(x, y, configWidth, configHeight, config));
 	}
 
-	public ConfigObject(String name, T instance, String comment) {
-		this(name, instance, comment, name, name, name);
+	public ConfigObject(String name, T instance, String modId, String comment) {
+		this(name, instance, modId, comment, name, name, name);
 	}
 
-	public ConfigObject(String name, T instance, String comment, String buttonDisplayName) {
-		this(name, instance, comment, buttonDisplayName, name, name);
+	public ConfigObject(String name, T instance, String modId, String comment, String buttonDisplayName) {
+		this(name, instance, modId, comment, buttonDisplayName, name, name);
 	}
 
-	public ConfigObject(String name, T instance, String comment, String buttonDisplayName, String translatedName, String prettyName) {
+	public ConfigObject(String name, T instance, String modId, String comment, String buttonDisplayName, String translatedName, String prettyName) {
 		super(name, comment, translatedName, prettyName);
 
 		this.instance = instance;
@@ -38,21 +38,9 @@ public class ConfigObject<T> extends CustomConfigBase<ConfigObject<T>> {
 
 		ImmutableList.Builder<IConfigBase> configsBuilder = new ImmutableList.Builder<>();
 		ImmutableList.Builder<IConfigResettable> resettablesBuilder = new ImmutableList.Builder<>();
-		try {
-			for (Field f : instance.getClass().getDeclaredFields()) {
-				int mods = f.getModifiers();
-				if (!Modifier.isStatic(mods)) {
-					f.setAccessible(true);
-					Object o = f.get(instance);
-					if (o instanceof IConfigResettable resettable && o instanceof IConfigBase base) {
-						configsBuilder.add(base);
-						resettablesBuilder.add(resettable);
-					}
-				}
-			}
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
+
+		configsBuilder.addAll((kr1v.malilibApi.util.ConfigUtils.generateOptions(instance.getClass(), modId, false, instance)));
+
 		configs = configsBuilder.build();
 		resettables = resettablesBuilder.build();
 	}

@@ -69,7 +69,7 @@ public class InternalMalilibApi {
 					Map<String, List<ConfigProcessor.ElementRepresentation>> map = GSON.fromJson(reader, type);
 
 					for (String clazz : map.keySet()) {
-						classToRepresentation.put(Class.forName(clazz), map.get(clazz));
+						classToRepresentation.put(Class.forName(clazz, false, Thread.currentThread().getContextClassLoader()), map.get(clazz));
 					}
 				}
 			}
