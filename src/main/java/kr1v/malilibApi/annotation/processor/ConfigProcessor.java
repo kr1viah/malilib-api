@@ -5,8 +5,6 @@ import com.google.gson.*;
 import com.sun.source.tree.*;
 import com.sun.source.util.TreePath;
 import com.sun.source.util.Trees;
-import kr1v.malilibApi.annotation.Config;
-import kr1v.malilibApi.annotation.PopupConfig;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
@@ -24,7 +22,7 @@ import java.util.stream.Collectors;
 
 
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
-@SupportedAnnotationTypes({"kr1v.malilibApi.annotation.Config", "kr1v.malilibApi.annotation.PopupConfig"})
+@SupportedAnnotationTypes("*")
 @AutoService(Processor.class)
 public class ConfigProcessor extends AbstractProcessor {
 	public static final Gson GSON = new GsonBuilder().registerTypeAdapter(ConfigProcessor.ValueDTO.class, new ConfigProcessor.ValueDTODeserializer()).setPrettyPrinting().create();
@@ -44,15 +42,21 @@ public class ConfigProcessor extends AbstractProcessor {
 		this.typeUtils = processingEnv.getTypeUtils();
 	}
 
+	public void handle(javax.lang.model.element.Element e, Set<TypeElement> classes) {
+		if (e.getKind() == ElementKind.CLASS || e.getKind() == ElementKind.INTERFACE) {
+			classes.add((TypeElement) e);
+		}
+		for (javax.lang.model.element.Element enclosed : e.getEnclosedElements()) {
+			handle(enclosed, classes);
+		}
+	}
+
 	@Override
 	public boolean process(Set<? extends TypeElement> annos, RoundEnvironment roundEnv) {
 		Set<TypeElement> classes = new HashSet<>();
 
-		for (var e : roundEnv.getElementsAnnotatedWith(Config.class)) {
-			classes.add((TypeElement) e);
-		}
-		for (var e : roundEnv.getElementsAnnotatedWith(PopupConfig.class)) {
-			classes.add((TypeElement) e);
+		for (var e : roundEnv.getRootElements()) {
+			handle(e, classes);
 		}
 
 		for (TypeElement typeElement : classes) {
