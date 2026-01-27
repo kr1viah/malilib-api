@@ -6,8 +6,6 @@ import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
 import fi.dy.masa.malilib.render.RenderUtils;
 import fi.dy.masa.malilib.util.GuiUtils;
-import kr1v.malilibApi.annotation.PopupConfig;
-import kr1v.malilibApi.config._new.ConfigObject;
 import kr1v.malilibApi.mixin.accessor.WidgetListConfigOptionsBaseAccessor;
 import kr1v.malilibApi.util.ConfigUtils;
 import net.minecraft.client.gui.DrawContext;
@@ -15,7 +13,7 @@ import net.minecraft.client.gui.screen.Screen;
 
 import java.util.List;
 
-public class ConfigPopupScreen extends GuiConfigsBase {
+public class ConfigObjectScreen extends GuiConfigsBase {
 	protected int dialogWidth;
 	protected int dialogHeight;
 	protected int dialogLeft;
@@ -30,30 +28,16 @@ public class ConfigPopupScreen extends GuiConfigsBase {
 
 	private final Screen customParent;
 
-	public ConfigPopupScreen(ConfigObject<?> configObject, Screen parent) {
-		super(0, 0, "", parent, "", configObject.getButtonDisplayName());
+	public ConfigObjectScreen(List<IConfigBase> configs, Screen parent, String titleKey, int distanceFromTops, int distanceFromSides, int width, int height) {
+		super(0, 0, "", parent, "", titleKey);
 
 		this.setParent(parent);
 		this.customParent = parent;
 
-		configDistanceFromTops = 110;
-		configDistanceFromSides = -1;
-		configWidth = -1;
-		configHeight = 300;
-
-		this.configs = configObject.configs;
-	}
-
-	public ConfigPopupScreen(List<IConfigBase> configs, Screen parent, String name, PopupConfig popupConfig) {
-		super(0, 0, "", parent, "", name);
-
-		this.setParent(parent);
-		this.customParent = parent;
-
-		configDistanceFromTops = popupConfig.distanceFromTops();
-		configDistanceFromSides = popupConfig.distanceFromSides();
-		configWidth = popupConfig.width();
-		configHeight = popupConfig.height();
+		configDistanceFromTops = distanceFromTops;
+		configDistanceFromSides = distanceFromSides;
+		configWidth = width;
+		configHeight = height;
 
 		this.configs = configs;
 	}

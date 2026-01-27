@@ -25,4 +25,6 @@ public @interface PopupConfig {
 
 	/// if this is set, height is ignored
 	int distanceFromTops() default -1;
+
+	String comment() default "";
 }

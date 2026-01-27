@@ -3,14 +3,12 @@ package kr1v.malilibApi.util;
 import com.google.common.collect.ImmutableList;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
-import fi.dy.masa.malilib.util.GuiUtils;
 import kr1v.malilibApi.InternalMalilibApi;
 import kr1v.malilibApi.annotation.*;
 import kr1v.malilibApi.annotation.processor.ConfigProcessor;
-import kr1v.malilibApi.config._new.ConfigButton;
 import kr1v.malilibApi.config._new.ConfigLabel;
-import kr1v.malilibApi.screen.ConfigPopupScreen;
-import net.minecraft.client.MinecraftClient;
+import kr1v.malilibApi.config._new.ConfigObject;
+import kr1v.malilibApi.widget.Util;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.annotation.Annotation;
@@ -50,7 +48,7 @@ public final class ConfigUtils {
 				}
 			}
 		} catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException | InstantiationException e) {
-			throw new RuntimeException(e);
+			Util.rethrow(e);
 		}
 		return list;
 	}
@@ -59,6 +57,10 @@ public final class ConfigUtils {
 		for (Annotation annotation : element.annotations) {
 			switch (annotation) {
 				case PopupConfig popupConfig -> {
+					if (!static_) {
+						throw new IllegalStateException("Don't use PopupConfigs inside of a ConfigObject!");
+					}
+
 					assert element.aClass != null;
 					Class<?> klass = element.aClass;
 					String name = popupConfig.name();
@@ -72,15 +74,19 @@ public final class ConfigUtils {
 						buttonName = popupConfig.buttonName();
 					}
 
-					Object popupInstance = klass.getDeclaredConstructor().newInstance();
+					List<IConfigBase> configs = generateOptions(klass, modId, true, null);
 
-					List<IConfigBase> configs = generateOptions(klass, modId, static_, popupInstance);
-
-					String finalName = name;
-					ConfigButton configButton = new ConfigButton(name, buttonName, () ->
-							MinecraftClient.getInstance().setScreen(
-									new ConfigPopupScreen(configs, GuiUtils.getCurrentScreen(), finalName, popupConfig)
-							)
+					ConfigObject<?> configObject = new ConfigObject<>(
+							name,
+							configs,
+							popupConfig.comment(),
+							buttonName,
+							name,
+							name,
+							popupConfig.distanceFromTops(),
+							popupConfig.distanceFromSides(),
+							popupConfig.width(),
+							popupConfig.height()
 					);
 
 					boolean prev = InternalMalilibApi.getDefaultEnabled();
@@ -89,7 +95,7 @@ public final class ConfigUtils {
 					InternalMalilibApi.setDefaultEnabled(prev);
 					InternalMalilibApi.registerTab(modId, AnnotationUtils.nameForConfig(klass), list, true, 0); // order doesnt matter for popups
 
-					list.add(configButton);
+					list.add(configObject);
 				}
 				case Label label -> list.add(new ConfigLabel(label.value()));
 				case Extras extras -> {

@@ -3,7 +3,6 @@ package kr1v.malilibApiTest.config;
 import fi.dy.masa.malilib.config.IConfigBase;
 import kr1v.malilibApi.annotation.Config;
 import kr1v.malilibApi.annotation.Extras;
-import kr1v.malilibApi.annotation.PopupConfig;
 import kr1v.malilibApi.config._new.ConfigLabel;
 import kr1v.malilibApi.config._new.ConfigList;
 import kr1v.malilibApi.config._new.ConfigObject;
@@ -27,11 +26,6 @@ public class ConfigObjectTest {
 		@Extras
 		void add(List<IConfigBase> existing) {
 			existing.add(new ConfigLabel("Hi"));
-		}
-
-		@PopupConfig
-		public static class Test {
-			public final ConfigStringPlus HI = new ConfigStringPlus("G");
 		}
 
 		public BlockPos get() {

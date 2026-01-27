@@ -19,6 +19,7 @@ import kr1v.malilibApi.interfaces.IWidgetSupplier;
 import kr1v.malilibApi.screen.ConfigScreen;
 import kr1v.malilibApi.util.AnnotationUtils;
 import kr1v.malilibApi.util.ConfigUtils;
+import kr1v.malilibApi.widget.Util;
 import net.minecraft.client.gui.screen.Screen;
 
 import java.io.IOException;
@@ -74,7 +75,7 @@ public class InternalMalilibApi {
 				}
 			}
 		} catch (IOException | ClassNotFoundException e) {
-			throw new RuntimeException(e);
+			Util.rethrow(e);
 		}
 
 		for (Class<?> cfgClass : classToRepresentation.keySet()) {

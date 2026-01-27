@@ -2,6 +2,7 @@ package kr1v.malilibApi.util;
 
 import kr1v.malilibApi.InternalMalilibApi;
 import kr1v.malilibApi.annotation.processor.ConfigProcessor;
+import kr1v.malilibApi.widget.Util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -64,7 +65,7 @@ public final class ClassUtils {
 				elementsOfClass.add(element);
 			}
 		} catch (NoSuchFieldException | ClassNotFoundException | NoSuchMethodException e) {
-			throw new RuntimeException(e);
+			Util.rethrow(e);
 		}
 
 		return elementsOfClass;

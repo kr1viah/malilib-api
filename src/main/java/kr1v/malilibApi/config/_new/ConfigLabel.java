@@ -4,9 +4,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import fi.dy.masa.malilib.config.ConfigType;
 import fi.dy.masa.malilib.config.IConfigBase;
+import fi.dy.masa.malilib.config.IConfigResettable;
 import org.jetbrains.annotations.Nullable;
 
-public class ConfigLabel implements IConfigBase {
+public class ConfigLabel implements IConfigBase, IConfigResettable {
 	private String label;
 
 	public ConfigLabel(String label) {
@@ -53,6 +54,16 @@ public class ConfigLabel implements IConfigBase {
 	@Override
 	public JsonElement getAsJsonElement() {
 		return JsonNull.INSTANCE;
+	}
+
+	@Override
+	public boolean isModified() {
+		return false;
+	}
+
+	@Override
+	public void resetToDefault() {
+
 	}
 
 	//? if >=1.21.10 {
