@@ -111,20 +111,16 @@ public class InternalMalilibApi {
 		cacheFor(modId).put(cfgClass, list);
 	}
 
-	public static ModInfo modInfoFor(String modId) {
-		return getMod(modId).modInfo;
+	public static ModRepresentation getMod(String modId) {
+		return registeredMods.get(modId);
 	}
 
 	public static void openScreenFor(String modId, Screen parent) {
-		GuiBase.openGui(getMod(modId).configScreenSupplier.get(parent));
+		getMod(modId).openScreen(parent);
 	}
 
 	public static void openScreenFor(String modId) {
-		GuiBase.openGui(getMod(modId).configScreenSupplier.get());
-	}
-
-	public static ModRepresentation getMod(String modId) {
-		return registeredMods.get(modId);
+		getMod(modId).openScreen();
 	}
 
 	public static Collection<ModRepresentation> getModConfigs() {
@@ -136,11 +132,11 @@ public class InternalMalilibApi {
 	}
 
 	public static List<IConfigBase> configListFor(String modId, Class<?> configClass) {
-		return getMod(modId).configs.get(configClass);
+		return cacheFor(modId).get(configClass);
 	}
 
 	public static Set<Class<?>> classesFor(String modId) {
-		return getMod(modId).configs.keySet();
+		return cacheFor(modId).keySet();
 	}
 
 	public static void registerMod(String modId, ModRepresentation modRepresentation) {
@@ -161,12 +157,12 @@ public class InternalMalilibApi {
 		defaultEnabled = defaultEnabled1;
 	}
 
-	public static void registerTab(String modId, String tab, List<IConfigBase> options, boolean isPopup, int order) {
-		getMod(modId).tabs.add(new ModRepresentation.Tab(tab, options, isPopup, order));
+	public static void registerTab(String modId, String tabName, List<IConfigBase> options, boolean isPopup, int order) {
+		getMod(modId).registerTab(tabName, options, isPopup, order);
 	}
 
 	public static void unregisterTab(String modId, String tabName) {
-		getMod(modId).tabs.removeIf(tab -> tab.translationKey().equals(tabName));
+		getMod(modId).unregisterTab(tabName);
 	}
 
 	public static List<ModRepresentation.Tab> getTabsFor(String modId) {
@@ -187,32 +183,27 @@ public class InternalMalilibApi {
 	}
 
 	public static ModRepresentation.Tab getTabForTranslationKey(String modId, String translationKey) {
-		for (ModRepresentation.Tab tab : getTabsFor(modId)) {
-			if (tab.translationKey().equals(translationKey)) {
-				return tab;
-			}
-		}
-		return null;
+		return getMod(modId).tabByTranslationKey(translationKey);
 	}
 
 	public static int getScrollValueFor(String modId) {
-		return getScrollValueFor(modId, getActiveTabFor(modId));
+		return getMod(modId).scrollValue();
 	}
 
 	public static int getScrollValueFor(String modId, ModRepresentation.Tab tab) {
-		return getMod(modId).tabToScrollValue.getInt(tab);
+		return getMod(modId).scrollValue(tab);
 	}
 
 	public static void setActiveTabFor(String modId, ModRepresentation.Tab tab) {
-		getMod(modId).activeTab = tab;
+		getMod(modId).setActiveTab(tab);
 	}
 
 	public static void setScrollValueFor(String modId, int value) {
-		setScrollValueFor(modId, getActiveTabFor(modId), value);
+		getMod(modId).setScrollValue(value);
 	}
 
 	public static void setScrollValueFor(String modId, ModRepresentation.Tab tab, int value) {
-		getMod(modId).tabToScrollValue.put(tab, value);
+		getMod(modId).setScrollValue(tab, value);
 	}
 
 	private static List<ModRepresentation.Tab> rawTabs(String modId) {

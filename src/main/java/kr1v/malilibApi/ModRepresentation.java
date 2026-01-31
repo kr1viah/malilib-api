@@ -1,16 +1,16 @@
 package kr1v.malilibApi;
 
 import fi.dy.masa.malilib.config.IConfigBase;
+import fi.dy.masa.malilib.gui.GuiBase;
 import fi.dy.masa.malilib.util.data.ModInfo;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import kr1v.malilibApi.interfaces.IConfigScreenSupplier;
 import kr1v.malilibApi.util.AnnotationUtils;
+import net.minecraft.client.gui.screen.Screen;
 
 import java.util.*;
 
-// TODO: maybe move some of the methods from InternalMalilibApi
-//  (like getActiveTabFor()) here and instead of it  being ...For(modId) it just gives it immediately
 public class ModRepresentation {
 	public final Map<Class<?>, List<IConfigBase>> configs = new TreeMap<>(Comparator.comparing((Class<?> x) -> AnnotationUtils.nameForConfig(x) + x.getName()));
 	public final List<Tab> tabs = new ArrayList<>();
@@ -32,5 +32,66 @@ public class ModRepresentation {
 	}
 
 	public record Tab(String translationKey, List<IConfigBase> options, boolean isPopup, int order) {
+	}
+
+	public void openScreen() {
+		GuiBase.openGui(configScreenSupplier.get());
+	}
+
+	public void openScreen(Screen parent) {
+		GuiBase.openGui(configScreenSupplier.get(parent));
+	}
+
+	public void registerTab(String tabName, List<IConfigBase> options, boolean isPopup, int order) {
+		this.tabs.add(new ModRepresentation.Tab(tabName, options, isPopup, order));
+	}
+
+	public void unregisterTab(String tabName) {
+		this.tabs.removeIf(tab -> tab.translationKey().equals(tabName));
+	}
+
+	public List<Tab> tabs() {
+		return tabs
+				.stream()
+				.sorted(Comparator
+						.comparing(ModRepresentation.Tab::isPopup)
+						.thenComparingInt(ModRepresentation.Tab::order)
+						.thenComparing(ModRepresentation.Tab::translationKey)
+				)
+				.toList();
+	}
+
+	public Tab activeTab() {
+		if (this.activeTab == null) return tabs().getFirst();
+		return this.activeTab;
+	}
+
+	public Tab tabByTranslationKey(String translationKey) {
+		for (ModRepresentation.Tab tab : tabs()) {
+			if (tab.translationKey().equals(translationKey)) {
+				return tab;
+			}
+		}
+		return null;
+	}
+
+	public int scrollValue() {
+		return this.tabToScrollValue.getInt(activeTab());
+	}
+
+	public int scrollValue(Tab tab) {
+		return this.tabToScrollValue.getInt(tab);
+	}
+
+	public void setActiveTab(Tab tab) {
+		this.activeTab = tab;
+	}
+
+	public void setScrollValue(int value) {
+		this.tabToScrollValue.put(activeTab(), value);
+	}
+
+	public void setScrollValue(Tab tab, int value) {
+		this.tabToScrollValue.put(tab, value);
 	}
 }

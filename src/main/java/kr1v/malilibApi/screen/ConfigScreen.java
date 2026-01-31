@@ -107,7 +107,7 @@ public class ConfigScreen extends GuiConfigsBase {
 		if (MaLiLibConfigs.Generic.ENABLE_CONFIG_SWITCHER.getBooleanValue()) {
 			this.modSwitchWidget = new WidgetDropDownList<>(GuiUtils.getScaledWindowWidth() - 155, 6, 130, 18, 200, 10, Registry.CONFIG_SCREEN.getAllModsWithConfigScreens()) {
 				{
-					selectedEntry = InternalMalilibApi.modInfoFor(modId);
+					selectedEntry = InternalMalilibApi.getMod(modId).modInfo;
 				}
 
 				@Override
