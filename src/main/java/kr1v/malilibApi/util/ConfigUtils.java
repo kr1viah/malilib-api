@@ -8,7 +8,6 @@ import kr1v.malilibApi.annotation.*;
 import kr1v.malilibApi.annotation.processor.ConfigProcessor;
 import kr1v.malilibApi.config._new.ConfigLabel;
 import kr1v.malilibApi.config._new.ConfigObject;
-import kr1v.malilibApi.widget.Util;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.annotation.Annotation;

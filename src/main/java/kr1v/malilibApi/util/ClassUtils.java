@@ -2,7 +2,6 @@ package kr1v.malilibApi.util;
 
 import kr1v.malilibApi.InternalMalilibApi;
 import kr1v.malilibApi.annotation.processor.ConfigProcessor;
-import kr1v.malilibApi.widget.Util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

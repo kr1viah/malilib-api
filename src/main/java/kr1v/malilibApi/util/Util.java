@@ -1,4 +1,4 @@
-package kr1v.malilibApi.widget;
+package kr1v.malilibApi.util;
 
 public class Util {
 	/// usage: try { ... } catch( ... e) { return rethrow(e); }
