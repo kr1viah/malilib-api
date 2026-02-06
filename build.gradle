@@ -28,6 +28,10 @@ repositories {
         url = "https://masa.dy.fi/maven/"
     }
     maven {
+        name = "sakura-ryoko"
+        url = "https://masa.dy.fi/maven/sakura-ryoko"
+    }
+    maven {
         name = "JitPack"
         url = "https://jitpack.io"
     }
@@ -72,14 +76,15 @@ processResources {
     // 1.21.8:  25w17a (inclusive) - 1.21.8  (inclusive)
     // 1.21.10: 1.21.9 (inclusive) - 1.21.10 (inclusive)
     // 1.21.11: 1.21.11
-    def versions = ""
-
-    switch (sc.current.version) {
-        case "1.21" ->    versions = ">=1.21 <=1.21.1"
-        case "1.21.5" ->  versions = ">1.21.1 <=1.21.5"
-        case "1.21.8" ->  versions = ">=1.21.6 <=1.21.8" // I cant specify >=25w17a??
-        case "1.21.10" -> versions = ">=1.21.9 <=1.21.10"
-        case "1.21.11" -> versions = "1.21.11"
+    def versions = switch (sc.current.version) {
+        case "1.20.4" ->  ">=1.20.3 <=1.20.4"
+        case "1.20.6" ->  ">=1.20.5 <=1.20.6"
+        case "1.21" ->    ">=1.21 <=1.21.1"
+        case "1.21.5" ->  ">1.21.1 <=1.21.5"
+        case "1.21.8" ->  ">=1.21.6 <=1.21.8" // I cant specify >=25w17a??
+        case "1.21.10" -> ">=1.21.9 <=1.21.10"
+//        case "1.21.11" -> "1.21.11"
+        default ->        sc.current.version
     }
 
     inputs.property "versions", versions

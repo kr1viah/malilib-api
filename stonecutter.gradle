@@ -34,7 +34,7 @@ version = project.mod_version + "+" + sc.current.version
 
 tasks.register("runClient active version") {
     group = 'activeVersion'
-    def wantedTask = 'runClient'
+    def wantedTask = 'runTestmodClient'
     dependsOn(rootProject.findProject(sc.current.version).tasks.named(wantedTask))
 }
 tasks.register("build active version") {

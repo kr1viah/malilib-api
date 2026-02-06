@@ -1,8 +1,8 @@
-## 0.3.2 changelog
+## 0.3.3 changelog
 
 ### Users
 
-* Lists now properly always save
+* 1.20.X support!
 
 ### Mod developers
 

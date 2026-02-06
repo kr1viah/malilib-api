@@ -85,10 +85,16 @@ public class ConfigScreen extends GuiConfigsBase {
 	public List<ConfigOptionWrapper> getConfigs() {
 		return ConfigUtils.getConfigOptions(this.tab.options());
 	}
+	//? if <=1.20.4
+	//private final net.minecraft.client.gui.RotatingCubeMapRenderer backgroundRenderer = new net.minecraft.client.gui.RotatingCubeMapRenderer(net.minecraft.client.gui.screen.TitleScreen.PANORAMA_CUBE_MAP);
 
 	@Override
 	public void render(DrawContext drawContext, int mouseX, int mouseY, float partialTicks) {
+		//? if >=1.20.6 {
 		if (this.client != null && this.client.world == null) this.renderPanoramaBackground(drawContext, partialTicks);
+		//? } else {
+		/*if (this.client != null && this.client.world == null) this.backgroundRenderer.render(partialTicks, 1.0F);
+		*///? }
 		//? if =1.21 {
 		/*this.applyBlur(partialTicks); // this arg was removed in 24w33a
 		 *///? } else if =1.21.5 {
