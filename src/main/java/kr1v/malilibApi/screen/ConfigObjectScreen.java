@@ -100,9 +100,11 @@ public class ConfigObjectScreen extends GuiConfigsBase {
 				this.getBrowserWidth(), this.getBrowserHeight(), 204, 0.f, false, this);
 	}
 
+	//? if >=1.21 {
 	@Override
 	protected void buildConfigSwitcher() {
 	}
+	//? }
 
 	@Override
 	public List<ConfigOptionWrapper> getConfigs() {
@@ -118,10 +120,20 @@ public class ConfigObjectScreen extends GuiConfigsBase {
 		super.render(drawContext, mouseX, mouseY, partialTicks);
 	}
 
+	//? if <1.21 {
+	/*@Override
+	protected void drawScreenBackground(int mouseX, int mouseY) {
+		RenderUtils.drawOutlinedBox(this.dialogLeft, this.dialogTop, this.dialogWidth, this.dialogHeight, 0xFF000000, COLOR_HORIZONTAL_BAR);
+		super.drawScreenBackground(mouseX, mouseY);
+	}
+	*///? }
+
+	//? if >=1.21 {
 	@Override
 	protected void drawScreenBackground(/*? if >=1.21.11 {*//*fi.dy.masa.malilib.render.GuiContext*//*? } else {*/DrawContext/*? }*/ drawContext, int mouseX, int mouseY) {
 		RenderUtils.drawOutlinedBox(/*? if >=1.21.8 {*//*drawContext, *//*? }*/this.dialogLeft, this.dialogTop, this.dialogWidth, this.dialogHeight, 0xFF000000, COLOR_HORIZONTAL_BAR);
 	}
+	//? }
 
 	@Override
 	protected void drawTitle(/*? if >=1.21.11 {*//*fi.dy.masa.malilib.render.GuiContext*//*? } else {*/DrawContext/*? }*/ drawContext, int mouseX, int mouseY, float partialTicks) {

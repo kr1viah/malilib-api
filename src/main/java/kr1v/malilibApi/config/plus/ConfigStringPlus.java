@@ -4,22 +4,22 @@ import fi.dy.masa.malilib.config.options.ConfigString;
 
 public class ConfigStringPlus extends ConfigString implements Plus {
 	public ConfigStringPlus(String name) {
-		super(name, "");
+		this(name, "");
 	}
 
 	public ConfigStringPlus(String name, String defaultValue) {
-		super(name, defaultValue);
+		this(name, defaultValue, "");
 	}
 
 	public ConfigStringPlus(String name, String defaultValue, String comment) {
-		super(name, defaultValue, comment);
+		this(name, defaultValue, comment, name);
 	}
 
 	public ConfigStringPlus(String name, String defaultValue, String comment, String prettyName) {
-		super(name, defaultValue, comment, prettyName);
+		this(name, defaultValue, comment, prettyName, name);
 	}
 
 	public ConfigStringPlus(String name, String defaultValue, String comment, String prettyName, String translatedName) {
-		super(name, defaultValue, comment, prettyName, translatedName);
+		super(name, defaultValue, comment/*? if >=1.21 {*/, prettyName, translatedName/*? }*/);
 	}
 }

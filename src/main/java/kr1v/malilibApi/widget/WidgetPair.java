@@ -107,6 +107,7 @@ public class WidgetPair extends WidgetContainer {
 			switch (config)
 			{
 				case IConfigDouble iConfigDouble -> callback = new SliderCallbackDouble(iConfigDouble, resetButton);
+				//? if >=1.21
 				case IConfigFloat iConfigFloat -> callback = new SliderCallbackFloat(iConfigFloat, resetButton);
 				case IConfigInteger iConfigInteger -> callback = new SliderCallbackInteger(iConfigInteger, resetButton);
 				default ->

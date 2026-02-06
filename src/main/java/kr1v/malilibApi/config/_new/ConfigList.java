@@ -61,8 +61,6 @@ public class ConfigList<T extends IConfigBase & IConfigResettable> extends Custo
 			JsonArray array = element.getAsJsonArray();
 			for (JsonElement element1 : array) {
 				T newInstance = supplier.get();
-				newInstance.setTranslatedName("");
-				newInstance.setPrettyName("");
 				newInstance.setValueFromJsonElement(element1);
 				list.add(newInstance);
 			}
@@ -84,8 +82,6 @@ public class ConfigList<T extends IConfigBase & IConfigResettable> extends Custo
 
 	public void addNewAfter(int index) {
 		T newInstance = supplier.get();
-		newInstance.setTranslatedName("");
-		newInstance.setPrettyName("");
 		list.add(index, newInstance);
 	}
 

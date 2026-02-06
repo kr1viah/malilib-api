@@ -101,6 +101,7 @@ public class ConfigScreen extends GuiConfigsBase {
 		super.render(drawContext, mouseX, mouseY, partialTicks);
 	}
 
+	//? if >=1.21 {
 	// why was it using the class :sob: that's so brittle
 	@Override
 	protected void buildConfigSwitcher() {
@@ -138,6 +139,7 @@ public class ConfigScreen extends GuiConfigsBase {
 			addWidget(this.modSwitchWidget);
 		}
 	}
+	//? }
 
 	@Override
 	@NotNull

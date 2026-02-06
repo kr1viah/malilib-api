@@ -35,6 +35,7 @@ public abstract class CustomConfigBase<T extends IConfigBase> implements IConfig
 		return comment;
 	}
 
+	//? if >=1.21
 	@Override
 	public String getTranslatedName() {
 		return translatedName;
@@ -49,16 +50,19 @@ public abstract class CustomConfigBase<T extends IConfigBase> implements IConfig
 		}
 	}
 
+	//? if >=1.21
 	@Override
 	public void setPrettyName(String prettyName) {
 		this.prettyName = prettyName;
 	}
 
+	//? if >=1.21
 	@Override
 	public void setTranslatedName(String translatedName) {
 		this.translatedName = translatedName;
 	}
 
+	//? if >=1.21
 	@Override
 	public void setComment(String comment) {
 		this.comment = comment;

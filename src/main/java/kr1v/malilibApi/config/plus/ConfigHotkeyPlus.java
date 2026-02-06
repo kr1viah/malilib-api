@@ -6,40 +6,39 @@ import fi.dy.masa.malilib.hotkeys.KeybindSettings;
 
 public class ConfigHotkeyPlus extends ConfigHotkey {
 	public ConfigHotkeyPlus(String name, IHotkeyCallback callback) {
-		super(name, "");
-		getKeybind().setCallback(callback);
+		this(name, "", callback);
 	}
 
 	public ConfigHotkeyPlus(String name, String defaultStorageString, IHotkeyCallback callback) {
-		super(name, defaultStorageString.replaceAll("\\s+", ""));
+		this(name, defaultStorageString.replaceAll("\\s+", ""), "");
 		getKeybind().setCallback(callback);
 	}
 
 	public ConfigHotkeyPlus(String name, String defaultStorageString, String comment) {
-		super(name, defaultStorageString.replaceAll("\\s+", ""), comment);
+		this(name, defaultStorageString.replaceAll("\\s+", ""), comment, name);
 	}
 
 	public ConfigHotkeyPlus(String name, String defaultStorageString, String comment, String prettyName) {
-		super(name, defaultStorageString.replaceAll("\\s+", ""), comment, prettyName);
+		this(name, defaultStorageString.replaceAll("\\s+", ""), comment, prettyName, name);
 	}
 
 	public ConfigHotkeyPlus(String name, String defaultStorageString, String comment, String prettyName, String translatedName) {
-		super(name, defaultStorageString.replaceAll("\\s+", ""), comment, prettyName, translatedName);
+		super(name, defaultStorageString.replaceAll("\\s+", ""), comment, prettyName/*? if >=1.21 {*/, translatedName/*? }*/);
 	}
 
 	public ConfigHotkeyPlus(String name, String defaultStorageString, KeybindSettings settings) {
-		super(name, defaultStorageString.replaceAll("\\s+", ""), settings);
+		this(name, defaultStorageString.replaceAll("\\s+", ""), settings, "");
 	}
 
 	public ConfigHotkeyPlus(String name, String defaultStorageString, KeybindSettings settings, String comment) {
-		super(name, defaultStorageString.replaceAll("\\s+", ""), settings, comment);
+		this(name, defaultStorageString.replaceAll("\\s+", ""), settings, comment, name);
 	}
 
 	public ConfigHotkeyPlus(String name, String defaultStorageString, KeybindSettings settings, String comment, String prettyName) {
-		super(name, defaultStorageString.replaceAll("\\s+", ""), settings, comment, prettyName);
+		this(name, defaultStorageString.replaceAll("\\s+", ""), settings, comment, prettyName, name);
 	}
 
 	public ConfigHotkeyPlus(String name, String defaultStorageString, KeybindSettings settings, String comment, String prettyName, String translatedName) {
-		super(name, defaultStorageString.replaceAll("\\s+", ""), settings, comment, prettyName, translatedName);
+		super(name, defaultStorageString.replaceAll("\\s+", ""), settings, comment, prettyName/*? if >=1.21 {*/, translatedName/*? }*/);
 	}
 }

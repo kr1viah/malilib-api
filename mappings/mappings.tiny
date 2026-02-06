@@ -1,0 +1,5 @@
+tiny	2	0	intermediary	named
+c	net/minecraft/class_2960	net/minecraft/resources/Identifier
+	m	(Ljava/lang/String;Ljava/lang/String;)Lnet/minecraft/class_2960;	method_43902	of
+c	net/minecraft/class_4184	net/minecraft/client/Camera
+	m	()Lnet/minecraft/class_243;	method_19326	getCameraPosition

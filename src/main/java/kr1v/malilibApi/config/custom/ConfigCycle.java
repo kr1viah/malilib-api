@@ -7,7 +7,7 @@ public abstract class ConfigCycle<T> extends ConfigOptionList {
 	T defaultValue;
 
 	public ConfigCycle(String name, CycleConfigEntry<T> defaultValue, String comment, String prettyName, String translatedName) {
-		super(name, defaultValue, comment, prettyName, translatedName);
+		super(name, defaultValue, comment, prettyName/*? if >=1.21 {*/, translatedName/*? }*/);
 		this.defaultValue = defaultValue.value;
 	}
 

@@ -6,6 +6,7 @@ import fi.dy.masa.malilib.config.options.ConfigBase;
 import kr1v.malilibApi.InternalMalilibApi;
 import kr1v.malilibApi.widget.ConfigButtonButton;
 
+// TODO: port to CustomConfigBase
 public class ConfigButton extends ConfigBase<ConfigButton> {
 	private final Runnable onPressed;
 	public final String displayName;
@@ -15,7 +16,7 @@ public class ConfigButton extends ConfigBase<ConfigButton> {
 	}
 
 	public ConfigButton(String name, String comment, String prettyName, String translatedName, String buttonDisplayName, Runnable onPressed) {
-		super(null, name, comment, prettyName, translatedName);
+		super(null, name, comment, prettyName/*? if >=1.21 {*/, translatedName/*? }*/);
 		this.displayName = buttonDisplayName;
 		this.onPressed = onPressed;
 	}

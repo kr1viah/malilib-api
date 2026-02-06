@@ -4,54 +4,54 @@ import fi.dy.masa.malilib.config.options.ConfigDouble;
 
 public class ConfigDoublePlus extends ConfigDouble implements Plus {
 	public ConfigDoublePlus(String name) {
-		super(name, 0);
+		this(name, 0);
 	}
 
 	public ConfigDoublePlus(String name, double defaultValue) {
-		super(name, defaultValue);
+		this(name, defaultValue, "");
 	}
 
 	public ConfigDoublePlus(String name, double defaultValue, String comment) {
-		super(name, defaultValue, comment);
+		this(name, defaultValue, comment, name);
 	}
 
 	public ConfigDoublePlus(String name, double defaultValue, String comment, String prettyName) {
-		super(name, defaultValue, comment, prettyName);
+		this(name, defaultValue, comment, prettyName, name);
 	}
 
 	public ConfigDoublePlus(String name, double defaultValue, String comment, String prettyName, String translatedName) {
-		super(name, defaultValue, comment, prettyName, translatedName);
+		super(name, defaultValue, comment/*? if >=1.21 {*/, prettyName, translatedName/*? }*/);
 	}
 
 	public ConfigDoublePlus(String name, double defaultValue, double minValue, double maxValue) {
-		super(name, defaultValue, minValue, maxValue);
+		this(name, defaultValue, minValue, maxValue, "");
 	}
 
 	public ConfigDoublePlus(String name, double defaultValue, double minValue, double maxValue, String comment) {
-		super(name, defaultValue, minValue, maxValue, comment);
+		this(name, defaultValue, minValue, maxValue, comment, name);
 	}
 
 	public ConfigDoublePlus(String name, double defaultValue, double minValue, double maxValue, String comment, String prettyName) {
-		super(name, defaultValue, minValue, maxValue, comment, prettyName);
+		this(name, defaultValue, minValue, maxValue, comment, prettyName, name);
 	}
 
 	public ConfigDoublePlus(String name, double defaultValue, double minValue, double maxValue, String comment, String prettyName, String translatedName) {
-		super(name, defaultValue, minValue, maxValue, comment, prettyName, translatedName);
+		super(name, defaultValue, minValue, maxValue, comment/*? if >=1.21 {*/, prettyName, translatedName/*? }*/);
 	}
 
 	public ConfigDoublePlus(String name, double defaultValue, double minValue, double maxValue, boolean useSlider) {
-		super(name, defaultValue, minValue, maxValue, useSlider);
+		this(name, defaultValue, minValue, maxValue, useSlider, "");
 	}
 
 	public ConfigDoublePlus(String name, double defaultValue, double minValue, double maxValue, boolean useSlider, String comment) {
-		super(name, defaultValue, minValue, maxValue, useSlider, comment);
+		this(name, defaultValue, minValue, maxValue, useSlider, comment, name);
 	}
 
 	public ConfigDoublePlus(String name, double defaultValue, double minValue, double maxValue, boolean useSlider, String comment, String prettyName) {
-		super(name, defaultValue, minValue, maxValue, useSlider, comment, prettyName);
+		this(name, defaultValue, minValue, maxValue, useSlider, comment, prettyName, name);
 	}
 
 	public ConfigDoublePlus(String name, double defaultValue, double minValue, double maxValue, boolean useSlider, String comment, String prettyName, String translatedName) {
-		super(name, defaultValue, minValue, maxValue, useSlider, comment, prettyName, translatedName);
+		super(name, defaultValue, minValue, maxValue, useSlider, comment/*? if >=1.21 {*/, prettyName, translatedName/*? }*/);
 	}
 }

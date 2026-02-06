@@ -7,6 +7,7 @@ import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.IConfigResettable;
 import org.jetbrains.annotations.Nullable;
 
+// TODO: port to CustomConfigBase
 public class ConfigLabel implements IConfigBase, IConfigResettable {
 	private String label;
 
@@ -29,6 +30,7 @@ public class ConfigLabel implements IConfigBase, IConfigResettable {
 		return label;
 	}
 
+	//? if >=1.21 {
 	@Override
 	public String getTranslatedName() {
 		return label;
@@ -46,6 +48,7 @@ public class ConfigLabel implements IConfigBase, IConfigResettable {
 	public void setComment(String s) {
 		label = s;
 	}
+	//? }
 
 	@Override
 	public void setValueFromJsonElement(JsonElement jsonElement) {

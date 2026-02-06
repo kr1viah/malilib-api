@@ -24,7 +24,7 @@ public class Init implements ClientModInitializer {
 			//? if <=1.21.8 {
             @Override
             protected boolean onMouseClickedImpl(int mouseX, int mouseY, int mouseButton) {
-                System.out.println("Custom button!");
+                System.out.println("Custom button!!");
                 return super.onMouseClickedImpl(mouseX, mouseY, mouseButton);
             }
 			//? }

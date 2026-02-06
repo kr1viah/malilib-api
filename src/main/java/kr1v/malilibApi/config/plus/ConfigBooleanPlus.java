@@ -7,22 +7,22 @@ import kr1v.malilibApi.InternalMalilibApi;
 // use this if it doesn't make sense to have a hotkey to toggle it.
 public class ConfigBooleanPlus extends ConfigBoolean implements Plus {
 	public ConfigBooleanPlus(String name) {
-		super(name, InternalMalilibApi.getDefaultEnabled(), " ");
+		this(name, InternalMalilibApi.getDefaultEnabled(), "");
 	}
 
 	public ConfigBooleanPlus(String name, boolean defaultValue) {
-		super(name, defaultValue, " ");
+		this(name, defaultValue, "");
 	}
 
 	public ConfigBooleanPlus(String name, boolean defaultValue, String comment) {
-		super(name, defaultValue, comment);
+		this(name, defaultValue, comment, name);
 	}
 
 	public ConfigBooleanPlus(String name, boolean defaultValue, String comment, String prettyName) {
-		super(name, defaultValue, comment, prettyName);
+		this(name, defaultValue, comment, prettyName, name);
 	}
 
 	public ConfigBooleanPlus(String name, boolean defaultValue, String comment, String prettyName, String translatedName) {
-		super(name, defaultValue, comment, prettyName, translatedName);
+		super(name, defaultValue, comment, prettyName/*? if >=1.21 {*/, translatedName/*? }*/);
 	}
 }
