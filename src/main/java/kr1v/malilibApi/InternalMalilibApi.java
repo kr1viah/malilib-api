@@ -8,7 +8,6 @@ import fi.dy.masa.malilib.config.IConfigResettable;
 import fi.dy.masa.malilib.event.InitializationHandler;
 import fi.dy.masa.malilib.event.InputEventHandler;
 import fi.dy.masa.malilib.gui.GuiBase;
-import fi.dy.masa.malilib.registry.Registry;
 import fi.dy.masa.malilib.util.data.ModInfo;
 import kr1v.malilibApi.annotation.Config;
 import kr1v.malilibApi.annotation.processor.ConfigProcessor;
@@ -50,7 +49,8 @@ public class InternalMalilibApi {
 		InitializationHandler.getInstance().registerInitializationHandler(() -> {
 			ConfigManager.getInstance().registerConfigHandler(modId, configHandler);
 
-			Registry.CONFIG_SCREEN.registerConfigScreenFactory(modInfo);
+			//? if >=1.21
+			fi.dy.masa.malilib.registry.Registry.CONFIG_SCREEN.registerConfigScreenFactory(modInfo);
 
 			InputEventHandler.getKeybindManager().registerKeybindProvider(inputHandler);
 			InputEventHandler.getInputManager().registerKeyboardInputHandler(inputHandler);
