@@ -251,3 +251,11 @@ publishing {
         }
     }
 }
+
+tasks.configureEach {
+    onlyIf {
+        def current = stonecutter.current.version
+        def active = stonecutter.active.version
+        return current == active
+    }
+}
