@@ -22,7 +22,7 @@ public class ConfigList<T extends IConfigBase & IConfigResettable> extends Custo
 	private final Supplier<T> supplier;
 	private final String buttonDisplayName;
 	private final List<T> list;
-	private final int originalSize;
+	private final List<T> defaultValue;
 
 	static {
 		InternalMalilibApi.registerButtonBasedConfigType(ConfigList.class, (widgetConfigOption, list, x, y, configWidth, configHeight) -> new ConfigListButton(x, y, configWidth, configHeight, list));
@@ -58,7 +58,7 @@ public class ConfigList<T extends IConfigBase & IConfigResettable> extends Custo
 			throw new IllegalStateException("Please make the supplier supply with empty names!");
 		}
 		this.list = new ArrayList<>(defaultValue);
-		this.originalSize = list.size();
+		this.defaultValue = defaultValue;
 	}
 
 	@Override
@@ -108,17 +108,20 @@ public class ConfigList<T extends IConfigBase & IConfigResettable> extends Custo
 	// TODO: resetToDefault and isModified etc
 	@Override
 	public boolean isModified() {
-		if (originalSize != list.size()) {
+		if (defaultValue.size() != list.size()) {
 			return true;
 		}
 		for (IConfigResettable config : list) {
 			if (config.isModified()) return true;
 		}
-		return false;
+		return !defaultValue.equals(list);
 	}
 
+	// maybe I should add from the supplier and set the values to those from the default list. idk.
 	@Override
 	public void resetToDefault() {
+		this.list.clear();
+		this.list.addAll(defaultValue);
 		for (IConfigResettable config : list) {
 			config.resetToDefault();
 		}
