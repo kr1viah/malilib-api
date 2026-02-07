@@ -6,7 +6,6 @@ import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
 import fi.dy.masa.malilib.gui.widgets.WidgetDropDownList;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
-import fi.dy.masa.malilib.registry.Registry;
 import fi.dy.masa.malilib.util.GuiUtils;
 import fi.dy.masa.malilib.util.data.ModInfo;
 import kr1v.malilibApi.InternalMalilibApi;
@@ -112,7 +111,7 @@ public class ConfigScreen extends GuiConfigsBase {
 	@Override
 	protected void buildConfigSwitcher() {
 		if (MaLiLibConfigs.Generic.ENABLE_CONFIG_SWITCHER.getBooleanValue()) {
-			this.modSwitchWidget = new WidgetDropDownList<>(GuiUtils.getScaledWindowWidth() - 155, 6, 130, 18, 200, 10, Registry.CONFIG_SCREEN.getAllModsWithConfigScreens()) {
+			this.modSwitchWidget = new WidgetDropDownList<>(GuiUtils.getScaledWindowWidth() - 155, 6, 130, 18, 200, 10, fi.dy.masa.malilib.registry.Registry.CONFIG_SCREEN.getAllModsWithConfigScreens()) {
 				{
 					selectedEntry = InternalMalilibApi.getMod(modId).modInfo;
 				}
