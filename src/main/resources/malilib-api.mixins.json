@@ -6,6 +6,7 @@
   "mixins": [
     "accessor.WidgetConfigOptionAccessor",
     "accessor.WidgetConfigOptionBaseAccessor",
+    "malilib.ButtonGenericMixin",
     "malilib.InputEventHandlerMixin",
     "malilib.WidgetConfigOptionMixin"
   ],
