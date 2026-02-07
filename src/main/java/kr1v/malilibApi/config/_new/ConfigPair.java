@@ -6,14 +6,19 @@ import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.IConfigResettable;
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
 import fi.dy.masa.malilib.gui.widgets.WidgetBase;
+import fi.dy.masa.malilib.hotkeys.IHotkey;
 import fi.dy.masa.malilib.util.StringUtils;
 import kr1v.malilibApi.InternalMalilibApi;
+import kr1v.malilibApi.interfaces.IHotkeyContainer;
 import kr1v.malilibApi.interfaces.IWidgetResettableSupplier;
 import kr1v.malilibApi.mixin.accessor.WidgetConfigOptionAccessor;
 import kr1v.malilibApi.mixin.accessor.WidgetConfigOptionBaseAccessor;
 import kr1v.malilibApi.widget.WidgetPair;
 
-public class ConfigPair<L extends IConfigBase & IConfigResettable, R extends IConfigBase & IConfigResettable> extends CustomConfigBase<ConfigPair<L, R>> {
+import java.util.ArrayList;
+import java.util.List;
+
+public class ConfigPair<L extends IConfigBase & IConfigResettable, R extends IConfigBase & IConfigResettable> extends CustomConfigBase<ConfigPair<L, R>> implements IHotkeyContainer {
 	private final L left;
 	private final R right;
 
@@ -104,5 +109,18 @@ public class ConfigPair<L extends IConfigBase & IConfigResettable, R extends ICo
 	@Override
 	public String toString() {
 		return left.toString() + " | " + right.toString();
+	}
+
+	@Override
+	public List<IHotkey> getHotkeys() {
+		List<IHotkey> hotkeys = new ArrayList<>();
+		for (IConfigBase config : List.of(left, right)) {
+			if (config instanceof IHotkey hotkey) {
+				hotkeys.add(hotkey);
+			} else if (config instanceof IHotkeyContainer container) {
+				hotkeys.addAll(container.getHotkeys());
+			}
+		}
+		return hotkeys;
 	}
 }

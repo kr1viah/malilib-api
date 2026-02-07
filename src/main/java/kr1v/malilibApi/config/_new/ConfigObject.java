@@ -6,12 +6,15 @@ import com.google.gson.JsonObject;
 import fi.dy.masa.malilib.config.ConfigUtils;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.IConfigResettable;
+import fi.dy.masa.malilib.hotkeys.IHotkey;
 import kr1v.malilibApi.InternalMalilibApi;
+import kr1v.malilibApi.interfaces.IHotkeyContainer;
 import kr1v.malilibApi.widget.ConfigObjectButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class ConfigObject<T> extends CustomConfigBase<ConfigObject<T>> {
+public class ConfigObject<T> extends CustomConfigBase<ConfigObject<T>> implements IHotkeyContainer {
 	public final ImmutableList<IConfigBase> configs;
 	public final ImmutableList<IConfigResettable> resettables;
 	public final int distanceFromTops;
@@ -122,5 +125,18 @@ public class ConfigObject<T> extends CustomConfigBase<ConfigObject<T>> {
 
 	public String getButtonDisplayName() {
 		return buttonDisplayName;
+	}
+
+	@Override
+	public List<IHotkey> getHotkeys() {
+		List<IHotkey> hotkeys = new ArrayList<>();
+		for (IConfigBase config : configs) {
+			if (config instanceof IHotkey hotkey) {
+				hotkeys.add(hotkey);
+			} else if (config instanceof IHotkeyContainer container) {
+				hotkeys.addAll(container.getHotkeys());
+			}
+		}
+		return hotkeys;
 	}
 }

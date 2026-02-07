@@ -6,12 +6,15 @@ import fi.dy.masa.malilib.config.IConfigNotifiable;
 import fi.dy.masa.malilib.config.IConfigResettable;
 import fi.dy.masa.malilib.interfaces.IValueChangeCallback;
 import fi.dy.masa.malilib.util.StringUtils;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class CustomConfigBase<T extends IConfigBase> implements IConfigBase, IConfigResettable, IConfigNotifiable<T> {
 	private final String name;
 	private String comment;
 	private String translatedName;
 	private String prettyName;
+	@Nullable
+	private IValueChangeCallback<T> callback;
 
 	public CustomConfigBase(String name, String comment, String translatedName, String prettyName) {
 		this.name = name;
@@ -68,14 +71,17 @@ public abstract class CustomConfigBase<T extends IConfigBase> implements IConfig
 		this.comment = comment;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onValueChanged() {
-
+		if (this.callback != null) {
+			this.callback.onValueChanged((T) this);
+		}
 	}
 
 	@Override
 	public void setValueChangeCallback(IValueChangeCallback<T> callback) {
-
+		this.callback = callback;
 	}
 
 	//? if >=1.21.10 {

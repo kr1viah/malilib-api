@@ -215,7 +215,7 @@ public class ConfigListScreen extends GuiConfigsBase {
 			}
 			else if (this.type == ButtonType.REMOVE) {
 				int index = parent.getListIndex() < 0 ? size : (Math.min(this.parent.getListIndex(), size));
-				config.getList().remove(index);
+				config.remove(index);
 			} else {
 				boolean down = this.type == ButtonType.MOVE_DOWN;
 
