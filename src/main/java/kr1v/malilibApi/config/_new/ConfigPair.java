@@ -89,7 +89,7 @@ public class ConfigPair<L extends IConfigBase & IConfigResettable, R extends ICo
 				WidgetPair pair2 = pair1.getEnclosing();
 				ButtonGeneric resetButton = pair2.resetButton;
 				WidgetPair.MultipleReset listenerReset = pair2.multipleListenerReset;
-				return new WidgetBase[]{new WidgetPair(x, y, configWidth, configHeight, pair, widgetConfigOption.getListIndex(), configWidth, accessor1.getHost(), accessor2.getParent(), resetButton, listenerReset)};
+				return new WidgetBase[]{new WidgetPair(x, y, configWidth + 21, configHeight, pair, widgetConfigOption.getListIndex(), configWidth, accessor1.getHost(), accessor2.getParent(), resetButton, listenerReset)};
 			} else {
 				WidgetBase[] widgets = new WidgetBase[2];
 
@@ -99,7 +99,7 @@ public class ConfigPair<L extends IConfigBase & IConfigResettable, R extends ICo
 
 				WidgetPair.MultipleReset listenerReset = new WidgetPair.MultipleReset();
 				resetButton.setActionListener(listenerReset);
-				widgets[0] = new WidgetPair(x, y, configWidth, configHeight, pair, widgetConfigOption.getListIndex(), configWidth, accessor1.getHost(), accessor2.getParent(), resetButton, listenerReset);
+				widgets[0] = new WidgetPair(x, y, configWidth + 21, configHeight, pair, widgetConfigOption.getListIndex(), configWidth, accessor1.getHost(), accessor2.getParent(), resetButton, listenerReset);
 				widgets[1] = resetButton;
 				return widgets;
 			}
