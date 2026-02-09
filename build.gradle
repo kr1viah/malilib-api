@@ -252,7 +252,7 @@ publishing {
     }
 }
 
-tasks.configureEach {
+tasks.named("runTestmodClient").configure {
     onlyIf {
         def current = stonecutter.current.version
         def active = stonecutter.active.version
