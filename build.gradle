@@ -198,12 +198,12 @@ publishMods {
                     endV = "1.20.1"
                 }
                 case "1.20.4" -> {
-                    startV = "1.20.4"
-                    endV = "1.20.3"
+                    startV = "1.20.3"
+                    endV = "1.20.4"
                 }
                 case "1.20.6" -> {
-                    startV = "1.20.6"
-                    endV = "1.20.5"
+                    startV = "1.20.5"
+                    endV = "1.20.6"
                 }
                 case "1.21" -> {
                     startV = "1.21"
