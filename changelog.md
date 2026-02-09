@@ -8,4 +8,4 @@
 
 ### Mod developers
 
-* Don't compare the same list, instead check isModified
+* 1.20.1, 1.20.2, 1.20.4 and 1.20.6 support
