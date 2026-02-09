@@ -188,32 +188,53 @@ publishMods {
             type = STABLE
             modLoaders.add("fabric")
 
+            def startV = null
+            def endV = null
             def currentV = sc.current.version
-            if (currentV != "1.21.11") {
+
+            switch (currentV) {
+                case "1.20.1" -> {
+                    startV = "1.20"
+                    endV = "1.20.1"
+                }
+                case "1.20.4" -> {
+                    startV = "1.20.4"
+                    endV = "1.20.3"
+                }
+                case "1.20.6" -> {
+                    startV = "1.20.6"
+                    endV = "1.20.5"
+                }
+                case "1.21" -> {
+                    startV = "1.21"
+                    endV = "1.21.1"
+                }
+                case "1.21.5" -> {
+                    startV = "24w33a" // first 1.21.2 snapshot
+                    endV = "1.21.5"
+                }
+                case "1.21.8" -> {
+                    startV = "25w17a" // 3rd 1.21.6 snapshot
+                    endV = "1.21.8"
+                }
+                case "1.21.10" -> {
+                    startV = "1.21.9"
+                    endV = "1.21.10"
+                }
+                default -> {
+                    startV = currentV
+                }
+            }
+
+            if (endV != null) {
                 minecraftVersionRange {
-                    switch (currentV) {
-                        case "1.21" -> {
-                            start = "1.21"
-                            end = "1.21.1"
-                        }
-                        case "1.21.5" -> {
-                            start = "24w33a" // first 1.21.2 snapshot
-                            end = "1.21.5"
-                        }
-                        case "1.21.8" -> {
-                            start = "25w17a" // 3rd 1.21.6 snapshot
-                            end = "1.21.8"
-                        }
-                        case "1.21.10" -> {
-                            start = "1.21.9"
-                            end = "1.21.10"
-                        }
-                    }
+                    start = startV
+                    end = endV
 
                     includeSnapshots = true
                 }
             } else {
-                minecraftVersions.add("1.21.11")
+                minecraftVersions.add(startV)
             }
 
             requires("malilib")
