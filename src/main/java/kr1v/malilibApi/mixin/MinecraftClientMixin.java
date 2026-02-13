@@ -19,7 +19,7 @@ public class MinecraftClientMixin {
 	}
 
 	// save
-	@Inject(method = "stop", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;info(Ljava/lang/String;)V"))
+	@Inject(method = "stop", at = @At(value = "HEAD"))
 	private void onStopping(CallbackInfo ci) {
 		for (ModRepresentation modRepresentation : InternalMalilibApi.getModConfigs()) {
 			modRepresentation.configHandler.save();

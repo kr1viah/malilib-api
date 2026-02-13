@@ -77,7 +77,7 @@ processResources {
     // 1.21.10: 1.21.9 (inclusive) - 1.21.10 (inclusive)
     // 1.21.11: 1.21.11
     def versions = switch (sc.current.version) {
-        case "1.19.2" -> ">=1.19 <=1.19.2"
+        case "1.19.2" -> ">=1.18.1 <=1.19.2"
         case "1.20.1" -> ">=1.20 <=1.20.1"
         case "1.20.4" ->  ">=1.20.3 <=1.20.4"
         case "1.20.6" ->  ">=1.20.5 <=1.20.6"
@@ -196,7 +196,7 @@ publishMods {
 
             switch (currentV) {
                 case "1.19.2" -> {
-                    startV = "1.19"
+                    startV = "1.18.1"
                     endV = "1.19.2"
                 }
                 case "1.20.1" -> {

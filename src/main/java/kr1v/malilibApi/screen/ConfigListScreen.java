@@ -159,11 +159,6 @@ public class ConfigListScreen extends GuiConfigsBase {
 		return Objects.requireNonNull(super.getListWidget());
 	}
 
-	@Override
-	public void close() {
-		super.close();
-	}
-
 	// h
 
 	@Override

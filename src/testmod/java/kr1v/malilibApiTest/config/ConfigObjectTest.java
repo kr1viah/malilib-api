@@ -50,7 +50,7 @@ public class ConfigObjectTest {
 			s.append(pos.toString()).append(", \n");
 		}
 
-		Init.LOGGER.info(s.substring(0, s.length() - 3));
+		System.out.println(s.substring(0, s.length() - 3));
 
 		return true;
 	});
