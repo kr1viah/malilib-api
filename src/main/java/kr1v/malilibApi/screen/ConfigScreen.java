@@ -8,7 +8,6 @@ import kr1v.malilibApi.ModRepresentation;
 import kr1v.malilibApi.mixin.accessor.WidgetListConfigOptionsBaseAccessor;
 import kr1v.malilibApi.util.ConfigUtils;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.math.MatrixStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -79,13 +78,10 @@ public class ConfigScreen extends GuiConfigsBase {
 	public List<ConfigOptionWrapper> getConfigs() {
 		return ConfigUtils.getConfigOptions(this.tab.options());
 	}
-	//? if <=1.20.4
-	//private final net.minecraft.client.gui.RotatingCubeMapRenderer backgroundRenderer = new net.minecraft.client.gui.RotatingCubeMapRenderer(net.minecraft.client.gui.screen.TitleScreen.PANORAMA_CUBE_MAP);
-
 	//? if <1.20.1 {
 	/*@Override
-	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-		if (this.client != null && this.client.world == null) this.backgroundRenderer.render(partialTicks, 1.0F);
+	public void render(net.minecraft.client.util.math.MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+		if (this.client != null && this.client.world == null) this.renderBackground(matrixStack);
 		InternalMalilibApi.setActiveTabFor(modId, this.tab);
 		InternalMalilibApi.setScrollValueFor(modId, this.tab, getListWidget().getScrollbar().getValue());
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
@@ -95,8 +91,10 @@ public class ConfigScreen extends GuiConfigsBase {
 	public void render(net.minecraft.client.gui.DrawContext drawContext, int mouseX, int mouseY, float partialTicks) {
 		//? if >=1.20.6 {
 		if (this.client != null && this.client.world == null) this.renderPanoramaBackground(drawContext, partialTicks);
-		//? } else {
-		/*if (this.client != null && this.client.world == null) this.backgroundRenderer.render(partialTicks, 1.0F);
+		//? } else if >=1.20.2 {
+		/*if (this.client != null && this.client.world == null) this.renderBackground(drawContext, mouseX, mouseY, partialTicks);
+		*///? } else {
+		/*if (this.client != null && this.client.world == null) this.renderBackground(drawContext);
 		*///? }
 		//? if =1.21 {
 		/*this.applyBlur(partialTicks); // this arg was removed in 24w33a
@@ -110,6 +108,18 @@ public class ConfigScreen extends GuiConfigsBase {
 		super.render(drawContext, mouseX, mouseY, partialTicks);
 	}
 	//? }
+
+
+	//? if <=1.20.4 {
+	/*@Override
+	protected void drawScreenBackground(int mouseX, int mouseY) {
+		if (this.client != null && this.client.world == null) {
+			return;
+		}
+		super.drawScreenBackground(mouseX, mouseY);
+	}
+	*///? }
+
 
 	//? if >=1.21 {
 	// why was it using the class :sob: that's so brittle
