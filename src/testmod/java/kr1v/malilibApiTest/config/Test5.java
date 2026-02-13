@@ -112,6 +112,7 @@ public class Test5 {
 	public static final ConfigPair<ConfigBoolean, ConfigBoolean> TEST_BOOLEAN_PAIR = new ConfigPair<>("boolean", new ConfigBoolean("", true, ""), new ConfigBoolean("", true, ""));
 	public static final ConfigPair<ConfigBooleanHotkeyed, ConfigBooleanHotkeyed> TEST_BOOLEAN_HOTKEYED_PAIR = new ConfigPair<>("boolean_hotkeyed", new ConfigBooleanHotkeyed("", true, "", ""), new ConfigBooleanHotkeyed("", true, "", ""));
 	public static final ConfigPair<ConfigColor, ConfigColor> TEST_COLOR_PAIR = new ConfigPair<>("color", new ConfigColor("", "", ""), new ConfigColor("", "", ""));
+	//? if >=1.20.1
 	public static final ConfigPair<ConfigColorList, ConfigColorList> TEST_COLOR_LIST_PAIR = new ConfigPair<>("color_list", new ConfigColorList("", ImmutableList.of(), ""), new ConfigColorList("", ImmutableList.of(), ""));
 	public static final ConfigPair<ConfigDouble, ConfigDouble> TEST_DOUBLE_PAIR = new ConfigPair<>("double", new ConfigDouble("", 0, ""), new ConfigDouble("", 0, ""));
 	//? if >=1.21

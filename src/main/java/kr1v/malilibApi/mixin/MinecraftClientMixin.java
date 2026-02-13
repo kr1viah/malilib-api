@@ -1,5 +1,5 @@
 package kr1v.malilibApi.mixin;
-
+// TODO: make the config screen have a dirt background on versions where that is applicable when not in a world
 import kr1v.malilibApi.InternalMalilibApi;
 import kr1v.malilibApi.ModRepresentation;
 import net.minecraft.client.MinecraftClient;

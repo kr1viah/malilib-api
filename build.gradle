@@ -77,6 +77,8 @@ processResources {
     // 1.21.10: 1.21.9 (inclusive) - 1.21.10 (inclusive)
     // 1.21.11: 1.21.11
     def versions = switch (sc.current.version) {
+        case "1.19.2" -> ">=1.19 <=1.19.2"
+        case "1.20.1" -> ">=1.20 <=1.20.1"
         case "1.20.4" ->  ">=1.20.3 <=1.20.4"
         case "1.20.6" ->  ">=1.20.5 <=1.20.6"
         case "1.21" ->    ">=1.21 <=1.21.1"
@@ -193,6 +195,10 @@ publishMods {
             def currentV = sc.current.version
 
             switch (currentV) {
+                case "1.19.2" -> {
+                    startV = "1.19"
+                    endV = "1.19.2"
+                }
                 case "1.20.1" -> {
                     startV = "1.20"
                     endV = "1.20.1"
@@ -273,10 +279,19 @@ publishing {
     }
 }
 
+def runAll = false
+
 tasks.named("runTestmodClient").configure {
-    onlyIf {
-        def current = stonecutter.current.version
-        def active = stonecutter.active.version
-        return current == active
+    if (!runAll) {
+        onlyIf {
+            def current = stonecutter.current.version
+            def active = stonecutter.active.version
+            return current == active
+        }
     }
+}
+
+tasks.register("runAllTestClient") {
+    runAll = true
+    dependsOn("runTestmodClient")
 }

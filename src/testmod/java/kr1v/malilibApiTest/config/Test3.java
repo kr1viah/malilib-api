@@ -21,6 +21,7 @@ public class Test3 {
 	public static final ConfigList<ConfigBoolean> TEST_BOOLEAN = new ConfigList<>("boolean", () -> new ConfigBoolean("", true, ""));
 	public static final ConfigList<ConfigBooleanHotkeyed> TEST_BOOLEAN_HOTKEYED = new ConfigList<>("boolean_hotkeyed", () -> new ConfigBooleanHotkeyed("", true, "", ""));
 	public static final ConfigList<ConfigColor> TEST_COLOR = new ConfigList<>("color", () -> new ConfigColor("", "", ""));
+	//? if >=1.20.1
 	public static final ConfigList<ConfigColorList> TEST_COLOR_LIST = new ConfigList<>("color_list", () -> new ConfigColorList("", ImmutableList.of(), ""));
 	public static final ConfigList<ConfigDouble> TEST_DOUBLE = new ConfigList<>("double", () -> new ConfigDouble("", 0, ""));
 	//? if >=1.21

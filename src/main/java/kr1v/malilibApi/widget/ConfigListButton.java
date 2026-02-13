@@ -22,7 +22,14 @@ public class ConfigListButton extends ButtonGeneric {
 		MinecraftClient.getInstance().setScreen(new ConfigListScreen(list, null, MinecraftClient.getInstance().currentScreen));
 		return true;
 	}
-	//? if <= 1.21.5 {
+
+	//? if <1.20.1 {
+	/*@Override
+	public void render(int mouseX, int mouseY, boolean selected, net.minecraft.client.util.math.MatrixStack matrixStack) {
+		setDisplay();
+		super.render(mouseX, mouseY, selected, matrixStack);
+	}
+	*///? } else if <= 1.21.5 {
 	@Override
 	public void render(int mouseX, int mouseY, boolean selected, net.minecraft.client.gui.DrawContext drawContext) {
 		setDisplay();

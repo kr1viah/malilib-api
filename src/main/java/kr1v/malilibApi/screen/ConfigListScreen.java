@@ -16,8 +16,8 @@ import fi.dy.masa.malilib.util.GuiUtils;
 import fi.dy.masa.malilib.util.StringUtils;
 import kr1v.malilibApi.config._new.ConfigList;
 import kr1v.malilibApi.util.ConfigUtils;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.util.math.MatrixStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -98,14 +98,24 @@ public class ConfigListScreen extends GuiConfigsBase {
 	}
 	//? }
 
+	//? if <1.20.1 {
+	/*@Override
+	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+		if (this.customParent != null) {
+			this.customParent.render(matrixStack, mouseX, mouseY, partialTicks);
+		}
+		super.render(matrixStack, mouseX, mouseY, partialTicks);
+	}
+	*///? } else {
 	@Override
-	public void render(DrawContext drawContext, int mouseX, int mouseY, float partialTicks) {
+	public void render(net.minecraft.client.gui.DrawContext drawContext, int mouseX, int mouseY, float partialTicks) {
 		if (this.customParent != null) {
 			this.customParent.render(drawContext, mouseX, mouseY, partialTicks);
 		}
 
 		super.render(drawContext, mouseX, mouseY, partialTicks);
 	}
+	//? }
 
 	//? if <1.21 {
 	/*@Override
@@ -113,19 +123,25 @@ public class ConfigListScreen extends GuiConfigsBase {
 		RenderUtils.drawOutlinedBox(this.dialogLeft, this.dialogTop, this.dialogWidth, this.dialogHeight, 0xFF000000, COLOR_HORIZONTAL_BAR);
 		super.drawScreenBackground(mouseX, mouseY);
 	}
-	*///? }
-
-	//? if >=1.21 {
+	*///? } else {
 	@Override
-	protected void drawScreenBackground(/*? if >=1.21.11 {*//*fi.dy.masa.malilib.render.GuiContext*//*? } else {*/DrawContext/*? }*/ drawContext, int mouseX, int mouseY) {
+	protected void drawScreenBackground(/*? if >=1.21.11 {*//*fi.dy.masa.malilib.render.GuiContext*//*? } else {*/net.minecraft.client.gui.DrawContext/*? }*/ drawContext, int mouseX, int mouseY) {
 		RenderUtils.drawOutlinedBox(/*? if >=1.21.8 {*//*drawContext, *//*? }*/this.dialogLeft, this.dialogTop, this.dialogWidth, this.dialogHeight, 0xFF000000, COLOR_HORIZONTAL_BAR);
 	}
 	//? }
 
+
+	//? if <1.20.1 {
+	/*@Override
+	protected void drawTitle(net.minecraft.client.util.math.MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+		this.drawStringWithShadow(matrixStack, this.title, this.dialogLeft + 10, this.dialogTop + 6, COLOR_WHITE);
+	}
+	*///? } else {
 	@Override
-	protected void drawTitle(/*? if >=1.21.11 {*//*fi.dy.masa.malilib.render.GuiContext*//*? } else {*/DrawContext/*? }*/ drawContext, int mouseX, int mouseY, float partialTicks) {
+	protected void drawTitle(/*? if >=1.21.11 {*//*fi.dy.masa.malilib.render.GuiContext*//*? } else {*/net.minecraft.client.gui.DrawContext/*? }*/ drawContext, int mouseX, int mouseY, float partialTicks) {
 		this.drawStringWithShadow(drawContext, this.title, this.dialogLeft + 10, this.dialogTop + 6, COLOR_WHITE);
 	}
+	//? }
 
 	@Override
 	protected void closeGui(boolean showParent) {
