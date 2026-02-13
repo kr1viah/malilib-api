@@ -18,7 +18,7 @@ public abstract class ButtonGenericMixin extends ButtonBase {
 	//? if <1.19.4 {
 	/*@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lfi/dy/masa/malilib/render/RenderUtils;drawTexturedRect(IIIIII)V", ordinal = 0))
 	private void renderMore(int x, int y, int u, int v, int width, int height, Operation<Void> original) {
-		width *= 2;
+		width = this.width;
 
 		final int centerSrcU = u + 2;
 		final int rightCapSrcU = u + 2 + 196;
