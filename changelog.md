@@ -1,11 +1,10 @@
-## 0.3.3 changelog
+## 0.4.0 changelog
 
 ### Users
 
-* 1.20.X support!
-* Hotkeys in lists, pairs, and objects now properly see and can conflict with other hotkeys
-* Lists now properly reset
+* 1.19.X support!
+* Dirt backgrounds on <1.20.4
 
 ### Mod developers
 
-* 1.20.1, 1.20.2, 1.20.4 and 1.20.6 support
+No new things for mod developers
