@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "kr1v.malilibApi.mixin",
-  "compatibilityLevel": "JAVA_21",
+  "compatibilityLevel": "${java}",
   "mixins": [
     "accessor.WidgetConfigOptionAccessor",
     "accessor.WidgetConfigOptionBaseAccessor",

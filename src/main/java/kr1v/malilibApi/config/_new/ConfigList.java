@@ -137,27 +137,25 @@ public class ConfigList<T extends IConfigBase & IConfigResettable> extends Custo
 			if (!isFirst) {
 				builder.append(", ");
 			}
-			switch (item) {
-				case ConfigHotkey configHotkey -> {
-					String stringValue = configHotkey.getStringValue();
-					builder.append(stringValue.isEmpty() ? "NONE" : configHotkey.getStringValue().replace(",", " + "));
-				}
-				case ConfigBooleanHotkeyed configBooleanHotkeyed -> {
-					String stringValue = configBooleanHotkeyed.getKeybind().getStringValue();
-					builder.append("(")
-							.append(configBooleanHotkeyed.getStringValue())
-							.append(", ")
-							.append(stringValue.isEmpty() ? "NONE" : stringValue.replace(",", " + "))
-							.append(")");
-				}
-				case IStringValue representable -> builder.append(representable.getStringValue());
-				case ConfigList<?> configList -> builder.append(configList);
-				default -> {
-					if (item.toString().equals(Objects.toIdentityString(item))) {
-						builder.append(item.getAsJsonElement().toString());
-					} else {
-						builder.append(item);
-					}
+			if (item instanceof ConfigHotkey configHotkey) {
+				String stringValue = configHotkey.getStringValue();
+				builder.append(stringValue.isEmpty() ? "NONE" : configHotkey.getStringValue().replace(",", " + "));
+			} else if (item instanceof ConfigBooleanHotkeyed configBooleanHotkeyed) {
+				String stringValue = configBooleanHotkeyed.getKeybind().getStringValue();
+				builder.append("(")
+						.append(configBooleanHotkeyed.getStringValue())
+						.append(", ")
+						.append(stringValue.isEmpty() ? "NONE" : stringValue.replace(",", " + "))
+						.append(")");
+			} else if (item instanceof IStringValue representable) {
+				builder.append(representable.getStringValue());
+			} else if (item instanceof ConfigList<?> configList) {
+				builder.append(configList);
+			} else {
+				if (item.toString().equals(toIdentityString(item))) {
+					builder.append(item.getAsJsonElement().toString());
+				} else {
+					builder.append(item);
 				}
 			}
 			isFirst = false;
@@ -166,6 +164,10 @@ public class ConfigList<T extends IConfigBase & IConfigResettable> extends Custo
 		builder.append("]");
 
 		return builder.toString();
+	}
+
+	private static String toIdentityString(Object o) {
+		return o.getClass().getName() + "@" + Integer.toHexString(System.identityHashCode(o));
 	}
 
 	public String getButtonDisplayName() {

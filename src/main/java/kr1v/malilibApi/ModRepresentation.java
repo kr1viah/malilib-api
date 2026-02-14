@@ -62,7 +62,7 @@ public class ModRepresentation {
 	}
 
 	public Tab activeTab() {
-		if (this.activeTab == null) return tabs().getFirst();
+		if (this.activeTab == null) return tabs().get(0);
 		return this.activeTab;
 	}
 

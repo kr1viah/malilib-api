@@ -68,6 +68,13 @@ configurations.configureEach {
     }
 }
 
+def requiredJava =
+        sc.current.parsed.matches('>=1.20.6') ? JavaVersion.VERSION_21 :
+                sc.current.parsed.matches('>=1.18')   ? JavaVersion.VERSION_17 :
+                        sc.current.parsed.matches('>=1.17')   ? JavaVersion.VERSION_16 :
+                                JavaVersion.VERSION_1_8
+
+
 processResources {
     // note: 25w17a is the 3rd snapshot for 1.21.6
 
@@ -101,6 +108,10 @@ processResources {
                 "loader_version": project.loader_version,
                 "versions": versions
     }
+    def mixinJava = "JAVA_${requiredJava.majorVersion}"
+    filesMatching("*.mixins.json") {
+        expand(java: mixinJava)
+    }
 }
 
 tasks.register("collectFile") {
@@ -124,7 +135,7 @@ tasks.register("buildAndCollect") {
     dependsOn(tasks.named("build"), tasks.named("collectFile"))
 }
 
-def targetJavaVersion = 21
+def targetJavaVersion = requiredJava.majorVersion.toInteger()
 
 tasks.withType(JavaCompile).configureEach {
     it.options.encoding = "UTF-8"
@@ -158,11 +169,9 @@ loom {
 }
 
 java {
-    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
-    if (JavaVersion.current() < javaVersion) {
-        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
-    }
     withSourcesJar()
+    sourceCompatibility = requiredJava
+    targetCompatibility = requiredJava
 }
 
 jar {

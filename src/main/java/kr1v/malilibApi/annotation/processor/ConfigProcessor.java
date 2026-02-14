@@ -14,6 +14,7 @@ import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
+import javax.tools.Diagnostic;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 import java.io.Writer;
@@ -23,7 +24,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
-@SupportedSourceVersion(SourceVersion.RELEASE_21)
+@SupportedSourceVersion(SourceVersion.RELEASE_16)
 @SupportedAnnotationTypes("*")
 @AutoService(Processor.class)
 public class ConfigProcessor extends AbstractProcessor {
@@ -85,42 +86,35 @@ public class ConfigProcessor extends AbstractProcessor {
 					annotationStrings.add(toDTO(annotation, elementUtils));
 				}
 
-				switch (memberElement) {
-					case VariableElement field -> {
-						ElementRepresentation representation = new ElementRepresentation("field", field.getSimpleName().toString());
-						representation.annotations = annotationStrings;
-						classRepresentation.add(representation);
-					}
-					case ExecutableElement method -> {
-						ElementRepresentation representation = new ElementRepresentation("method", method.getSimpleName().toString());
-						representation.annotations = annotationStrings;
-						for (VariableElement x : method.getParameters()) {
-							TypeMirror tm = x.asType();
-							representation.parameterNames.add(x.getSimpleName().toString());
+				if (memberElement instanceof VariableElement field) {
+					ElementRepresentation representation = new ElementRepresentation("field", field.getSimpleName().toString());
+					representation.annotations = annotationStrings;
+					classRepresentation.add(representation);
+				} else if (memberElement instanceof ExecutableElement method) {
+					ElementRepresentation representation = new ElementRepresentation("method", method.getSimpleName().toString());
+					representation.annotations = annotationStrings;
+					for (VariableElement x : method.getParameters()) {
+						TypeMirror tm = x.asType();
+						representation.parameterNames.add(x.getSimpleName().toString());
 
-							if (tm.getKind() == TypeKind.DECLARED) {
-								DeclaredType dt = (DeclaredType) tm;
-								TypeElement te = (TypeElement) dt.asElement();
-								if (te != null) {
-									representation.types.add(elementUtils.getBinaryName(te).toString());
-								} else {
-									representation.types.add(tm.toString());
-								}
+						if (tm.getKind() == TypeKind.DECLARED) {
+							DeclaredType dt = (DeclaredType) tm;
+							TypeElement te = (TypeElement) dt.asElement();
+							if (te != null) {
+								representation.types.add(elementUtils.getBinaryName(te).toString());
 							} else {
 								representation.types.add(tm.toString());
 							}
+						} else {
+							representation.types.add(tm.toString());
 						}
-						classRepresentation.add(representation);
 					}
-					case TypeElement inner -> {
-						String binaryName = elementUtils.getBinaryName(inner).toString();
-						ElementRepresentation representation = new ElementRepresentation("innerClass", binaryName);
-						representation.annotations = annotationStrings;
-						classRepresentation.add(representation);
-					}
-					default -> {
-
-					}
+					classRepresentation.add(representation);
+				} else if (memberElement instanceof TypeElement inner) {
+					String binaryName = elementUtils.getBinaryName(inner).toString();
+					ElementRepresentation representation = new ElementRepresentation("innerClass", binaryName);
+					representation.annotations = annotationStrings;
+					classRepresentation.add(representation);
 				}
 			}
 
@@ -137,7 +131,7 @@ public class ConfigProcessor extends AbstractProcessor {
 				println("Written map. classes processed: " + map.size());
 			}
 		} catch (Throwable t) {
-			processingEnv.getMessager().printError("Failed to write resource: " + t);
+			processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "Failed to write resource: " + t);
 		}
 
 		return false;
@@ -154,12 +148,10 @@ public class ConfigProcessor extends AbstractProcessor {
 		List<? extends AnnotationMirror> mirrors = element.getAnnotationMirrors();
 		if (mirrors.isEmpty()) return List.of();
 
-		List<? extends AnnotationTree> annotationTrees = switch (leaf) {
-			case ClassTree ct -> ct.getModifiers().getAnnotations();
-			case VariableTree vt -> vt.getModifiers().getAnnotations();
-			case MethodTree mt -> mt.getModifiers().getAnnotations();
-			default -> List.of();
-		};
+		List<? extends AnnotationTree> annotationTrees = List.of();
+		if (leaf instanceof ClassTree ct) annotationTrees = ct.getModifiers().getAnnotations();
+		if (leaf instanceof VariableTree vt) annotationTrees = vt.getModifiers().getAnnotations();
+		if (leaf instanceof MethodTree mt) annotationTrees = mt.getModifiers().getAnnotations();
 
 		if (annotationTrees.isEmpty()) {
 			return mirrors.stream().map(m -> (AnnotationMirror) m).collect(Collectors.toList());
@@ -266,7 +258,7 @@ public class ConfigProcessor extends AbstractProcessor {
 	}
 
 	private void println(Object o) {
-		processingEnv.getMessager().printNote(o == null ? "null" : o.toString());
+		processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, o == null ? "null" : o.toString());
 	}
 
 	public static class Element {
@@ -492,17 +484,33 @@ public class ConfigProcessor extends AbstractProcessor {
 		private static boolean deepArrayEquals(Object a, Object b) {
 			Class<?> ac = a.getClass().getComponentType();
 			if (ac.isPrimitive()) {
-				return switch (a) {
-					case int[] ints -> Arrays.equals(ints, (int[]) b);
-					case long[] longs -> Arrays.equals(longs, (long[]) b);
-					case short[] shorts -> Arrays.equals(shorts, (short[]) b);
-					case byte[] bytes -> Arrays.equals(bytes, (byte[]) b);
-					case char[] chars -> Arrays.equals(chars, (char[]) b);
-					case boolean[] booleans -> Arrays.equals(booleans, (boolean[]) b);
-					case float[] floats -> Arrays.equals(floats, (float[]) b);
-					case double[] doubles -> Arrays.equals(doubles, (double[]) b);
-					default -> false;
-				};
+				if (a instanceof int[]) {
+					return Arrays.equals((int[]) a, (int[]) b);
+				}
+				if (a instanceof long[]) {
+					return Arrays.equals((long[]) a, (long[]) b);
+				}
+				if (a instanceof short[]) {
+					return Arrays.equals((short[]) a, (short[]) b);
+				}
+				if (a instanceof byte[]) {
+					return Arrays.equals((byte[]) a, (byte[]) b);
+				}
+				if (a instanceof char[]) {
+					return Arrays.equals((char[]) a, (char[]) b);
+				}
+				if (a instanceof boolean[]) {
+					return Arrays.equals((boolean[]) a, (boolean[]) b);
+				}
+				if (a instanceof float[]) {
+					return Arrays.equals((float[]) a, (float[]) b);
+				}
+				if (a instanceof double[]) {
+					return Arrays.equals((double[]) a, (double[]) b);
+				}
+
+				return false;
+
 			}
 			return Arrays.deepEquals((Object[]) a, (Object[]) b);
 		}
@@ -512,33 +520,29 @@ public class ConfigProcessor extends AbstractProcessor {
 			if (v.getClass().isArray()) {
 				Class<?> comp = v.getClass().getComponentType();
 				if (comp.isPrimitive()) {
-					switch (v) {
-						case int[] ints -> {
-							return Arrays.hashCode(ints);
-						}
-						case long[] longs -> {
-							return Arrays.hashCode(longs);
-						}
-						case short[] shorts -> {
-							return Arrays.hashCode(shorts);
-						}
-						case byte[] bytes -> {
-							return Arrays.hashCode(bytes);
-						}
-						case char[] chars -> {
-							return Arrays.hashCode(chars);
-						}
-						case boolean[] booleans -> {
-							return Arrays.hashCode(booleans);
-						}
-						case float[] floats -> {
-							return Arrays.hashCode(floats);
-						}
-						case double[] doubles -> {
-							return Arrays.hashCode(doubles);
-						}
-						default -> {
-						}
+					if (v instanceof int[]) {
+						return Arrays.hashCode((int[]) v);
+					}
+					if (v instanceof long[]) {
+						return Arrays.hashCode((long[]) v);
+					}
+					if (v instanceof short[]) {
+						return Arrays.hashCode((short[]) v);
+					}
+					if (v instanceof byte[]) {
+						return Arrays.hashCode((byte[]) v);
+					}
+					if (v instanceof char[]) {
+						return Arrays.hashCode((char[]) v);
+					}
+					if (v instanceof boolean[]) {
+						return Arrays.hashCode((boolean[]) v);
+					}
+					if (v instanceof float[]) {
+						return Arrays.hashCode((float[]) v);
+					}
+					if (v instanceof double[]) {
+						return Arrays.hashCode((double[]) v);
 					}
 				} else {
 					return Arrays.deepHashCode((Object[]) v);
@@ -552,33 +556,29 @@ public class ConfigProcessor extends AbstractProcessor {
 			if (v.getClass().isArray()) {
 				Class<?> comp = v.getClass().getComponentType();
 				if (comp.isPrimitive()) {
-					switch (v) {
-						case int[] ints -> {
-							return Arrays.toString(ints);
-						}
-						case long[] longs -> {
-							return Arrays.toString(longs);
-						}
-						case short[] shorts -> {
-							return Arrays.toString(shorts);
-						}
-						case byte[] bytes -> {
-							return Arrays.toString(bytes);
-						}
-						case char[] chars -> {
-							return Arrays.toString(chars);
-						}
-						case boolean[] booleans -> {
-							return Arrays.toString(booleans);
-						}
-						case float[] floats -> {
-							return Arrays.toString(floats);
-						}
-						case double[] doubles -> {
-							return Arrays.toString(doubles);
-						}
-						default -> {
-						}
+					if (v instanceof int[]) {
+						return Arrays.toString((int[]) v);
+					}
+					if (v instanceof long[]) {
+						return Arrays.toString((long[]) v);
+					}
+					if (v instanceof short[]) {
+						return Arrays.toString((short[]) v);
+					}
+					if (v instanceof byte[]) {
+						return Arrays.toString((byte[]) v);
+					}
+					if (v instanceof char[]) {
+						return Arrays.toString((char[]) v);
+					}
+					if (v instanceof boolean[]) {
+						return Arrays.toString((boolean[]) v);
+					}
+					if (v instanceof float[]) {
+						return Arrays.toString((float[]) v);
+					}
+					if (v instanceof double[]) {
+						return Arrays.toString((double[]) v);
 					}
 				}
 				return Arrays.toString((Object[]) v);

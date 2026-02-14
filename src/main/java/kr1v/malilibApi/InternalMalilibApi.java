@@ -178,7 +178,7 @@ public class InternalMalilibApi {
 
 	public static ModRepresentation.Tab getActiveTabFor(String modId) {
 		ModRepresentation.Tab tab = getMod(modId).activeTab;
-		if (tab == null) tab = getTabsFor(modId).getFirst();
+		if (tab == null) tab = getTabsFor(modId).get(0);
 		return tab;
 	}
 

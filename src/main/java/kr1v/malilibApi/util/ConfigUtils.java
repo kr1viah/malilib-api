@@ -54,75 +54,71 @@ public final class ConfigUtils {
 
 	private static void handleAnnotations(ConfigProcessor.Element element, List<IConfigBase> list, Class<?> declaringClass, String modId, boolean static_, Object instance) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException {
 		for (Annotation annotation : element.annotations) {
-			switch (annotation) {
-				case PopupConfig popupConfig -> {
-					if (!static_) {
-						throw new IllegalStateException("Don't use PopupConfigs inside of a ConfigObject!");
-					}
-
-					assert element.aClass != null;
-					Class<?> klass = element.aClass;
-					String name = popupConfig.name();
-					if (name.isEmpty()) {
-						name = klass.getSimpleName();
-					}
-					String buttonName;
-					if (popupConfig.buttonName().isEmpty()) {
-						buttonName = "Edit " + name;
-					} else {
-						buttonName = popupConfig.buttonName();
-					}
-
-					List<IConfigBase> configs = generateOptions(klass, modId, true, null);
-
-					ConfigObject<?> configObject = new ConfigObject<>(
-							name,
-							configs,
-							popupConfig.comment(),
-							buttonName,
-							name,
-							name,
-							popupConfig.distanceFromTops(),
-							popupConfig.distanceFromSides(),
-							popupConfig.width(),
-							popupConfig.height()
-					);
-
-					boolean prev = InternalMalilibApi.getDefaultEnabled();
-					InternalMalilibApi.setDefaultEnabled(klass.getAnnotation(PopupConfig.class).defaultEnabled());
-					InternalMalilibApi.cacheFor(modId).put(klass, configs);
-					InternalMalilibApi.setDefaultEnabled(prev);
-					InternalMalilibApi.registerTab(modId, AnnotationUtils.nameForConfig(klass), list, true, 0); // order doesnt matter for popups
-
-					list.add(configObject);
+			if (annotation instanceof PopupConfig popupConfig) {
+				if (!static_) {
+					throw new IllegalStateException("Don't use PopupConfigs inside of a ConfigObject!");
 				}
-				case Label label -> list.add(new ConfigLabel(label.value()));
-				case Extras extras -> {
-					// if is @Extras or any is "" (e.g. @Extras {"One", ""}) run here
-					if (extras.runAt().length == 0 || Arrays.stream(extras.runAt()).anyMatch(String::isEmpty)) {
-						element.method.setAccessible(true);
-						element.method.invoke(instance, list);
-					}
+
+				assert element.aClass != null;
+				Class<?> klass = element.aClass;
+				String name = popupConfig.name();
+				if (name.isEmpty()) {
+					name = klass.getSimpleName();
 				}
-				case Marker marker -> {
-					if (marker.value().isEmpty()) {
-						continue;
-					}
-					for (Method m : declaringClass.getDeclaredMethods()) {
-						if (m.isAnnotationPresent(Extras.class)) {
-							Extras extras = m.getAnnotation(Extras.class);
-							for (String value : extras.runAt()) {
-								if (marker.value().equals(value)) {
-									m.setAccessible(true);
-									m.invoke(instance, list);
-								}
+				String buttonName;
+				if (popupConfig.buttonName().isEmpty()) {
+					buttonName = "Edit " + name;
+				} else {
+					buttonName = popupConfig.buttonName();
+				}
+
+				List<IConfigBase> configs = generateOptions(klass, modId, true, null);
+
+				ConfigObject<?> configObject = new ConfigObject<>(
+						name,
+						configs,
+						popupConfig.comment(),
+						buttonName,
+						name,
+						name,
+						popupConfig.distanceFromTops(),
+						popupConfig.distanceFromSides(),
+						popupConfig.width(),
+						popupConfig.height()
+				);
+
+				boolean prev = InternalMalilibApi.getDefaultEnabled();
+				InternalMalilibApi.setDefaultEnabled(klass.getAnnotation(PopupConfig.class).defaultEnabled());
+				InternalMalilibApi.cacheFor(modId).put(klass, configs);
+				InternalMalilibApi.setDefaultEnabled(prev);
+				InternalMalilibApi.registerTab(modId, AnnotationUtils.nameForConfig(klass), list, true, 0); // order doesnt matter for popups
+
+				list.add(configObject);
+			} else if (annotation instanceof Label label) {
+				list.add(new ConfigLabel(label.value()));
+			} else if (annotation instanceof Extras extras) {
+				// if is @Extras or any is "" (e.g. @Extras {"One", ""}) run here
+				if (extras.runAt().length == 0 || Arrays.stream(extras.runAt()).anyMatch(String::isEmpty)) {
+					element.method.setAccessible(true);
+					element.method.invoke(instance, list);
+				}
+			} else if (annotation instanceof Marker marker) {
+				if (marker.value().isEmpty()) {
+					continue;
+				}
+				for (Method m : declaringClass.getDeclaredMethods()) {
+					if (m.isAnnotationPresent(Extras.class)) {
+						Extras extras = m.getAnnotation(Extras.class);
+						for (String value : extras.runAt()) {
+							if (marker.value().equals(value)) {
+								m.setAccessible(true);
+								m.invoke(instance, list);
 							}
 						}
 					}
 				}
-				case Hide ignored -> InternalMalilibApi.addHide(element.field.get(instance));
-				default -> {
-				}
+			} else if (annotation instanceof Hide) {
+				InternalMalilibApi.addHide(element.field.get(instance));
 			}
 		}
 	}
