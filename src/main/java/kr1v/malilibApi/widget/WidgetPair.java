@@ -128,7 +128,7 @@ public class WidgetPair extends WidgetContainer {
 //			ButtonGeneric button = this.createResetButton(x, y, keybind);
 
 			ConfigOptionChangeListenerKeybind listener = new ConfigOptionChangeListenerKeybind(keybind, buttonHotkey, resetButton, this.host);
-			this.host.addKeybindChangeListener(listener::updateButtons);
+//			this.host.addKeybindChangeListener(listener::updateButtons);
 			multipleListenerReset.add(listener);
 //			this.addButton(button, listener);
 		}

@@ -49,7 +49,7 @@ public abstract class CustomConfigBase<T extends IConfigBase> implements IConfig
 		if (this.prettyName.isEmpty()) {
 			return StringUtils.splitCamelCase(this.getName());
 		} else {
-			return StringUtils.getTranslatedOrFallback(this.prettyName, this.prettyName);
+			return StringUtils.translate(this.prettyName);
 		}
 	}
 
