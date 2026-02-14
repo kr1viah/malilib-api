@@ -1,5 +1,6 @@
 package kr1v.malilibApi.widget;
 
+import fi.dy.masa.malilib.gui.GuiBase;
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
 import fi.dy.masa.malilib.util.StringUtils;
 import kr1v.malilibApi.config._new.ConfigList;
@@ -19,7 +20,7 @@ public class ConfigListButton extends ButtonGeneric {
 	@Override
 	protected boolean onMouseClickedImpl(/*? if >=1.21.10 {*//*net.minecraft.client.gui.Click click, boolean doubleClick*//*? } else {*/int mouseX, int mouseY, int mouseButton/*? }*/) {
 		super.onMouseClickedImpl(/*? if >=1.21.10 {*//*click, doubleClick*//*? } else {*/mouseX, mouseY, mouseButton/*? }*/);
-		MinecraftClient.getInstance().setScreen(new ConfigListScreen(list, null, MinecraftClient.getInstance().currentScreen));
+		GuiBase.openGui(new ConfigListScreen(list, null, MinecraftClient.getInstance().currentScreen));
 		return true;
 	}
 

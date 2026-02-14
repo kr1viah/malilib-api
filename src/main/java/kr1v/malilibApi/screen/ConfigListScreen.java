@@ -145,7 +145,7 @@ public class ConfigListScreen extends GuiConfigsBase {
 
 	@Override
 	protected void closeGui(boolean showParent) {
-		mc.setScreen(customParent);
+		GuiBase.openGui(customParent);
 	}
 
 	@Override

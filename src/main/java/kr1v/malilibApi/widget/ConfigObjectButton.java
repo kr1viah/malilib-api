@@ -1,5 +1,6 @@
 package kr1v.malilibApi.widget;
 
+import fi.dy.masa.malilib.gui.GuiBase;
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
 import fi.dy.masa.malilib.util.GuiUtils;
 import kr1v.malilibApi.config._new.ConfigObject;
@@ -17,10 +18,12 @@ public class ConfigObjectButton extends ButtonGeneric {
 		}
 	}
 
+	// TODO: fix sliders having the same issue as previously buttons
+
 	@Override
 	protected boolean onMouseClickedImpl(/*? if >=1.21.10 {*//*net.minecraft.client.gui.Click click, boolean doubleClick*//*? } else {*/int mouseX, int mouseY, int mouseButton/*? }*/) {
 		super.onMouseClickedImpl(/*? if >=1.21.10 {*//*click, doubleClick*//*? } else {*/mouseX, mouseY, mouseButton/*? }*/);
-		MinecraftClient.getInstance().setScreen(
+		GuiBase.openGui(
 				new ConfigObjectScreen(
 						configObject.configs,
 						GuiUtils.getCurrentScreen(),

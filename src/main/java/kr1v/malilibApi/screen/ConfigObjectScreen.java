@@ -159,6 +159,6 @@ public class ConfigObjectScreen extends GuiConfigsBase {
 
 	@Override
 	protected void closeGui(boolean showParent) {
-		mc.setScreen(customParent);
+		GuiBase.openGui(customParent);
 	}
 }
