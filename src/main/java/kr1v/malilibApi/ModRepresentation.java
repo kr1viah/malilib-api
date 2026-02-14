@@ -32,60 +32,7 @@ public class ModRepresentation {
 		this.modId = modId;
 	}
 
-	public static final class Tab {
-		private final String translationKey;
-		private final List<IConfigBase> options;
-		private final boolean isPopup;
-		private final int order;
-
-		public Tab(String translationKey, List<IConfigBase> options, boolean isPopup, int order) {
-			this.translationKey = translationKey;
-			this.options = options == null ? null : Collections.unmodifiableList(new ArrayList<>(options));
-			this.isPopup = isPopup;
-			this.order = order;
-		}
-
-		public String translationKey() {
-			return translationKey;
-		}
-
-		public List<IConfigBase> options() {
-			return options;
-		}
-
-		public boolean isPopup() {
-			return isPopup;
-		}
-
-		public int order() {
-			return order;
-		}
-
-		@Override
-		public boolean equals(Object o) {
-			if (this == o) return true;
-			if (!(o instanceof Tab)) return false;
-			Tab tab = (Tab) o;
-			return isPopup == tab.isPopup &&
-					order == tab.order &&
-					Objects.equals(translationKey, tab.translationKey) &&
-					Objects.equals(options, tab.options);
-		}
-
-		@Override
-		public int hashCode() {
-			return Objects.hash(translationKey, options, isPopup, order);
-		}
-
-		@Override
-		public String toString() {
-			return "Tab[" +
-					"translationKey=" + translationKey +
-					", options=" + options +
-					", isPopup=" + isPopup +
-					", order=" + order +
-					']';
-		}
+	public record Tab(String translationKey, List<IConfigBase> options, boolean isPopup, int order) {
 	}
 
 	public void openScreen() {
