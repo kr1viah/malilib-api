@@ -1,5 +1,7 @@
 ## 0.4.0 changelog
 
+Note: Internally, a lot of things changed. I expect a lot of bugs to arise.
+
 ### Users
 
 * Don't need java 21 on versions <1.20.5
