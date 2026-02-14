@@ -111,7 +111,7 @@ public class ModRepresentation {
 						.thenComparingInt(ModRepresentation.Tab::order)
 						.thenComparing(ModRepresentation.Tab::translationKey)
 				)
-				.toList();
+				.collect(Collectors.toList());
 	}
 
 	public Tab activeTab() {
