@@ -94,7 +94,11 @@ public class ConfigPair<L extends IConfigBase & IConfigResettable, R extends ICo
 				WidgetBase[] widgets = new WidgetBase[2];
 
 				String labelReset = StringUtils.translate("malilib.gui.button.reset.caps");
-				ButtonGeneric resetButton = new ButtonGeneric(x + configWidth + 2, y, -1, 20, labelReset);
+				//? if <=1.17.1 {
+				int resetButtonXOffset = 4;
+				//? } else
+				//int resetButtonXOffset = 2;
+				ButtonGeneric resetButton = new ButtonGeneric(x + configWidth + resetButtonXOffset, y, -1, 20, labelReset);
 				resetButton.setEnabled(pair.isModified());
 
 				WidgetPair.MultipleReset listenerReset = new WidgetPair.MultipleReset();
