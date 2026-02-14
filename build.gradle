@@ -69,7 +69,7 @@ configurations.configureEach {
 }
 
 def requiredJava =
-        sc.current.parsed.matches('>=1.20.6') ? JavaVersion.VERSION_21 :
+        sc.current.parsed.matches('>=1.20.5') ? JavaVersion.VERSION_21 :
                 sc.current.parsed.matches('>=1.18')   ? JavaVersion.VERSION_17 :
                         sc.current.parsed.matches('>=1.17')   ? JavaVersion.VERSION_16 :
                                 JavaVersion.VERSION_1_8
@@ -87,7 +87,7 @@ processResources {
         case "1.19.4" -> ">=1.18 <=1.19.4"
         case "1.20.1" -> ">=1.20 <=1.20.1"
         case "1.20.4" ->  ">=1.20.3 <=1.20.4"
-        case "1.20.6" ->  ">=1.20.5 <=1.20.6"
+//        case "1.20.6" ->  ">=1.20.5 <=1.20.6"
         case "1.21" ->    ">=1.21 <=1.21.1"
         case "1.21.5" ->  ">1.21.1 <=1.21.5"
         case "1.21.8" ->  ">=1.21.6 <=1.21.8" // I cant specify >=25w17a??
@@ -216,10 +216,10 @@ publishMods {
                     startV = "1.20.3"
                     endV = "1.20.4"
                 }
-                case "1.20.6" -> {
-                    startV = "1.20.5"
-                    endV = "1.20.6"
-                }
+//                case "1.20.6" -> {
+//                    startV = "1.20.5"
+//                    endV = "1.20.6"
+//                }
                 case "1.21" -> {
                     startV = "1.21"
                     endV = "1.21.1"
