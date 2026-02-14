@@ -8,7 +8,8 @@
     "accessor.WidgetConfigOptionBaseAccessor",
     "malilib.ButtonGenericMixin",
     "malilib.InputEventHandlerMixin",
-    "malilib.WidgetConfigOptionMixin"
+    "malilib.WidgetConfigOptionMixin",
+    "malilib.WidgetSliderMixin"
   ],
   "client": [
     "MinecraftClientMixin",
