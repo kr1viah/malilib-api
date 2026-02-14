@@ -10,6 +10,7 @@ import kr1v.malilibApi.util.AnnotationUtils;
 import net.minecraft.client.gui.screen.Screen;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ModRepresentation {
 	public final Map<Class<?>, List<IConfigBase>> configs = new TreeMap<>(Comparator.comparing((Class<?> x) -> AnnotationUtils.nameForConfig(x) + x.getName()));
