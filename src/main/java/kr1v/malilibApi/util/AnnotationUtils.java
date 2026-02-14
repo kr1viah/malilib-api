@@ -3,8 +3,6 @@ package kr1v.malilibApi.util;
 import kr1v.malilibApi.annotation.Config;
 import kr1v.malilibApi.annotation.PopupConfig;
 
-import java.util.*;
-
 public final class AnnotationUtils {
 	private AnnotationUtils() {
 	}

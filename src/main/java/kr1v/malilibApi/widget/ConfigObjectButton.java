@@ -5,7 +5,6 @@ import fi.dy.masa.malilib.gui.button.ButtonGeneric;
 import fi.dy.masa.malilib.util.GuiUtils;
 import kr1v.malilibApi.config._new.ConfigObject;
 import kr1v.malilibApi.screen.ConfigObjectScreen;
-import net.minecraft.client.MinecraftClient;
 
 public class ConfigObjectButton extends ButtonGeneric {
 	private final ConfigObject<?> configObject;

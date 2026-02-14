@@ -15,7 +15,6 @@ import kr1v.malilibApi.widget.ConfigListButton;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Supplier;
 
 public class ConfigList<T extends IConfigBase & IConfigResettable> extends CustomConfigBase<ConfigList<T>> implements IVariableHotkeyContainer {
