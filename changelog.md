@@ -2,7 +2,8 @@
 
 ### Users
 
-* 1.19.X support!
+* Don't need java 21 on versions <1.20.5
+* 1.17.X, 1.18.X, and 1.19.X support!
 * Dirt backgrounds on <1.20.4
 
 ### Mod developers
