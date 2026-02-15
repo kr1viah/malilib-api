@@ -131,9 +131,11 @@ public class ConfigObject<T> extends CustomConfigBase<ConfigObject<T>> implement
 	public List<IHotkey> getHotkeys() {
 		List<IHotkey> hotkeys = new ArrayList<>();
 		for (IConfigBase config : configs) {
-			if (config instanceof IHotkey hotkey) {
+			if (config instanceof IHotkey) {
+				IHotkey hotkey = (IHotkey) config;
 				hotkeys.add(hotkey);
-			} else if (config instanceof IHotkeyContainer container) {
+			} else if (config instanceof IHotkeyContainer) {
+				IHotkeyContainer container = (IHotkeyContainer) config;
 				hotkeys.addAll(container.getHotkeys());
 			}
 		}

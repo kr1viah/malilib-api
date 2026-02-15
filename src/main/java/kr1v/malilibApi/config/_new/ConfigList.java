@@ -136,19 +136,23 @@ public class ConfigList<T extends IConfigBase & IConfigResettable> extends Custo
 			if (!isFirst) {
 				builder.append(", ");
 			}
-			if (item instanceof ConfigHotkey configHotkey) {
+			if (item instanceof ConfigHotkey) {
+				ConfigHotkey configHotkey = (ConfigHotkey) item;
 				String stringValue = configHotkey.getStringValue();
 				builder.append(stringValue.isEmpty() ? "NONE" : configHotkey.getStringValue().replace(",", " + "));
-			} else if (item instanceof ConfigBooleanHotkeyed configBooleanHotkeyed) {
+			} else if (item instanceof ConfigBooleanHotkeyed) {
+				ConfigBooleanHotkeyed configBooleanHotkeyed = (ConfigBooleanHotkeyed) item;
 				String stringValue = configBooleanHotkeyed.getKeybind().getStringValue();
 				builder.append("(")
 						.append(configBooleanHotkeyed.getStringValue())
 						.append(", ")
 						.append(stringValue.isEmpty() ? "NONE" : stringValue.replace(",", " + "))
 						.append(")");
-			} else if (item instanceof IStringValue representable) {
+			} else if (item instanceof IStringValue) {
+				IStringValue representable = (IStringValue) item;
 				builder.append(representable.getStringValue());
-			} else if (item instanceof ConfigList<?> configList) {
+			} else if (item instanceof ConfigList<?>) {
+				ConfigList<?> configList = (ConfigList<?>) item;
 				builder.append(configList);
 			} else {
 				if (item.toString().equals(toIdentityString(item))) {
@@ -177,9 +181,11 @@ public class ConfigList<T extends IConfigBase & IConfigResettable> extends Custo
 	public List<IHotkey> getHotkeys() {
 		List<IHotkey> hotkeys = new ArrayList<>();
 		for (IConfigBase config : list) {
-			if (config instanceof IHotkey hotkey) {
+			if (config instanceof IHotkey) {
+				IHotkey hotkey = (IHotkey) config;
 				hotkeys.add(hotkey);
-			} else if (config instanceof IHotkeyContainer container) {
+			} else if (config instanceof IHotkeyContainer) {
+				IHotkeyContainer container = (IHotkeyContainer) config;
 				hotkeys.addAll(container.getHotkeys());
 			}
 		}

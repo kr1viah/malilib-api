@@ -79,7 +79,7 @@ public class ArrayBackedCycleConfig<T> extends ConfigCycle<T> {
 		}
 	}
 
-	public static class ArrayBackedCycleEntry<T> extends ConfigCycle.CycleConfigEntry<T> {
+	public static class ArrayBackedCycleEntry<T> extends CycleConfigEntry<T> {
 		private final T[] options;
 		final Function<T, String> displayNameProvider;
 

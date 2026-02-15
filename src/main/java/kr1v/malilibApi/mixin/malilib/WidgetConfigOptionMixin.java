@@ -42,17 +42,20 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
 							 @Local(name = "y") int y,
 							 @Local(name = "configWidth") int configWidth,
 							 @Local(name = "configHeight") int configHeight) {
-		for (var entry : InternalMalilibApi.customConfigMap.entrySet()) {
+		for (java.util.Map.Entry<Class<?>, IWidgetSupplier<?>> entry : InternalMalilibApi.customConfigMap.entrySet()) {
 			Class<?> configClass = entry.getKey();
 			IWidgetSupplier<?> widgetSupplier = entry.getValue();
 
 			if (configClass.isInstance(config)){
-				//noinspection rawtypes
-				if (widgetSupplier instanceof IButtonBasedResettableWidgetSupplier buttonGiver) {
+				if (widgetSupplier instanceof IButtonBasedResettableWidgetSupplier) {
+					//noinspection rawtypes
+					IButtonBasedResettableWidgetSupplier buttonGiver = (IButtonBasedResettableWidgetSupplier) widgetSupplier;
 					//noinspection unchecked
 					ButtonBase button = buttonGiver.getButton((WidgetConfigOption) (Object) this, config, x, y, configWidth, configHeight);
 					this.addConfigButtonEntry(x + configWidth + 2, y, (IConfigResettable) config, button);
-				} else if (widgetSupplier instanceof @SuppressWarnings("rawtypes")IWidgetResettableSupplier widgetGiver) {
+				} else if (widgetSupplier instanceof IWidgetResettableSupplier) {
+					//noinspection rawtypes
+					IWidgetResettableSupplier widgetGiver = (IWidgetResettableSupplier) widgetSupplier;
 					//noinspection unchecked
 					WidgetBase[] widgetsToAdd = widgetGiver.getWidget((WidgetConfigOption) (Object) this, config, x, y, configWidth, configHeight);
 					for (WidgetBase widget : widgetsToAdd) {

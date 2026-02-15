@@ -82,10 +82,11 @@ public class ConfigPair<L extends IConfigBase & IConfigResettable, R extends ICo
 
 	static {
 		InternalMalilibApi.registerWidgetBasedConfigType(ConfigPair.class, (IWidgetResettableSupplier<ConfigPair<?, ?>>) (widgetConfigOption, pair, x, y, configWidth, configHeight) -> {
-			var accessor1 = (WidgetConfigOptionAccessor) widgetConfigOption;
-			var accessor2 = (WidgetConfigOptionBaseAccessor) widgetConfigOption;
+			WidgetConfigOptionAccessor accessor1 = (WidgetConfigOptionAccessor) widgetConfigOption;
+			WidgetConfigOptionBaseAccessor accessor2 = (WidgetConfigOptionBaseAccessor) widgetConfigOption;
 
-			if (widgetConfigOption instanceof WidgetPair.WidgetConfigOptionPair pair1) {
+			if (widgetConfigOption instanceof WidgetPair.WidgetConfigOptionPair) {
+				WidgetPair.WidgetConfigOptionPair pair1 = (WidgetPair.WidgetConfigOptionPair) widgetConfigOption;
 				WidgetPair pair2 = pair1.getEnclosing();
 				ButtonGeneric resetButton = pair2.resetButton;
 				WidgetPair.MultipleReset listenerReset = pair2.multipleListenerReset;
@@ -118,12 +119,19 @@ public class ConfigPair<L extends IConfigBase & IConfigResettable, R extends ICo
 	@Override
 	public List<IHotkey> getHotkeys() {
 		List<IHotkey> hotkeys = new ArrayList<>();
-		for (IConfigBase config : List.of(left, right)) {
-			if (config instanceof IHotkey hotkey) {
-				hotkeys.add(hotkey);
-			} else if (config instanceof IHotkeyContainer container) {
-				hotkeys.addAll(container.getHotkeys());
-			}
+		if (left instanceof IHotkey) {
+			IHotkey hotkey = (IHotkey) left;
+			hotkeys.add(hotkey);
+		} else if (left instanceof IHotkeyContainer) {
+			IHotkeyContainer container = (IHotkeyContainer) left;
+			hotkeys.addAll(container.getHotkeys());
+		}
+		if (right instanceof IHotkey) {
+			IHotkey hotkey = (IHotkey) right;
+			hotkeys.add(hotkey);
+		} else if (right instanceof IHotkeyContainer) {
+			IHotkeyContainer container = (IHotkeyContainer) right;
+			hotkeys.addAll(container.getHotkeys());
 		}
 		return hotkeys;
 	}

@@ -32,7 +32,62 @@ public class ModRepresentation {
 		this.modId = modId;
 	}
 
-	public record Tab(String translationKey, List<IConfigBase> options, boolean isPopup, int order) {
+	public static final class Tab {
+		private final String translationKey;
+		private final List<IConfigBase> options;
+		private final boolean isPopup;
+		private final int order;
+
+		public Tab(String translationKey, List<IConfigBase> options, boolean isPopup, int order) {
+			this.translationKey = translationKey;
+			// defensive copy to approximate record immutability
+			this.options = options == null ? null : Collections.unmodifiableList(new ArrayList<>(options));
+			this.isPopup = isPopup;
+			this.order = order;
+		}
+
+		/* -- Record-style accessors (same names as a record would provide) -- */
+		public String translationKey() {
+			return translationKey;
+		}
+
+		public List<IConfigBase> options() {
+			return options;
+		}
+
+		public boolean isPopup() {
+			return isPopup;
+		}
+
+		public int order() {
+			return order;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (!(o instanceof Tab)) return false;
+			Tab tab = (Tab) o;
+			return isPopup == tab.isPopup &&
+					order == tab.order &&
+					Objects.equals(translationKey, tab.translationKey) &&
+					Objects.equals(options, tab.options);
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(translationKey, options, isPopup, order);
+		}
+
+		@Override
+		public String toString() {
+			return "Tab[" +
+					"translationKey=" + translationKey +
+					", options=" + options +
+					", isPopup=" + isPopup +
+					", order=" + order +
+					']';
+		}
 	}
 
 	public void openScreen() {
@@ -44,7 +99,7 @@ public class ModRepresentation {
 	}
 
 	public void registerTab(String tabName, List<IConfigBase> options, boolean isPopup, int order) {
-		this.tabs.add(new ModRepresentation.Tab(tabName, options, isPopup, order));
+		this.tabs.add(new Tab(tabName, options, isPopup, order));
 	}
 
 	public void unregisterTab(String tabName) {
@@ -55,9 +110,9 @@ public class ModRepresentation {
 		return tabs
 				.stream()
 				.sorted(Comparator
-						.comparing(ModRepresentation.Tab::isPopup)
-						.thenComparingInt(ModRepresentation.Tab::order)
-						.thenComparing(ModRepresentation.Tab::translationKey)
+						.comparing(Tab::isPopup)
+						.thenComparingInt(Tab::order)
+						.thenComparing(Tab::translationKey)
 				)
 				.collect(Collectors.toList());
 	}
@@ -68,7 +123,7 @@ public class ModRepresentation {
 	}
 
 	public Tab tabByTranslationKey(String translationKey) {
-		for (ModRepresentation.Tab tab : tabs()) {
+		for (Tab tab : tabs()) {
 			if (tab.translationKey().equals(translationKey)) {
 				return tab;
 			}

@@ -24,11 +24,11 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
-@SupportedSourceVersion(SourceVersion.RELEASE_16)
+@SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedAnnotationTypes("*")
 @AutoService(Processor.class)
 public class ConfigProcessor extends AbstractProcessor {
-	public static final Gson GSON = new GsonBuilder().registerTypeAdapter(ConfigProcessor.ValueDTO.class, new ConfigProcessor.ValueDTODeserializer()).setPrettyPrinting().create();
+	public static final Gson GSON = new GsonBuilder().registerTypeAdapter(ValueDTO.class, new ValueDTODeserializer()).setPrettyPrinting().create();
 
 	// fqcn -> class representation
 	private static final Map<String, List<ElementRepresentation>> map = new HashMap<>();
@@ -58,7 +58,7 @@ public class ConfigProcessor extends AbstractProcessor {
 	public boolean process(Set<? extends TypeElement> annos, RoundEnvironment roundEnv) {
 		Set<TypeElement> classes = new HashSet<>();
 
-		for (var e : roundEnv.getRootElements()) {
+		for (javax.lang.model.element.Element e : roundEnv.getRootElements()) {
 			handle(e, classes);
 		}
 
@@ -86,11 +86,13 @@ public class ConfigProcessor extends AbstractProcessor {
 					annotationStrings.add(toDTO(annotation, elementUtils));
 				}
 
-				if (memberElement instanceof VariableElement field) {
+				if (memberElement instanceof VariableElement) {
+					VariableElement field = (VariableElement) memberElement;
 					ElementRepresentation representation = new ElementRepresentation("field", field.getSimpleName().toString());
 					representation.annotations = annotationStrings;
 					classRepresentation.add(representation);
-				} else if (memberElement instanceof ExecutableElement method) {
+				} else if (memberElement instanceof ExecutableElement) {
+					ExecutableElement method = (ExecutableElement) memberElement;
 					ElementRepresentation representation = new ElementRepresentation("method", method.getSimpleName().toString());
 					representation.annotations = annotationStrings;
 					for (VariableElement x : method.getParameters()) {
@@ -110,7 +112,9 @@ public class ConfigProcessor extends AbstractProcessor {
 						}
 					}
 					classRepresentation.add(representation);
-				} else if (memberElement instanceof TypeElement inner) {
+				} else if (memberElement instanceof TypeElement) {
+					TypeElement inner = (TypeElement) memberElement;
+
 					String binaryName = elementUtils.getBinaryName(inner).toString();
 					ElementRepresentation representation = new ElementRepresentation("innerClass", binaryName);
 					representation.annotations = annotationStrings;
@@ -146,12 +150,12 @@ public class ConfigProcessor extends AbstractProcessor {
 
 		Tree leaf = elementPath.getLeaf();
 		List<? extends AnnotationMirror> mirrors = element.getAnnotationMirrors();
-		if (mirrors.isEmpty()) return List.of();
+		if (mirrors.isEmpty()) return new ArrayList<>(0);
 
-		List<? extends AnnotationTree> annotationTrees = List.of();
-		if (leaf instanceof ClassTree ct) annotationTrees = ct.getModifiers().getAnnotations();
-		if (leaf instanceof VariableTree vt) annotationTrees = vt.getModifiers().getAnnotations();
-		if (leaf instanceof MethodTree mt) annotationTrees = mt.getModifiers().getAnnotations();
+		List<? extends AnnotationTree> annotationTrees = new ArrayList<>(0);
+		if (leaf instanceof ClassTree) annotationTrees = ((ClassTree)leaf).getModifiers().getAnnotations();
+		if (leaf instanceof VariableTree) annotationTrees = ((VariableTree)leaf).getModifiers().getAnnotations();
+		if (leaf instanceof MethodTree) annotationTrees = ((MethodTree)leaf).getModifiers().getAnnotations();
 
 		if (annotationTrees.isEmpty()) {
 			return mirrors.stream().map(m -> (AnnotationMirror) m).collect(Collectors.toList());
@@ -164,11 +168,12 @@ public class ConfigProcessor extends AbstractProcessor {
 
 			for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> ev : am.getElementValues().entrySet()) {
 				Object val = ev.getValue().getValue();
-				if (val instanceof List<?> listVal) {
-					for (Object innerObj : listVal) {
-						if (innerObj instanceof AnnotationValue innerAv) {
-							Object innerVal = innerAv.getValue();
-							if (innerVal instanceof AnnotationMirror innerAm) {
+				if (val instanceof List<?>) {
+					for (Object innerObj : (List<?>) val) {
+						if (innerObj instanceof AnnotationValue) {
+							Object innerVal = ((AnnotationValue)innerObj).getValue();
+							if (innerVal instanceof AnnotationMirror) {
+								AnnotationMirror innerAm = (AnnotationMirror) innerVal;
 								String innerType = innerAm.getAnnotationType().toString();
 								mirrorsByType.computeIfAbsent(innerType, k -> new ArrayDeque<>()).addLast(innerAm);
 							}
@@ -186,13 +191,15 @@ public class ConfigProcessor extends AbstractProcessor {
 
 				for (ExpressionTree arg : at.getArguments()) {
 					ExpressionTree expr = arg;
-					if (expr instanceof AssignmentTree asg) {
-						expr = asg.getExpression();
+					if (expr instanceof AssignmentTree) {
+						expr = ((AssignmentTree)expr).getExpression();
 					}
 
-					if (expr instanceof NewArrayTree newArr) {
+					if (expr instanceof NewArrayTree) {
+						NewArrayTree newArr = (NewArrayTree) expr;
 						for (ExpressionTree init : newArr.getInitializers()) {
-							if (init instanceof AnnotationTree innerAt) {
+							if (init instanceof AnnotationTree) {
+								AnnotationTree innerAt = (AnnotationTree) init;
 								TypeMirror innerAnnType = trees.getTypeMirror(new TreePath(elementPath, innerAt.getAnnotationType()));
 								AnnotationMirror matched = null;
 								if (innerAnnType != null) {
@@ -436,7 +443,8 @@ public class ConfigProcessor extends AbstractProcessor {
 
 		private boolean buildEquals(Object other) {
 			if (other == this) return true;
-			if (!(other instanceof Annotation oAnn)) return false;
+			if (!(other instanceof Annotation)) return false;
+			Annotation oAnn = (Annotation) other;
 			if (!oAnn.annotationType().equals(type)) return false;
 
 			for (Method m : type.getDeclaredMethods()) {
@@ -605,21 +613,35 @@ public class ConfigProcessor extends AbstractProcessor {
 			try {
 				assert kind != null;
 				switch (kind) {
-					case "string" -> v.value = valueElem.getAsString();
-					case "primitive" -> {
+					case "string":
+						v.value = valueElem.getAsString();
+						break;
+					case "primitive": {
 						JsonPrimitive p = valueElem.getAsJsonPrimitive();
-						if (p.isBoolean()) v.value = p.getAsBoolean();
-						else if (p.isNumber()) {
+						if (p.isBoolean()) {
+							v.value = p.getAsBoolean();
+						} else if (p.isNumber()) {
 							v.value = p.getAsNumber();
 						} else {
 							v.value = p.getAsString();
 						}
+						break;
 					}
-					case "enum" -> v.value = ctx.deserialize(valueElem, EnumDTO.class);
-					case "class" -> v.value = ctx.deserialize(valueElem, ClassDTO.class);
-					case "annotation" -> v.value = ctx.deserialize(valueElem, AnnotationDTO.class);
-					case "array" -> v.value = ctx.deserialize(valueElem, ArrayDTO.class);
-					default -> v.value = ctx.deserialize(valueElem, Object.class);
+					case "enum":
+						v.value = ctx.deserialize(valueElem, EnumDTO.class);
+						break;
+					case "class":
+						v.value = ctx.deserialize(valueElem, ClassDTO.class);
+						break;
+					case "annotation":
+						v.value = ctx.deserialize(valueElem, AnnotationDTO.class);
+						break;
+					case "array":
+						v.value = ctx.deserialize(valueElem, ArrayDTO.class);
+						break;
+					default:
+						v.value = ctx.deserialize(valueElem, Object.class);
+						break;
 				}
 			} catch (JsonParseException ex) {
 				throw ex;
@@ -637,7 +659,7 @@ public class ConfigProcessor extends AbstractProcessor {
 		dto.annotationType = elements.getBinaryName(annType).toString();
 		dto.values = new LinkedHashMap<>();
 
-		for (var entry : mirror.getElementValues().entrySet()) {
+		for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : mirror.getElementValues().entrySet()) {
 			String name = entry.getKey().getSimpleName().toString();
 			dto.values.put(name, toValueDTO(entry.getValue(), elements));
 		}
@@ -648,25 +670,28 @@ public class ConfigProcessor extends AbstractProcessor {
 		Object v = av.getValue();
 		ValueDTO dto = new ValueDTO();
 
-		if (v instanceof String s) {
+		if (v instanceof String) {
 			dto.kind = "string";
-			dto.value = s;
+			dto.value = v;
 		} else if (v instanceof Integer || v instanceof Long ||
 				v instanceof Short || v instanceof Byte ||
 				v instanceof Boolean || v instanceof Character ||
 				v instanceof Double || v instanceof Float) {
 			dto.kind = "primitive";
 			dto.value = v;
-		} else if (v instanceof VariableElement ve) {
+		} else if (v instanceof VariableElement) {
+			VariableElement ve = (VariableElement) v;
 			EnumDTO e = new EnumDTO();
 			TypeElement enumType = (TypeElement) ve.getEnclosingElement();
 			e.enumType = elements.getBinaryName(enumType).toString();
 			e.constant = ve.getSimpleName().toString();
 			dto.kind = "enum";
 			dto.value = e;
-		} else if (v instanceof TypeMirror tm) {
-			var el = typeUtils.asElement(tm);
-			if (el instanceof TypeElement te) {
+		} else if (v instanceof TypeMirror) {
+			TypeMirror tm = (TypeMirror) v;
+			javax.lang.model.element.Element el = typeUtils.asElement(tm);
+			if (el instanceof TypeElement) {
+				TypeElement te = (TypeElement) el;
 				ClassDTO c = new ClassDTO();
 				c.className = elements.getBinaryName(te).toString();
 				dto.kind = "class";
@@ -677,13 +702,14 @@ public class ConfigProcessor extends AbstractProcessor {
 				dto.kind = "class";
 				dto.value = c;
 			}
-		} else if (v instanceof AnnotationMirror nested) {
+		} else if (v instanceof AnnotationMirror) {
+			AnnotationMirror nested = (AnnotationMirror) v;
 			dto.kind = "annotation";
 			dto.value = toDTO(nested, elements);
-		} else if (v instanceof List<?> list) {
+		} else if (v instanceof List<?>) {
 			ArrayDTO arr = new ArrayDTO();
 			arr.values = new ArrayList<>();
-			for (Object o : list) {
+			for (Object o : (List<?>) v) {
 				arr.values.add(toValueDTO((AnnotationValue) o, elements));
 			}
 			dto.kind = "array";

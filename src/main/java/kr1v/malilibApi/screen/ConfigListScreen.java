@@ -60,7 +60,8 @@ public class ConfigListScreen extends GuiConfigsBase {
 	@Override
 	public void initGui() {
 		int scrollPos = getListWidget().getScrollbar().getValue();
-		if (customParent != null && customParent instanceof GuiBase guiBase) {
+		if (customParent != null && customParent instanceof GuiBase) {
+			GuiBase guiBase = (GuiBase) customParent;
 			guiBase.initGui();
 		}
 

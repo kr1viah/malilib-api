@@ -4,20 +4,13 @@ import fi.dy.masa.malilib.config.*;
 import fi.dy.masa.malilib.config.gui.*;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.GuiTextFieldGeneric;
-import fi.dy.masa.malilib.gui.MaLiLibIcons;
 import fi.dy.masa.malilib.gui.button.*;
-import fi.dy.masa.malilib.gui.interfaces.IConfigInfoProvider;
-import fi.dy.masa.malilib.gui.interfaces.IGuiIcon;
 import fi.dy.masa.malilib.gui.interfaces.IKeybindConfigGui;
 import fi.dy.masa.malilib.gui.interfaces.ISliderCallback;
 import fi.dy.masa.malilib.gui.widgets.*;
 import fi.dy.masa.malilib.hotkeys.IHotkey;
 import fi.dy.masa.malilib.hotkeys.IKeybind;
-import kr1v.malilibApi.InternalMalilibApi;
 import kr1v.malilibApi.config._new.ConfigPair;
-import kr1v.malilibApi.interfaces.IButtonBasedResettableWidgetSupplier;
-import kr1v.malilibApi.interfaces.IWidgetResettableSupplier;
-import kr1v.malilibApi.interfaces.IWidgetSupplier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,17 +64,20 @@ public class WidgetPair extends WidgetContainer {
 
 			x += labelWidth + 10;
 
-			for (var entry : InternalMalilibApi.customConfigMap.entrySet()) {
+			for (Map.Entry<Class<?>, IWidgetSupplier<?>> entry : InternalMalilibApi.customConfigMap.entrySet()) {
 				Class<?> configClass = entry.getKey();
 				IWidgetSupplier<?> widgetSupplier = entry.getValue();
 
 				if (configClass.isInstance(config)){
-					//noinspection rawtypes
-					if (widgetSupplier instanceof IButtonBasedResettableWidgetSupplier buttonGiver) {
+					if (widgetSupplier instanceof IButtonBasedResettableWidgetSupplier) {
+						//noinspection rawtypes
+						IButtonBasedResettableWidgetSupplier buttonGiver = (IButtonBasedResettableWidgetSupplier) widgetSupplier;
 						//noinspection unchecked
 						ButtonBase button = buttonGiver.getButton((WidgetConfigOption) (Object) this, config, x, y, configWidth, configHeight);
 						this.addConfigButtonEntry(x + configWidth + 2, y, (IConfigResettable) config, button);
-					} else if (widgetSupplier instanceof @SuppressWarnings("rawtypes")IWidgetResettableSupplier widgetGiver) {
+					} else if (widgetSupplier instanceof IWidgetResettableSupplier) {
+						//noinspection rawtypes
+						IWidgetResettableSupplier widgetGiver = (IWidgetResettableSupplier) widgetSupplier;
 						//noinspection unchecked
 						WidgetBase[] widgetsToAdd = widgetGiver.getWidget((WidgetConfigOption) (Object) this, config, x, y, configWidth, configHeight);
 						for (WidgetBase widget : widgetsToAdd) {
@@ -207,10 +203,10 @@ public class WidgetPair extends WidgetContainer {
 		protected void addConfigSliderEntry(int x, int y, int resetX, int configWidth, int configHeight, IConfigSlider config) {
 			ISliderCallback callback;
 
-			if (config instanceof IConfigDouble iConfigDouble) callback = new SliderCallbackDouble(iConfigDouble, resetButton);
+			if (config instanceof IConfigDouble) callback = new SliderCallbackDouble((IConfigDouble) config, resetButton);
 			//? if >=1.21
 			else if (config instanceof IConfigFloat iConfigFloat) callback = new SliderCallbackFloat(iConfigFloat, resetButton);
-			else if (config instanceof IConfigInteger iConfigInteger) callback = new SliderCallbackInteger(iConfigInteger, resetButton);
+			else if (config instanceof IConfigInteger) callback = new SliderCallbackInteger((IConfigInteger) config, resetButton);
 			else return;
 
 			WidgetSlider slider = new WidgetSlider(x, y, configWidth, configHeight, callback);

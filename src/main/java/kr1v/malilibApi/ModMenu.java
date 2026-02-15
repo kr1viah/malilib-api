@@ -2,6 +2,7 @@ package kr1v.malilibApi;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
+import kr1v.malilibApi.interfaces.IConfigScreenSupplier;
 import net.minecraft.client.gui.screen.Screen;
 
 import java.util.Map;
@@ -13,7 +14,7 @@ public class ModMenu implements ModMenuApi {
 		return InternalMalilibApi.registeredMods.entrySet()
 				.stream()
 				.map(entry -> Map.entry(entry.getKey(), (ConfigScreenFactory<Screen>) screen -> {
-					var supplier = entry.getValue().configScreenSupplier;
+					IConfigScreenSupplier supplier = entry.getValue().configScreenSupplier;
 					if (screen == null) return supplier.get();
 					return supplier.get(screen);
 				}))

@@ -19,9 +19,11 @@ public class InputHandler implements IKeybindProvider, IKeyboardInputHandler, IM
 	public void addKeysToMap(IKeybindManager manager) {
 		for (ModRepresentation.Tab tab : InternalMalilibApi.getTabsFor(MOD_ID)) {
 			for (IConfigBase option : tab.options()) {
-				if (option instanceof IHotkey hotkey) {
+				if (option instanceof IHotkey) {
+					IHotkey hotkey = (IHotkey) option;
 					manager.addKeybindToMap(hotkey.getKeybind());
-				} else if (option instanceof IHotkeyContainer container) {
+				} else if (option instanceof IHotkeyContainer) {
+					IHotkeyContainer container = (IHotkeyContainer) option;
 					List<IHotkey> containedHotkeys = container.getHotkeys();
 					for (IHotkey hotkey : containedHotkeys) {
 						manager.addKeybindToMap(hotkey.getKeybind());
@@ -36,16 +38,19 @@ public class InputHandler implements IKeybindProvider, IKeyboardInputHandler, IM
 		for (ModRepresentation.Tab tab : InternalMalilibApi.getTabsFor(MOD_ID)) {
 			List<IHotkey> hotkeys = new ArrayList<>();
 			for (IConfigBase option : tab.options()) {
-				if (option instanceof IHotkey hotkey) {
+				if (option instanceof IHotkey) {
+					IHotkey hotkey = (IHotkey) option;
 					hotkeys.add(hotkey);
-				} else if (option instanceof IVariableHotkeyContainer variableContainer) {
+				} else if (option instanceof IVariableHotkeyContainer) {
+					IVariableHotkeyContainer variableContainer = (IVariableHotkeyContainer) option;
 					variableContainer.registerListener(() -> {
 						List<IHotkey> containedHotkeys = variableContainer.getHotkeys();
 						if (!containedHotkeys.isEmpty()) {
 							manager.addHotkeysForCategory(MOD_ID, tab.translationKey() + " -> " + option.getName(), containedHotkeys);
 						}
 					});
-				} else if (option instanceof IHotkeyContainer container) {
+				} else if (option instanceof IHotkeyContainer) {
+					IHotkeyContainer container = (IHotkeyContainer) option;
 					List<IHotkey> containedHotkeys = container.getHotkeys();
 					if (!containedHotkeys.isEmpty()) {
 						manager.addHotkeysForCategory(MOD_ID, tab.translationKey() + " -> " + option.getName(), containedHotkeys);

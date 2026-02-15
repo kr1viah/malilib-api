@@ -54,7 +54,8 @@ public final class ConfigUtils {
 
 	private static void handleAnnotations(ConfigProcessor.Element element, List<IConfigBase> list, Class<?> declaringClass, String modId, boolean static_, Object instance) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException {
 		for (Annotation annotation : element.annotations) {
-			if (annotation instanceof PopupConfig popupConfig) {
+			if (annotation instanceof PopupConfig) {
+				PopupConfig popupConfig = (PopupConfig) annotation;
 				if (!static_) {
 					throw new IllegalStateException("Don't use PopupConfigs inside of a ConfigObject!");
 				}
@@ -94,15 +95,18 @@ public final class ConfigUtils {
 				InternalMalilibApi.registerTab(modId, AnnotationUtils.nameForConfig(klass), list, true, 0); // order doesnt matter for popups
 
 				list.add(configObject);
-			} else if (annotation instanceof Label label) {
+			} else if (annotation instanceof Label) {
+				Label label = (Label) annotation;
 				list.add(new ConfigLabel(label.value()));
-			} else if (annotation instanceof Extras extras) {
+			} else if (annotation instanceof Extras) {
+				Extras extras = (Extras) annotation;
 				// if is @Extras or any is "" (e.g. @Extras {"One", ""}) run here
 				if (extras.runAt().length == 0 || Arrays.stream(extras.runAt()).anyMatch(String::isEmpty)) {
 					element.method.setAccessible(true);
 					element.method.invoke(instance, list);
 				}
-			} else if (annotation instanceof Marker marker) {
+			} else if (annotation instanceof Marker) {
+				Marker marker = (Marker) annotation;
 				if (marker.value().isEmpty()) {
 					continue;
 				}

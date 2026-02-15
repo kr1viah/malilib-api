@@ -72,7 +72,8 @@ public class ConfigObjectScreen extends GuiConfigsBase {
 
 	@Override
 	public void initGui() {
-		if (customParent != null && customParent instanceof GuiBase guiBase) {
+		if (customParent != null && customParent instanceof GuiBase) {
+			GuiBase guiBase = (GuiBase) customParent;
 			guiBase.initGui();
 		}
 		super.initGui();
