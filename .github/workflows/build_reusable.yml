@@ -41,7 +41,7 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Build with Gradle
-        run: ./gradlew buildAndCollect --no-daemon
+        run: ./gradlew build --no-daemon
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4

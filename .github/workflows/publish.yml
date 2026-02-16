@@ -18,7 +18,7 @@ jobs:
       options: --user root
     steps:
       - uses: actions/checkout@v4
-      - run: ./gradlew build publishMods publish
+      - run: ./gradlew build publish
         env:
           REPSY_USERNAME: ${{ secrets.REPSY_USERNAME }}
           REPSY_TOKEN: ${{ secrets.REPSY_TOKEN }}
