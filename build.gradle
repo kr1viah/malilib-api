@@ -49,23 +49,12 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     modImplementation "${project.malilib}"
+
     modCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
-
-    implementation "com.google.auto.service:auto-service-annotations:${project.auto_service_version}"
     implementation "com.google.code.gson:gson:${project.gson_version}"
-    annotationProcessor "com.google.auto.service:auto-service:${project.auto_service_version}"
 
-    // cursed
-    testmodAnnotationProcessor("net.kr1v:malilib-api:0.3.3-1.21.5") {
-        changing = true
-    }
-}
-
-
-configurations.configureEach {
-    resolutionStrategy {
-        cacheChangingModulesFor 0, 'seconds'
-    }
+    include(implementation("net.kr1v:malilib-api-processor:1.0.0"))
+    testmodAnnotationProcessor "net.kr1v:malilib-api-processor:1.0.0"
 }
 
 def requiredJava =
@@ -296,13 +285,13 @@ publishing {
 def runAll = false
 
 tasks.named("runTestmodClient").configure {
-    if (!runAll) {
-        onlyIf {
-            def current = stonecutter.current.version
-            def active = stonecutter.active.version
-            return current == active
-        }
-    }
+//    if (!runAll) {
+//        onlyIf {
+//            def current = stonecutter.current.version
+//            def active = stonecutter.active.version
+//            return current == active
+//        }
+//    }
 }
 
 tasks.register("runAllTestClient") {

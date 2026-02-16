@@ -12,6 +12,7 @@ import kr1v.malilibApi.config.plus.ConfigStringPlus;
 import kr1v.malilibApiTest.Init;
 import net.minecraft.world.GameMode;
 
+import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings("unused")
@@ -37,7 +38,7 @@ public class Test3 {
 	public static final ConfigList<ConfigList<ConfigBoolean>> TEST_LIST = new ConfigList<>("list", () -> new ConfigList<>("", () -> new ConfigBoolean("", false, "")));
 
 	@Label("Default values")
-	public static final ConfigList<ConfigString> TEST_DEFAULT_STRING = new ConfigList<>("default_string", List.of(
+	public static final ConfigList<ConfigString> TEST_DEFAULT_STRING = new ConfigList<>("default_string", Arrays.asList(
 			new ConfigStringPlus("", "twenty"),
 			new ConfigStringPlus("", "fifty!")
 	), () -> new ConfigStringPlus(""), "default_string");

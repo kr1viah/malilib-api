@@ -14,6 +14,7 @@ import kr1v.malilibApi.interfaces.IVariableHotkeyContainer;
 import kr1v.malilibApi.widget.ConfigListButton;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -30,11 +31,11 @@ public class ConfigList<T extends IConfigBase & IConfigResettable> extends Custo
 	private final List<Runnable> runnables = new ArrayList<>();
 
 	public ConfigList(String name, Supplier<T> supplier) {
-		this(name, List.of(), supplier, "");
+		this(name, Arrays.asList(), supplier, "");
 	}
 
 	public ConfigList(String name, Supplier<T> supplier, String buttonDisplayName) {
-		this(name, List.of(), supplier, buttonDisplayName);
+		this(name, Arrays.asList(), supplier, buttonDisplayName);
 	}
 
 	public ConfigList(String name, List<T> defaultValue, Supplier<T> supplier, String buttonDisplayName) {
@@ -42,7 +43,7 @@ public class ConfigList<T extends IConfigBase & IConfigResettable> extends Custo
 	}
 
 	public ConfigList(String name, Supplier<T> supplier, String comment, String buttonDisplayName) {
-		this(name, List.of(), supplier, comment, buttonDisplayName);
+		this(name, Arrays.asList(), supplier, comment, buttonDisplayName);
 	}
 
 	public ConfigList(String name, List<T> defaultValue, Supplier<T> supplier, String comment, String buttonDisplayName) {

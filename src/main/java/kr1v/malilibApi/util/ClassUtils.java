@@ -54,13 +54,13 @@ public final class ClassUtils {
 							break;
 						}
 					}
-
-					ConfigProcessor.Element element = new ConfigProcessor.Element(f, m, klass);
-					for (ConfigProcessor.AnnotationDTO ann : el.annotations) {
-						element.annotations.add(ConfigProcessor.toAnnotation(ann, Class.forName(ann.annotationType)));
-					}
-					elementsOfClass.add(element);
 				}
+
+				ConfigProcessor.Element element = new ConfigProcessor.Element(f, m, klass);
+				for (ConfigProcessor.AnnotationDTO ann : el.annotations) {
+					element.annotations.add(ConfigProcessor.toAnnotation(ann, Class.forName(ann.annotationType)));
+				}
+				elementsOfClass.add(element);
 			}
 		} catch (NoSuchFieldException | ClassNotFoundException | NoSuchMethodException e) {
 			Util.rethrow(e);

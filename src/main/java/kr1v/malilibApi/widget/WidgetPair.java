@@ -4,16 +4,21 @@ import fi.dy.masa.malilib.config.*;
 import fi.dy.masa.malilib.config.gui.*;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.GuiTextFieldGeneric;
+import fi.dy.masa.malilib.gui.MaLiLibIcons;
 import fi.dy.masa.malilib.gui.button.*;
-import fi.dy.masa.malilib.gui.interfaces.IKeybindConfigGui;
-import fi.dy.masa.malilib.gui.interfaces.ISliderCallback;
+import fi.dy.masa.malilib.gui.interfaces.*;
 import fi.dy.masa.malilib.gui.widgets.*;
 import fi.dy.masa.malilib.hotkeys.IHotkey;
 import fi.dy.masa.malilib.hotkeys.IKeybind;
+import kr1v.malilibApi.InternalMalilibApi;
 import kr1v.malilibApi.config._new.ConfigPair;
+import kr1v.malilibApi.interfaces.IButtonBasedResettableWidgetSupplier;
+import kr1v.malilibApi.interfaces.IWidgetResettableSupplier;
+import kr1v.malilibApi.interfaces.IWidgetSupplier;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class WidgetPair extends WidgetContainer {
 	public final ButtonGeneric resetButton;

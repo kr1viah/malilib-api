@@ -29,6 +29,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /// this exists in order to not bloat MalilibApi with methods that need to be public but aren't ""supposed"" to be used by others
 public class InternalMalilibApi {
@@ -173,7 +174,7 @@ public class InternalMalilibApi {
 						.thenComparingInt(ModRepresentation.Tab::order)
 						.thenComparing(ModRepresentation.Tab::translationKey)
 				)
-				.toList();
+				.collect(Collectors.toList());
 	}
 
 	public static ModRepresentation.Tab getActiveTabFor(String modId) {
