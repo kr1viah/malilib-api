@@ -23,7 +23,6 @@ import java.lang.reflect.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedAnnotationTypes("*")
 @AutoService(Processor.class)

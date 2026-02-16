@@ -1,273 +1,51 @@
 plugins {
-    id 'fabric-loom' /*version '1.13-SNAPSHOT'*/
+    id 'java-library'
     id 'maven-publish'
-    id "me.modmuss50.mod-publish-plugin" version "1.1.0"
 }
 
-sourceSets {
-    register("testmod") {
-        compileClasspath += main.output + main.compileClasspath
-        runtimeClasspath += main.output + main.runtimeClasspath
-    }
-}
-
-version = project.mod_version + "+" + sc.current.version
+version = project.version
 group = project.maven_group
 
-base {
-    archivesName = project.archives_base_name
-}
+//base.archivesName = project.archives_base_name
 
 repositories {
-    maven {
-        name = "Terraformers"
-        url = "https://maven.terraformersmc.com/"
-    }
-    maven {
-        name = "masa"
-        url = "https://masa.dy.fi/maven/"
-    }
-    maven {
-        name = "sakura-ryoko"
-        url = "https://masa.dy.fi/maven/sakura-ryoko"
-    }
-    maven {
-        name = "JitPack"
-        url = "https://jitpack.io"
-    }
     mavenLocal()
     mavenCentral()
 }
 
 dependencies {
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-//    mappings loom.layered() {
-//        it.mappings("net.fabricmc:yarn:${project.yarn_mappings}:v2")
-//        it.mappings rootProject.file("mappings/mappings.tiny")
-//    }
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-
-    modImplementation "${project.malilib}"
-    modCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
-
-    implementation "com.google.auto.service:auto-service-annotations:${project.auto_service_version}"
     implementation "com.google.code.gson:gson:${project.gson_version}"
+    compileOnly "com.google.auto.service:auto-service-annotations:${project.auto_service_version}"
     annotationProcessor "com.google.auto.service:auto-service:${project.auto_service_version}"
-
-    // cursed
-    testmodAnnotationProcessor("net.kr1v:malilib-api:0.3.3-1.21.5") {
-        changing = true
-    }
 }
-
-
-configurations.configureEach {
-    resolutionStrategy {
-        cacheChangingModulesFor 0, 'seconds'
-    }
-}
-
-def requiredJava =
-        sc.current.parsed.matches('>=1.20.5') ? JavaVersion.VERSION_21 :
-                sc.current.parsed.matches('>=1.18')   ? JavaVersion.VERSION_17 :
-                        sc.current.parsed.matches('>=1.17')   ? JavaVersion.VERSION_16 :
-                                JavaVersion.VERSION_1_8
-
-
-processResources {
-    // note: 25w17a is the 3rd snapshot for 1.21.6
-
-    // 1.21:    1.21   (inclusive) - 1.21.1  (inclusive)
-    // 1.21.5:  1.21.1 (exclusive) - 1.21.5  (inclusive)
-    // 1.21.8:  25w17a (inclusive) - 1.21.8  (inclusive)
-    // 1.21.10: 1.21.9 (inclusive) - 1.21.10 (inclusive)
-    // 1.21.11: 1.21.11
-    def versions = switch (sc.current.version) {
-        case "1.17.1" -> ">=1.17 <=1.17.1"
-        case "1.19.4" -> ">=1.18 <=1.19.4"
-        case "1.20.1" -> ">=1.20 <=1.20.1"
-        case "1.20.4" ->  ">=1.20.3 <=1.20.4"
-//        case "1.20.6" ->  ">=1.20.5 <=1.20.6"
-        case "1.21" ->    ">=1.21 <=1.21.1"
-        case "1.21.5" ->  ">1.21.1 <=1.21.5"
-        case "1.21.8" ->  ">=1.21.6 <=1.21.8" // I cant specify >=25w17a??
-        case "1.21.10" -> ">=1.21.9 <=1.21.10"
-//        case "1.21.11" -> "1.21.11"
-        default ->        sc.current.version
-    }
-
-    inputs.property "versions", versions
-    inputs.property "version", project.version
-    inputs.property "minecraft_version", project.minecraft_version
-    inputs.property "loader_version", project.loader_version
-    filteringCharset "UTF-8"
-
-    filesMatching("fabric.mod.json") {
-        expand "version": project.version,
-                "minecraft_version": project.minecraft_version,
-                "loader_version": project.loader_version,
-                "versions": versions
-    }
-    def mixinJava = "JAVA_${requiredJava.majorVersion}"
-    filesMatching("*.mixins.json") {
-        expand(java: mixinJava)
-    }
-}
-
-tasks.register("collectFile") {
-    group = "build"
-    mustRunAfter("build")
-
-    doLast {
-        copy {
-            from file("build/libs/${project.archives_base_name}-${project.mod_version}+${project.minecraft_version}.jar")
-            into rootProject.file("build/libs")
-        }
-        copy {
-            from file("build/libs/${project.archives_base_name}-${project.mod_version}+${project.minecraft_version}-sources.jar")
-            into rootProject.file("build/libs")
-        }
-    }
-}
-
-tasks.register("buildAndCollect") {
-    group = "build"
-    dependsOn(tasks.named("build"), tasks.named("collectFile"))
-}
-
-def targetJavaVersion = requiredJava.majorVersion.toInteger()
 
 tasks.withType(JavaCompile).configureEach {
     it.options.encoding = "UTF-8"
-    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
-        it.options.release.set(targetJavaVersion)
-    }
-}
-
-loom {
-    runConfigs.all {
-        ideConfigGenerated = false
-        runDir "../../run"
-    }
-    runs {
-        register("testmodClient") {
-            client()
-            configName = "Testmod Client"
-            source(sourceSets["testmod"])
-        }
-    }
-    mods {
-        register("malilib-api") {
-            sourceSet(sourceSets.main)
-        }
-        register("malilib-api-test") {
-            sourceSet("testmod")
-        }
-    }
-
-    fabricModJsonPath = rootProject.file("src/main/resources/fabric.mod.json")
 }
 
 java {
     withSourcesJar()
-    sourceCompatibility = requiredJava
-    targetCompatibility = requiredJava
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 jar {
     from("LICENSE") {
-        rename { "${it}_${project.archivesBaseName}" }
+        rename { "${it}_${project.archives_base_name}" }
     }
 }
 
-publishMods {
-    file = remapJar.archiveFile
-
-    if (releaseGithub()) {
-        github {
-            accessToken = providers.environmentVariable("GITHUB_TOKEN")
-
-            parent project(":").tasks.named("publishGithub")
-        }
-    }
-
-    if (releaseModrinth()) {
-        modrinth {
-            accessToken = providers.environmentVariable("MODRINTH_TOKEN")
-            projectId = "Qppvg0Y6"
-            changelog = rootProject.file("changelog.md").text
-            type = STABLE
-            modLoaders.add("fabric")
-
-            def startV = null
-            def endV = null
-            def currentV = sc.current.version
-
-            switch (currentV) {
-                case "1.17.1" -> {
-                    startV = "1.17"
-                    endV = "1.17.1"
-                }
-                case "1.19.4" -> {
-                    startV = "1.18"
-                    endV = "1.19.4"
-                }
-                case "1.20.1" -> {
-                    startV = "1.20"
-                    endV = "1.20.1"
-                }
-                case "1.20.4" -> {
-                    startV = "1.20.3"
-                    endV = "1.20.4"
-                }
-//                case "1.20.6" -> {
-//                    startV = "1.20.5"
-//                    endV = "1.20.6"
-//                }
-                case "1.21" -> {
-                    startV = "1.21"
-                    endV = "1.21.1"
-                }
-                case "1.21.5" -> {
-                    startV = "24w33a" // first 1.21.2 snapshot
-                    endV = "1.21.5"
-                }
-                case "1.21.8" -> {
-                    startV = "25w17a" // 3rd 1.21.6 snapshot
-                    endV = "1.21.8"
-                }
-                case "1.21.10" -> {
-                    startV = "1.21.9"
-                    endV = "1.21.10"
-                }
-                default -> {
-                    startV = currentV
-                }
-            }
-
-            if (endV != null) {
-                minecraftVersionRange {
-                    start = startV
-                    end = endV
-
-                    includeSnapshots = true
-                }
-            } else {
-                minecraftVersions.add(startV)
-            }
-
-            requires("malilib")
-        }
-    }
+boolean releaseMaven() {
+    return providers.environmentVariable("RELEASE_MAVEN").getOrElse("false").toBoolean()
 }
+
 
 publishing {
     publications {
         mavenJava(MavenPublication) {
             groupId = 'net.kr1v'
             artifactId = "${project.archives_base_name}"
-            version = project.mod_version + "-" + project.minecraft_version
+            version = project.version
 
             from components.java
         }
@@ -291,21 +69,4 @@ publishing {
             }
         }
     }
-}
-
-def runAll = false
-
-tasks.named("runTestmodClient").configure {
-    if (!runAll) {
-        onlyIf {
-            def current = stonecutter.current.version
-            def active = stonecutter.active.version
-            return current == active
-        }
-    }
-}
-
-tasks.register("runAllTestClient") {
-    runAll = true
-    dependsOn("runTestmodClient")
 }

@@ -3,21 +3,9 @@ name: Publish Mod
 on:
   workflow_dispatch:
     inputs:
-      github_repo:
-        type: string
-        description: 'Github repo'
-        default: "kr1viah/malilib-api"
-      release_github:
-        type: boolean
-        description: 'Github Release'
-        default: false
       release_maven:
         type: boolean
         description: 'Maven Release'
-        default: false
-      release_modrinth:
-        type: boolean
-        description: 'Modrinth Release'
         default: false
 permissions:
   contents: write
@@ -34,9 +22,4 @@ jobs:
         env:
           REPSY_USERNAME: ${{ secrets.REPSY_USERNAME }}
           REPSY_TOKEN: ${{ secrets.REPSY_TOKEN }}
-          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPO: ${{ inputs.github_repo }}
-          RELEASE_GITHUB: ${{ inputs.release_github }}
-          RELEASE_MODRINTH: ${{ inputs.release_modrinth }}
           RELEASE_MAVEN: ${{ inputs.release_maven }}
