@@ -132,7 +132,7 @@ public class ArrayBackedCycleConfig<T> extends ConfigCycle<T> {
 					return this;
 				}
 			}
-			return null;
+			return this;
 		}
 
 		@Override
