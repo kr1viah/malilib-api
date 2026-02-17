@@ -26,6 +26,9 @@ public class ConfigScreen extends GuiConfigsBase {
 
 	public ConfigScreen(String modId, String titleKey, Screen parent) {
 		super(10, 50, modId, parent, titleKey);
+		if (this.client == null) {
+			this.client = MinecraftClient.getInstance();
+		}
 	}
 
 	@Override
