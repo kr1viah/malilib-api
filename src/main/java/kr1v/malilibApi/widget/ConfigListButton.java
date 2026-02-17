@@ -24,7 +24,13 @@ public class ConfigListButton extends ButtonGeneric {
 		return true;
 	}
 
-	//? if <1.20.1 {
+	//? if <1.16 {
+	/*@Override
+	public void render(int mouseX, int mouseY, boolean selected) {
+		setDisplay();
+		super.render(mouseX, mouseY, selected);
+	}
+	*///? } else if <1.20.1 {
 	/*@Override
 	public void render(int mouseX, int mouseY, boolean selected, net.minecraft.client.util.math.MatrixStack matrixStack) {
 		setDisplay();

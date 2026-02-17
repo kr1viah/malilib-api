@@ -7,6 +7,7 @@ import kr1v.malilibApi.InternalMalilibApi;
 import kr1v.malilibApi.ModRepresentation;
 import kr1v.malilibApi.mixin.accessor.WidgetListConfigOptionsBaseAccessor;
 import kr1v.malilibApi.util.ConfigUtils;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,6 +16,9 @@ import java.util.Objects;
 
 public class ConfigScreen extends GuiConfigsBase {
 	public ModRepresentation.Tab tab = InternalMalilibApi.getActiveTabFor(modId);
+
+	//? if <1.16
+	//protected MinecraftClient client = this.minecraft;
 
 	public ConfigScreen(String modId, String titleKey) {
 		this(modId, titleKey, null);
@@ -78,7 +82,16 @@ public class ConfigScreen extends GuiConfigsBase {
 	public List<ConfigOptionWrapper> getConfigs() {
 		return ConfigUtils.getConfigOptions(this.tab.options());
 	}
-	//? if <1.20.1 {
+
+	//? if <1.16 {
+	/*@Override
+	public void render(int mouseX, int mouseY, float partialTicks) {
+		if (this.client != null && this.client.world == null) this.renderBackground();
+		InternalMalilibApi.setActiveTabFor(modId, this.tab);
+		InternalMalilibApi.setScrollValueFor(modId, this.tab, getListWidget().getScrollbar().getValue());
+		super.render(mouseX, mouseY, partialTicks);
+	}
+	*///? } else if <1.20.1 {
 	/*@Override
 	public void render(net.minecraft.client.util.math.MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		if (this.client != null && this.client.world == null) this.renderBackground(matrixStack);

@@ -1,10 +1,15 @@
 package kr1v.malilibApi;
 
+// TODO fix
+
+//? if >=1.16 {
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import kr1v.malilibApi.interfaces.IConfigScreenSupplier;
+import net.minecraft.client.gui.screen.Screen;
 
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class ModMenu implements ModMenuApi {
@@ -33,3 +38,11 @@ public class ModMenu implements ModMenuApi {
 		return screen -> null;
 	}
 }
+//? } else {
+/*public class ModMenu implements io.github.prospector.modmenu.api.ModMenuApi {
+	@Override
+	public String getModId() {
+		return "malilib-api";
+	}
+}
+*///? }

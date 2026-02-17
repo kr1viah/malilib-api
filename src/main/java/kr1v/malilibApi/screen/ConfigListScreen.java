@@ -17,7 +17,6 @@ import fi.dy.masa.malilib.util.StringUtils;
 import kr1v.malilibApi.config._new.ConfigList;
 import kr1v.malilibApi.util.ConfigUtils;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.math.MatrixStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -98,10 +97,17 @@ public class ConfigListScreen extends GuiConfigsBase {
 	protected void buildConfigSwitcher() {
 	}
 	//? }
-
-	//? if <1.20.1 {
+	//? if <1.16 {
 	/*@Override
-	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+	public void render(int mouseX, int mouseY, float partialTicks) {
+		if (this.customParent != null) {
+			this.customParent.render(mouseX, mouseY, partialTicks);
+		}
+		super.render(mouseX, mouseY, partialTicks);
+	}
+	*///? } else if <1.20.1 {
+	/*@Override
+	public void render(net.minecraft.client.util.math.MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		if (this.customParent != null) {
 			this.customParent.render(matrixStack, mouseX, mouseY, partialTicks);
 		}
@@ -132,7 +138,14 @@ public class ConfigListScreen extends GuiConfigsBase {
 	//? }
 
 
-	//? if <1.20.1 {
+	//? if <1.16 {
+	/*@Override
+	protected void drawTitle(int mouseX, int mouseY, float partialTicks) {
+		this.drawStringWithShadow(this.title, this.dialogLeft + 10, this.dialogTop + 6, COLOR_WHITE);
+		super.drawTitle(mouseX, mouseY, partialTicks);
+	}
+
+	*///? } else if <1.20.1 {
 	/*@Override
 	protected void drawTitle(net.minecraft.client.util.math.MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		this.drawStringWithShadow(matrixStack, this.title, this.dialogLeft + 10, this.dialogTop + 6, COLOR_WHITE);
