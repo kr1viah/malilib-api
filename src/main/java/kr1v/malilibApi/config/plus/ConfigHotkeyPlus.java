@@ -42,8 +42,8 @@ public class ConfigHotkeyPlus extends ConfigHotkey {
 		super(name, defaultStorageString.replaceAll("\\s+", ""), settings, comment, prettyName/*? if >=1.21 {*/, translatedName/*? }*/);
 	}
 
-	public ConfigHotkeyPlus setSetting(KeybindSettings settings) {
-		this.setSetting(settings);
+	public ConfigHotkeyPlus setSettings(KeybindSettings settings) {
+		this.getKeybind().setSettings(settings);
 		return this;
 	}
 }

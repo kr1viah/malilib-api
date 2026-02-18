@@ -75,8 +75,8 @@ public class ConfigBooleanHotkeyedPlus extends ConfigBooleanHotkeyed implements 
 		setValueChangeCallback(callback);
 	}
 
-	public ConfigBooleanHotkeyedPlus setSetting(KeybindSettings settings) {
-		this.setSetting(settings);
+	public ConfigBooleanHotkeyedPlus setSettings(KeybindSettings settings) {
+		this.getKeybind().setSettings(settings);
 		return this;
 	}
 }
