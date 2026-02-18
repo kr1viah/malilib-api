@@ -83,7 +83,7 @@ public class ConfigList<T extends IConfigBase & IConfigResettable> extends Custo
 
 	@Override
 	public JsonElement getAsJsonElement() {
-		JsonArray array = new JsonArray(list.size());
+		JsonArray array = new JsonArray();
 		for (T t : list) {
 			array.add(t.getAsJsonElement());
 		}
