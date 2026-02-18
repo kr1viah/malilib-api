@@ -39,6 +39,7 @@ public class InternalMalilibApi {
 
 	public static void registerMod(String modId, String modName, ConfigHandler configHandler, InputHandler inputHandler, IConfigScreenSupplier configScreenSupplier) {
 		if (isModRegistered(modId)) throw new IllegalStateException("Mod id is already registered! mod id: " + modId);
+		System.out.println("(MaLiLib API) Registering mod " + modName + " with mod id " + modId);
 
 		Supplier<GuiBase> guiBaseSupplier = configScreenSupplier::get;
 
