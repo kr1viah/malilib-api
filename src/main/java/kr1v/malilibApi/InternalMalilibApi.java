@@ -38,7 +38,7 @@ public class InternalMalilibApi {
 	public static final Gson GSON = ConfigProcessor.GSON;
 
 	public static void registerMod(String modId, String modName, ConfigHandler configHandler, InputHandler inputHandler, IConfigScreenSupplier configScreenSupplier) {
-		if (isModRegistered(modId)) throw new IllegalStateException("Mod id is already registered!");
+		if (isModRegistered(modId)) throw new IllegalStateException("Mod id is already registered! mod id: " + modId);
 
 		Supplier<GuiBase> guiBaseSupplier = configScreenSupplier::get;
 
