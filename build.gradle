@@ -113,11 +113,11 @@ tasks.register("collectFile") {
     doLast {
         copy {
             from file("build/libs/${project.archives_base_name}-${project.mod_version}+${project.minecraft_version}.jar")
-            into rootProject.file("build/libs")
+            into rootProject.file("build/libs/${project.mod_version}")
         }
         copy {
             from file("build/libs/${project.archives_base_name}-${project.mod_version}+${project.minecraft_version}-sources.jar")
-            into rootProject.file("build/libs")
+            into rootProject.file("build/libs/${project.mod_version}")
         }
     }
 }
