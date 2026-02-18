@@ -74,4 +74,9 @@ public class ConfigBooleanHotkeyedPlus extends ConfigBooleanHotkeyed implements 
 		super(name, defaultValue, defaultHotkey.replaceAll("\\s+", ""), comment);
 		setValueChangeCallback(callback);
 	}
+
+	public ConfigBooleanHotkeyedPlus setSetting(KeybindSettings settings) {
+		this.setSetting(settings);
+		return this;
+	}
 }
