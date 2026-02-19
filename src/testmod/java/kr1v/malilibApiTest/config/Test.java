@@ -16,7 +16,7 @@ import static kr1v.malilibApiTest.Init.MOD_ID;
 public class Test {
 	public static final ConfigStringPlus TEST = new ConfigStringPlus("Hiii");
 
-	static final ConfigHotkeyPlus HOTKEY = new ConfigHotkeyPlus("Open gui", "G,    C", (keyAction, iKeybind) -> {
+	static final ConfigHotkeyPlus HOTKEY = new ConfigHotkeyPlus("Open gui", "G,    C").setPressCallback((keyAction, iKeybind) -> {
 		MalilibApi.openScreenFor(MOD_ID);
 		return true;
 	});

@@ -42,7 +42,7 @@ public class ConfigObjectTest {
 	public static final ConfigStringListPlus STRING_LIST_PLUS = new ConfigStringListPlus("Test");
 	public static final ConfigStringPlus STRING_PLUS = new ConfigStringPlus("S");
 
-	static final ConfigHotkeyPlus PRINT_KEY = new ConfigHotkeyPlus("Print blocks", (action, key) -> {
+	static final ConfigHotkeyPlus PRINT_KEY = new ConfigHotkeyPlus("Print blocks").setPressCallback((action, key) -> {
 		StringBuilder s = new StringBuilder();
 
 		for (ConfigObject<BlockPosConfig> config : BLOCKS.getList()) {

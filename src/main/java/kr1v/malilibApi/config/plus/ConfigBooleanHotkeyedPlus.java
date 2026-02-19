@@ -4,17 +4,9 @@ import fi.dy.masa.malilib.config.options.ConfigBoolean;
 import fi.dy.masa.malilib.config.options.ConfigBooleanHotkeyed;
 import fi.dy.masa.malilib.hotkeys.IHotkeyCallback;
 import fi.dy.masa.malilib.hotkeys.KeybindSettings;
-import fi.dy.masa.malilib.interfaces.IValueChangeCallback;
 import kr1v.malilibApi.InternalMalilibApi;
 
 public class ConfigBooleanHotkeyedPlus extends ConfigBooleanHotkeyed implements Plus<ConfigBoolean> {
-	{
-		getKeybind().setCallback((keyAction, keybind) -> {
-			setBooleanValue(!getBooleanValue());
-			return true;
-		});
-	}
-
 	public ConfigBooleanHotkeyedPlus(String name) {
 		this(name, InternalMalilibApi.getDefaultEnabled(), "", "");
 	}
@@ -31,52 +23,17 @@ public class ConfigBooleanHotkeyedPlus extends ConfigBooleanHotkeyed implements 
 		super(name, defaultValue, defaultHotkey.replaceAll("\\s+", ""), comment);
 	}
 
-	public ConfigBooleanHotkeyedPlus(String name, IHotkeyCallback callback) {
-		this(name, InternalMalilibApi.getDefaultEnabled(), "", "");
-		getKeybind().setCallback(callback);
-	}
-
-	public ConfigBooleanHotkeyedPlus(String name, boolean defaultValue, IHotkeyCallback callback) {
-		this(name, defaultValue, "", "");
-		getKeybind().setCallback(callback);
-	}
-
-	public ConfigBooleanHotkeyedPlus(String name, boolean defaultValue, String defaultHotkey, IHotkeyCallback callback) {
-		this(name, defaultValue, defaultHotkey.replaceAll("\\s+", ""), "");
-		getKeybind().setCallback(callback);
-	}
-
-	public ConfigBooleanHotkeyedPlus(String name, boolean defaultValue, String defaultHotkey, String comment, IHotkeyCallback callback) {
-		super(name, defaultValue, defaultHotkey.replaceAll("\\s+", ""), comment);
-		getKeybind().setCallback(callback);
-	}
-
-	public ConfigBooleanHotkeyedPlus(String name, boolean defaultValue, String defaultHotkey, KeybindSettings settings, String comment, String prettyName, String translatedName) {
-		super(name, defaultValue, defaultHotkey.replaceAll("\\s+", ""), settings, comment, prettyName/*? if >=1.21 {*/, translatedName/*? }*/);
-	}
-
-	public ConfigBooleanHotkeyedPlus(String name, IValueChangeCallback<ConfigBoolean> callback) {
-		this(name, InternalMalilibApi.getDefaultEnabled(), "", "");
-		setValueChangeCallback(callback);
-	}
-
-	public ConfigBooleanHotkeyedPlus(String name, boolean defaultValue, IValueChangeCallback<ConfigBoolean> callback) {
-		this(name, defaultValue, "", "");
-		setValueChangeCallback(callback);
-	}
-
-	public ConfigBooleanHotkeyedPlus(String name, boolean defaultValue, String defaultHotkey, IValueChangeCallback<ConfigBoolean> callback) {
-		this(name, defaultValue, defaultHotkey.replaceAll("\\s+", ""), "");
-		setValueChangeCallback(callback);
-	}
-
-	public ConfigBooleanHotkeyedPlus(String name, boolean defaultValue, String defaultHotkey, String comment, IValueChangeCallback<ConfigBoolean> callback) {
-		super(name, defaultValue, defaultHotkey.replaceAll("\\s+", ""), comment);
-		setValueChangeCallback(callback);
+	public ConfigBooleanHotkeyedPlus(String name, boolean defaultValue, String defaultHotkey, String comment, String prettyName, String translatedName) {
+		super(name, defaultValue, defaultHotkey.replaceAll("\\s+", ""), comment, prettyName/*? if >=1.21 {*/, translatedName/*? }*/);
 	}
 
 	public ConfigBooleanHotkeyedPlus setSettings(KeybindSettings settings) {
 		this.getKeybind().setSettings(settings);
+		return this;
+	}
+
+	public ConfigBooleanHotkeyedPlus setPressCallback(IHotkeyCallback callback) {
+		this.getKeybind().setCallback(callback);
 		return this;
 	}
 }
