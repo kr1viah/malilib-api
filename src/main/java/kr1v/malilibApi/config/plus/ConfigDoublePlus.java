@@ -2,7 +2,7 @@ package kr1v.malilibApi.config.plus;
 
 import fi.dy.masa.malilib.config.options.ConfigDouble;
 
-public class ConfigDoublePlus extends ConfigDouble implements Plus {
+public class ConfigDoublePlus extends ConfigDouble implements Plus<ConfigDouble> {
 	public ConfigDoublePlus(String name) {
 		this(name, 0);
 	}

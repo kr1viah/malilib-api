@@ -3,7 +3,7 @@ package kr1v.malilibApi.config.plus;
 import com.google.common.collect.ImmutableList;
 import fi.dy.masa.malilib.config.options.ConfigStringList;
 
-public class ConfigStringListPlus extends ConfigStringList implements Plus {
+public class ConfigStringListPlus extends ConfigStringList implements Plus<ConfigStringList> {
 	public ConfigStringListPlus(String name) {
 		this(name, ImmutableList.of());
 	}

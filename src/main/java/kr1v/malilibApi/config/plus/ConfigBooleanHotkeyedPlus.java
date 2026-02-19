@@ -7,7 +7,7 @@ import fi.dy.masa.malilib.hotkeys.KeybindSettings;
 import fi.dy.masa.malilib.interfaces.IValueChangeCallback;
 import kr1v.malilibApi.InternalMalilibApi;
 
-public class ConfigBooleanHotkeyedPlus extends ConfigBooleanHotkeyed implements Plus {
+public class ConfigBooleanHotkeyedPlus extends ConfigBooleanHotkeyed implements Plus<ConfigBoolean> {
 	{
 		getKeybind().setCallback((keyAction, keybind) -> {
 			setBooleanValue(!getBooleanValue());

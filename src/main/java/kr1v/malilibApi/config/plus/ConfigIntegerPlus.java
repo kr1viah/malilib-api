@@ -2,8 +2,7 @@ package kr1v.malilibApi.config.plus;
 
 import fi.dy.masa.malilib.config.options.ConfigInteger;
 
-// TODO: check if its actually sensible to support translatedName in all versions
-public class ConfigIntegerPlus extends ConfigInteger implements Plus {
+public class ConfigIntegerPlus extends ConfigInteger implements Plus<ConfigInteger> {
 	public ConfigIntegerPlus(String name) {
 		this(name, 0);
 	}

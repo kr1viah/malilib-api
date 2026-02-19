@@ -2,7 +2,7 @@ package kr1v.malilibApi.config.plus;
 
 import fi.dy.masa.malilib.config.options.ConfigString;
 
-public class ConfigStringPlus extends ConfigString implements Plus {
+public class ConfigStringPlus extends ConfigString implements Plus<ConfigString> {
 	public ConfigStringPlus(String name) {
 		this(name, "");
 	}

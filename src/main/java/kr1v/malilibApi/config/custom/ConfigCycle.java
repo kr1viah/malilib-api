@@ -2,8 +2,9 @@ package kr1v.malilibApi.config.custom;
 
 import fi.dy.masa.malilib.config.IConfigOptionListEntry;
 import fi.dy.masa.malilib.config.options.ConfigOptionList;
+import kr1v.malilibApi.config.plus.Plus;
 
-public abstract class ConfigCycle<T> extends ConfigOptionList {
+public abstract class ConfigCycle<T> extends ConfigOptionList implements Plus<ConfigOptionList> {
 	T defaultValue;
 
 	public ConfigCycle(String name, CycleConfigEntry<T> defaultValue, String comment, String prettyName, String translatedName) {

@@ -4,7 +4,7 @@ import fi.dy.masa.malilib.config.options.ConfigHotkey;
 import fi.dy.masa.malilib.hotkeys.IHotkeyCallback;
 import fi.dy.masa.malilib.hotkeys.KeybindSettings;
 
-public class ConfigHotkeyPlus extends ConfigHotkey {
+public class ConfigHotkeyPlus extends ConfigHotkey implements Plus<ConfigHotkey> {
 	public ConfigHotkeyPlus(String name, IHotkeyCallback callback) {
 		this(name, "", callback);
 	}
