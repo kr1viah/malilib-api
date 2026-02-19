@@ -22,7 +22,7 @@ public @interface Config {
 	String name() default "";
 
 	/**
-	 * Default enabled for ConfigBooleanPlus
+	 * Default enabled for ConfigBooleanPlus/ConfigHotkeyedBooleanPlus
 	 */
 	boolean defaultEnabled() default true;
 
