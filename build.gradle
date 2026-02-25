@@ -169,6 +169,61 @@ jar {
 
 publishMods {
     file = remapJar.archiveFile
+    modLoaders.add("fabric")
+
+    def startV = null
+    def endV = null
+    def currentV = sc.current.version
+
+    switch (currentV) {
+        case "1.15.2" -> {
+            startV = "1.14"
+            endV = "1.15.2"
+        }
+        case "1.16.5" -> {
+            startV = "1.16"
+            endV = "1.16.5"
+        }
+        case "1.17.1" -> {
+            startV = "1.17"
+            endV = "1.17.1"
+        }
+        case "1.19.4" -> {
+            startV = "1.18"
+            endV = "1.19.4"
+        }
+        case "1.20.1" -> {
+            startV = "1.20"
+            endV = "1.20.1"
+        }
+        case "1.20.4" -> {
+            startV = "1.20.3"
+            endV = "1.20.4"
+        }
+//                case "1.20.6" -> {
+//                    startV = "1.20.5"
+//                    endV = "1.20.6"
+//                }
+        case "1.21" -> {
+            startV = "1.21"
+            endV = "1.21.1"
+        }
+        case "1.21.5" -> {
+            startV = "24w33a" // first 1.21.2 snapshot
+            endV = "1.21.5"
+        }
+        case "1.21.8" -> {
+            startV = "25w17a" // 3rd 1.21.6 snapshot
+            endV = "1.21.8"
+        }
+        case "1.21.10" -> {
+            startV = "1.21.9"
+            endV = "1.21.10"
+        }
+        default -> {
+            startV = currentV
+        }
+    }
 
     if (releaseGithub()) {
         github {
@@ -178,67 +233,40 @@ publishMods {
         }
     }
 
+    if (releaseCurseForge()) {
+        curseforge {
+            accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
+            projectId = "1471872"
+
+            if (endV != null) {
+                minecraftVersionRange {
+                    start = startV
+                    end = endV
+
+                    includeSnapshots = true
+                }
+            } else {
+                minecraftVersions.add(startV)
+            }
+
+            javaVersions.add(requiredJava)
+
+            clientRequired = true
+            serverRequired = false
+
+            requires("malilib")
+
+            changelog = rootProject.file("changelog.md").text
+            changelogType = "markdown"
+        }
+    }
+
     if (releaseModrinth()) {
         modrinth {
             accessToken = providers.environmentVariable("MODRINTH_TOKEN")
             projectId = "Qppvg0Y6"
             changelog = rootProject.file("changelog.md").text
             type = STABLE
-            modLoaders.add("fabric")
-
-            def startV = null
-            def endV = null
-            def currentV = sc.current.version
-
-            switch (currentV) {
-                case "1.15.2" -> {
-                    startV = "1.14"
-                    endV = "1.15.2"
-                }
-                case "1.16.5" -> {
-                    startV = "1.16"
-                    endV = "1.16.5"
-                }
-                case "1.17.1" -> {
-                    startV = "1.17"
-                    endV = "1.17.1"
-                }
-                case "1.19.4" -> {
-                    startV = "1.18"
-                    endV = "1.19.4"
-                }
-                case "1.20.1" -> {
-                    startV = "1.20"
-                    endV = "1.20.1"
-                }
-                case "1.20.4" -> {
-                    startV = "1.20.3"
-                    endV = "1.20.4"
-                }
-//                case "1.20.6" -> {
-//                    startV = "1.20.5"
-//                    endV = "1.20.6"
-//                }
-                case "1.21" -> {
-                    startV = "1.21"
-                    endV = "1.21.1"
-                }
-                case "1.21.5" -> {
-                    startV = "24w33a" // first 1.21.2 snapshot
-                    endV = "1.21.5"
-                }
-                case "1.21.8" -> {
-                    startV = "25w17a" // 3rd 1.21.6 snapshot
-                    endV = "1.21.8"
-                }
-                case "1.21.10" -> {
-                    startV = "1.21.9"
-                    endV = "1.21.10"
-                }
-                default -> {
-                    startV = currentV
-                }
-            }
 
             if (endV != null) {
                 minecraftVersionRange {

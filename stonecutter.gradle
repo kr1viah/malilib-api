@@ -18,6 +18,10 @@ boolean releaseMaven() {
     return providers.environmentVariable("RELEASE_MAVEN").getOrElse("false").toBoolean()
 }
 
+boolean releaseCurseForge() {
+    return providers.environmentVariable("RELEASE_CURSEFORGE").getOrElse("false").toBoolean()
+}
+
 //noinspection GroovyAssignabilityCheck
 stonecutter.tasks {
     if (releaseModrinth()) {
@@ -26,8 +30,13 @@ stonecutter.tasks {
     if (releaseGithub()) {
         order("publishGithub")
     }
+    if (releaseCurseForge()) {
+        order("publishCurseforge")
+    }
+    if (releaseMaven()) {
+        order("publish")
+    }
     order("runTestmodClient")
-//    order("publishCurseforge")
 }
 
 version = project.mod_version + "+" + sc.current.version
@@ -52,6 +61,13 @@ publishMods {
             throw new GradleException('Missing MODRINTH_TOKEN')
         }
     }
+
+    if (releaseCurseForge()) {
+        if (!providers.environmentVariable("CURSEFORGE_TOKEN").isPresent() || providers.environmentVariable("CURSEFORGE_TOKEN").get() == "") {
+            throw new GradleException('Missing MODRINTH_TOKEN')
+        }
+    }
+
     if (releaseGithub()) {
         if (!providers.environmentVariable("GITHUB_TOKEN").isPresent() || providers.environmentVariable("GITHUB_TOKEN").get() == "") {
             throw new GradleException('Missing GITHUB_TOKEN')
