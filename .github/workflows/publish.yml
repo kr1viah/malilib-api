@@ -45,4 +45,4 @@ jobs:
           RELEASE_GITHUB: ${{ inputs.release_github }}
           RELEASE_MODRINTH: ${{ inputs.release_modrinth }}
           RELEASE_MAVEN: ${{ inputs.release_maven }}
-          RELEASE_CURSEFORGE: ${{ inputs.release_maven }}
+          RELEASE_CURSEFORGE: ${{ inputs.release_curseforge }}
