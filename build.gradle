@@ -295,8 +295,8 @@ publishing {
         }
     }
     repositories {
-        mavenLocal()
         if (releaseMaven()) {
+            mavenLocal()
             if (!providers.environmentVariable("REPSY_TOKEN").isPresent() || providers.environmentVariable("REPSY_TOKEN").get() == "") {
                 throw new GradleException('Missing REPSY_TOKEN')
             }
