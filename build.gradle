@@ -238,6 +238,8 @@ publishMods {
             accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
             projectId = "1471872"
 
+            type = STABLE
+
             if (endV != null) {
                 minecraftVersionRange {
                     start = startV
