@@ -242,8 +242,6 @@ publishMods {
                 minecraftVersionRange {
                     start = startV
                     end = endV
-
-                    includeSnapshots = true
                 }
             } else {
                 minecraftVersions.add(startV)
