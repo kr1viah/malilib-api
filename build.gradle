@@ -200,16 +200,12 @@ publishMods {
             startV = "1.20.3"
             endV = "1.20.4"
         }
-//                case "1.20.6" -> {
-//                    startV = "1.20.5"
-//                    endV = "1.20.6"
-//                }
         case "1.21" -> {
             startV = "1.21"
             endV = "1.21.1"
         }
         case "1.21.5" -> {
-            startV = "24w33a" // first 1.21.2 snapshot
+            startV = "1.21.2" // first 1.21.2 snapshot
             endV = "1.21.5"
         }
         case "1.21.8" -> {
