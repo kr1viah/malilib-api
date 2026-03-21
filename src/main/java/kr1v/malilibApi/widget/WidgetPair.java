@@ -183,7 +183,7 @@ public class WidgetPair extends WidgetContainer {
 		//? }
 
 		@Override
-		protected void addConfigTextFieldEntry(int x, int y, int resetX, int configWidth, int configHeight, IConfigValue config) {
+		protected void addConfigTextFieldEntry(int x, int y, int resetX, int configWidth, int configHeight, IConfigValue config/*? if >=1.21.11 {*//*, fi.dy.masa.malilib.gui.wrappers.TextFieldType type*//*? }*/) {
 			GuiTextFieldGeneric field = this.createTextField(x, y + 1, configWidth - 4, configHeight - 3);
 			field.setMaxLength(this.maxTextfieldTextLength);
 			field.setText(config.getStringValue());
@@ -192,7 +192,7 @@ public class WidgetPair extends WidgetContainer {
 			ConfigOptionListenerResetConfig listenerReset = new ConfigOptionListenerResetConfig(config, new ConfigOptionListenerResetConfig.ConfigResetterTextField(config, field), resetButton, null);
 			multipleListenerReset.add(listenerReset);
 
-			this.addTextField(field, listenerChange);
+			this.addTextField(field, listenerChange/*? if >=1.21.11 {*//*, type*//*? }*/);
 		}
 
 		@Override
@@ -210,7 +210,7 @@ public class WidgetPair extends WidgetContainer {
 
 			if (config instanceof IConfigDouble) callback = new SliderCallbackDouble((IConfigDouble) config, resetButton);
 			//? if >=1.21
-			else if (config instanceof IConfigFloat iConfigFloat) callback = new SliderCallbackFloat(iConfigFloat, resetButton);
+			else if (config instanceof IConfigFloat) callback = new SliderCallbackFloat((IConfigFloat) config, resetButton);
 			else if (config instanceof IConfigInteger) callback = new SliderCallbackInteger((IConfigInteger) config, resetButton);
 			else return;
 

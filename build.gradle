@@ -39,6 +39,10 @@ repositories {
         name = "kr1v"
         url = "https://repo.repsy.io/kr1v/maven/"
     }
+    maven {
+        name = "Fallen Breath"
+        url = 'https://maven.fallenbreath.me/releases'
+    }
     mavenLocal()
     mavenCentral()
 }
