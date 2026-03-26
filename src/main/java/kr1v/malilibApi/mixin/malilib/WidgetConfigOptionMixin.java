@@ -76,7 +76,7 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
 	/*@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lfi/dy/masa/malilib/gui/widgets/WidgetConfigOption;drawSubWidgets(Lnet/minecraft/client/gui/DrawContext;II)V"))
 	private void preventRedraw(WidgetConfigOption instance, net.minecraft.client.gui.DrawContext drawContext, int mouseX, int mouseY, Operation<Void> original) {
 	}
-	*///? } else if >=1.21.11 {
+	*///? } else if =1.21.11 {
 	/*@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lfi/dy/masa/malilib/gui/widgets/WidgetConfigOption;drawSubWidgets(Lfi/dy/masa/malilib/render/GuiContext;II)V"))
 	private void preventRedraw(WidgetConfigOption instance, fi.dy.masa.malilib.render.GuiContext guiContext, int mouseX, int mouseY, Operation<Void> original) {
 
