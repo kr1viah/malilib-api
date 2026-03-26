@@ -1,9 +1,9 @@
-## 0.5.1 changelog
+## 0.6.0 changelog
 
 ### Users
 
-Fix crash with latest MaLiLib
+26.1 update
 
 ### Mod developers
 
-Update MaLiLib to 0.27.7
+Nothing new
