@@ -3,7 +3,7 @@ package kr1v.malilibApi.config.plus;
 import fi.dy.masa.malilib.config.options.ConfigBoolean;
 import kr1v.malilibApi.InternalMalilibApi;
 
-public class ConfigBooleanPlus extends ConfigBoolean implements Plus<ConfigBoolean> {
+public class ConfigBooleanPlus extends ConfigBoolean implements Plus<ConfigBoolean, ConfigBooleanPlus> {
 	public ConfigBooleanPlus(String name) {
 		this(name, InternalMalilibApi.getDefaultEnabled(), "");
 	}

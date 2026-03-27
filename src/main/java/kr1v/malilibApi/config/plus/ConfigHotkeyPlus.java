@@ -5,7 +5,7 @@ import fi.dy.masa.malilib.hotkeys.IHotkeyCallback;
 import fi.dy.masa.malilib.hotkeys.KeyAction;
 import fi.dy.masa.malilib.hotkeys.KeybindSettings;
 
-public class ConfigHotkeyPlus extends ConfigHotkey implements Plus<ConfigHotkey> {
+public class ConfigHotkeyPlus extends ConfigHotkey implements Plus<ConfigHotkey, ConfigHotkeyPlus> {
 	public ConfigHotkeyPlus(String name) {
 		this(name, "");
 	}

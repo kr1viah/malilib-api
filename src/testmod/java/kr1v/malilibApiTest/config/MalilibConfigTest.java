@@ -8,6 +8,8 @@ import kr1v.malilibApi.config._new.ConfigButton;
 //import kr1v.malilibApi.config._new.ConfigDropdown;
 import kr1v.malilibApi.config._new.ConfigObject;
 import kr1v.malilibApi.config.custom.ArrayBackedCycleConfig;
+import kr1v.malilibApi.config.plus.ConfigBooleanHotkeyedPlus;
+import kr1v.malilibApi.config.plus.ConfigBooleanPlus;
 import kr1v.malilibApi.config.plus.ConfigStringPlus;
 
 import static kr1v.malilibApiTest.Init.MOD_ID;
@@ -20,6 +22,8 @@ public class MalilibConfigTest {
 //	public static final ConfigDropdown<String> TEST_DROPDOWN = new ConfigDropdown<>("dropdown", ImmutableList.of("Wawa", "Wawa 2", "Wawa 3", "Wawa 4", "5", "6", "seven", "eight", "9 (nine)"), "Wawa", "", "dropdown", "dropdown");
 	public static class ObjectThing { public final ConfigString STRING = new ConfigStringPlus("String"); }
 	public static final ConfigObject<ObjectThing> TEST_OBJECT = new ConfigObject<>("object", new ObjectThing(), MOD_ID, "");
+	public static final ConfigBooleanPlus TEST_BOOLEAN_PLUS = new ConfigBooleanPlus("boolean_plus").setChangeCallback(b -> System.out.println(b.getBooleanValue()));
+	public static final ConfigBooleanHotkeyedPlus TEST_BOOLEAN_HOTKEYED_PLUS = new ConfigBooleanHotkeyedPlus("boolean_hotkeyed_plus").setChangeCallbackCBH(b -> System.out.println("Is now " + b.getBooleanValue() + " and " + b.getKeybind().getStringValue()));
 
 	@Label
 	@Label("MaLiLib")

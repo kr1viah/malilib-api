@@ -5,9 +5,10 @@ import fi.dy.masa.malilib.config.options.ConfigBooleanHotkeyed;
 import fi.dy.masa.malilib.hotkeys.IHotkeyCallback;
 import fi.dy.masa.malilib.hotkeys.KeyAction;
 import fi.dy.masa.malilib.hotkeys.KeybindSettings;
+import fi.dy.masa.malilib.interfaces.IValueChangeCallback;
 import kr1v.malilibApi.InternalMalilibApi;
 
-public class ConfigBooleanHotkeyedPlus extends ConfigBooleanHotkeyed implements Plus<ConfigBoolean> {
+public class ConfigBooleanHotkeyedPlus extends ConfigBooleanHotkeyed implements Plus<ConfigBoolean, ConfigBooleanHotkeyedPlus> {
 	public ConfigBooleanHotkeyedPlus(String name) {
 		this(name, InternalMalilibApi.getDefaultEnabled(), "", "");
 	}
@@ -140,5 +141,11 @@ public class ConfigBooleanHotkeyedPlus extends ConfigBooleanHotkeyed implements 
 						allowEmpty
 				)
 		);
+	}
+
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	public ConfigBooleanHotkeyedPlus setChangeCallbackCBH(IValueChangeCallback<ConfigBooleanHotkeyedPlus> callback) {
+		this.setValueChangeCallback((IValueChangeCallback)callback);
+		return this;
 	}
 }
