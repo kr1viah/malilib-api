@@ -1,9 +1,9 @@
-## 0.6.0 changelog
+## 0.6.1 changelog
 
 ### Users
 
-26.1 update
+Fix rendering on 26.1 and 1.21.11
 
 ### Mod developers
 
-Nothing new
+Better setChangeCallback on config types
