@@ -73,7 +73,11 @@ public final class ConfigUtils {
 					buttonName = popupConfig.buttonName();
 				}
 
+				boolean prev = InternalMalilibApi.getDefaultEnabled();
+				
+				InternalMalilibApi.setDefaultEnabled(klass.getAnnotation(PopupConfig.class).defaultEnabled());
 				List<IConfigBase> configs = generateOptions(klass, modId, true, null);
+				InternalMalilibApi.setDefaultEnabled(prev);
 
 				ConfigObject<?> configObject = new ConfigObject<>(
 						name,
@@ -88,10 +92,7 @@ public final class ConfigUtils {
 						popupConfig.height()
 				);
 
-				boolean prev = InternalMalilibApi.getDefaultEnabled();
-				InternalMalilibApi.setDefaultEnabled(klass.getAnnotation(PopupConfig.class).defaultEnabled());
 				InternalMalilibApi.cacheFor(modId).put(klass, configs);
-				InternalMalilibApi.setDefaultEnabled(prev);
 				InternalMalilibApi.registerTab(modId, AnnotationUtils.nameForConfig(klass), list, true, 0); // order doesnt matter for popups
 
 				list.add(configObject);
