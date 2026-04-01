@@ -1,9 +1,10 @@
-## 0.6.1 changelog
+## 0.7.0 changelog
 
 ### Users
 
-Fix rendering on 26.1 and 1.21.11
+26.1.1 compatibility
 
 ### Mod developers
 
-Better setChangeCallback on config types
+New: Register annotation handlers (`MaLiLibAPI#registerAnnotationHandler`)
+Change JsonUtils import

@@ -4,7 +4,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import fi.dy.masa.malilib.config.ConfigUtils;
 import fi.dy.masa.malilib.config.IConfigHandler;
+//? if <=1.21.11 {
 import fi.dy.masa.malilib.util.JsonUtils;
+//? } else
+//import fi.dy.masa.malilib.util.data.json.JsonUtils;
 import net.minecraft.client.MinecraftClient;
 
 import java.io.File;
@@ -30,7 +33,6 @@ public class ConfigHandler implements IConfigHandler {
 		File configFile = new File(MinecraftClient.getInstance().runDirectory, "config/" + configFileName);
 
 		if (configFile.exists() && configFile.isFile() && configFile.canRead()) {
-			// TODO: switch out JsonUtils
 			JsonElement element = JsonUtils.parseJsonFile(configFile/*? if >1.21.11 {*//*.toPath()*//*? }*/);
 
 			if (element != null && element.isJsonObject()) {
