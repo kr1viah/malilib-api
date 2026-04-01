@@ -92,6 +92,7 @@ processResources {
         case "1.21.5" ->  ">=1.21.2 <=1.21.5"
         case "1.21.8" ->  ">=1.21.6 <=1.21.8"
         case "1.21.10" -> ">=1.21.9 <=1.21.10"
+        case "26.1" ->    "~26.1"
         default ->        sc.current.version
     }
 
@@ -227,6 +228,10 @@ publishMods {
         case "1.21.10" -> {
             startV = "1.21.9"
             endV = "1.21.10"
+        }
+        case "26.1" -> {
+            startV = "26.1"
+            endV = "26.1.1"
         }
         default -> {
             startV = currentV
