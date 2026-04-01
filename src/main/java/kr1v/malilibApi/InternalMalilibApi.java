@@ -11,10 +11,7 @@ import fi.dy.masa.malilib.gui.GuiBase;
 import fi.dy.masa.malilib.util.data.ModInfo;
 import kr1v.malilibApi.annotation.Config;
 import kr1v.malilibApi.annotation.processor.ConfigProcessor;
-import kr1v.malilibApi.interfaces.IButtonBasedResettableWidgetSupplier;
-import kr1v.malilibApi.interfaces.IConfigScreenSupplier;
-import kr1v.malilibApi.interfaces.IWidgetResettableSupplier;
-import kr1v.malilibApi.interfaces.IWidgetSupplier;
+import kr1v.malilibApi.interfaces.*;
 import kr1v.malilibApi.screen.ConfigScreen;
 import kr1v.malilibApi.util.AnnotationUtils;
 import kr1v.malilibApi.util.ConfigUtils;
@@ -24,6 +21,7 @@ import net.minecraft.client.gui.screen.Screen;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -242,4 +240,11 @@ public class InternalMalilibApi {
 	public static boolean shouldHide(Object o) {
 		return toHide.contains(o);
 	}
+
+	/// See usages of this method to see what it does
+	public static void registerAnnotationHandler(Class<? extends Annotation> annotationClass, AnnotationHandler handler) {
+		annotationHandlers.put(annotationClass, handler);
+	}
+
+	public static Map<Class<? extends Annotation>, AnnotationHandler> annotationHandlers = new LinkedHashMap<>();
 }
