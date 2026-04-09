@@ -2,7 +2,7 @@ package kr1v.malilibApi.config.plus;
 
 import fi.dy.masa.malilib.config.options.ConfigInteger;
 
-public class ConfigIntegerPlus extends ConfigInteger implements Plus<ConfigInteger, ConfigIntegerPlus> {
+public class ConfigIntegerPlus extends ConfigInteger implements Plus<ConfigInteger, ConfigIntegerPlus, Integer> {
 	public ConfigIntegerPlus(String name) {
 		this(name, 0);
 	}
@@ -53,5 +53,20 @@ public class ConfigIntegerPlus extends ConfigInteger implements Plus<ConfigInteg
 
 	public ConfigIntegerPlus(String name, int defaultValue, int minValue, int maxValue, boolean useSlider, String comment, String prettyName, String translatedName) {
 		super(name, defaultValue, minValue, maxValue, useSlider, comment/*? if >=1.21 {*/, prettyName, translatedName/*? }*/);
+	}
+
+	@Override
+	public Integer get() {
+		return this.getIntegerValue();
+	}
+
+	@Override
+	public Integer getDefault() {
+		return this.getDefaultIntegerValue();
+	}
+
+	@Override
+	public void set(Integer value) {
+		this.setIntegerValue(value);
 	}
 }

@@ -14,7 +14,7 @@ import kr1v.malilibApi.widget.ConfigObjectButton;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConfigObject<T> extends CustomConfigBase<ConfigObject<T>> implements IHotkeyContainer {
+public class ConfigObject<T> extends CustomConfigBase<ConfigObject<T>, T> implements IHotkeyContainer {
 	public final ImmutableList<IConfigBase> configs;
 	public final ImmutableList<IConfigResettable> resettables;
 	public final int distanceFromTops;
@@ -116,6 +116,16 @@ public class ConfigObject<T> extends CustomConfigBase<ConfigObject<T>> implement
 
 	public T get() {
 		return instance;
+	}
+
+	@Override
+	public T getDefault() {
+		throw new IllegalStateException("This makes no sense.");
+	}
+
+	@Override
+	public void set(T value) {
+		throw new IllegalStateException("This makes no sense.");
 	}
 
 	@Override

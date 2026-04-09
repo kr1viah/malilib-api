@@ -8,7 +8,7 @@ import fi.dy.masa.malilib.hotkeys.KeybindSettings;
 import fi.dy.masa.malilib.interfaces.IValueChangeCallback;
 import kr1v.malilibApi.InternalMalilibApi;
 
-public class ConfigBooleanHotkeyedPlus extends ConfigBooleanHotkeyed implements Plus<ConfigBoolean, ConfigBooleanHotkeyedPlus> {
+public class ConfigBooleanHotkeyedPlus extends ConfigBooleanHotkeyed implements Plus<ConfigBoolean, ConfigBooleanHotkeyedPlus, Boolean> {
 	public ConfigBooleanHotkeyedPlus(String name) {
 		this(name, InternalMalilibApi.getDefaultEnabled(), "", "");
 	}
@@ -147,5 +147,20 @@ public class ConfigBooleanHotkeyedPlus extends ConfigBooleanHotkeyed implements 
 	public ConfigBooleanHotkeyedPlus setChangeCallbackCBH(IValueChangeCallback<ConfigBooleanHotkeyedPlus> callback) {
 		this.setValueChangeCallback((IValueChangeCallback)callback);
 		return this;
+	}
+
+	@Override
+	public Boolean get() {
+		return this.getBooleanValue();
+	}
+
+	@Override
+	public Boolean getDefault() {
+		return this.getDefaultBooleanValue();
+	}
+
+	@Override
+	public void set(Boolean value) {
+		this.setBooleanValue(value);
 	}
 }

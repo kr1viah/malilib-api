@@ -5,7 +5,7 @@ import fi.dy.masa.malilib.hotkeys.IHotkeyCallback;
 import fi.dy.masa.malilib.hotkeys.KeyAction;
 import fi.dy.masa.malilib.hotkeys.KeybindSettings;
 
-public class ConfigHotkeyPlus extends ConfigHotkey implements Plus<ConfigHotkey, ConfigHotkeyPlus> {
+public class ConfigHotkeyPlus extends ConfigHotkey implements Plus<ConfigHotkey, ConfigHotkeyPlus, String> {
 	public ConfigHotkeyPlus(String name) {
 		this(name, "");
 	}
@@ -141,5 +141,20 @@ public class ConfigHotkeyPlus extends ConfigHotkey implements Plus<ConfigHotkey,
 						allowEmpty
 				)
 		);
+	}
+
+	@Override
+	public String get() {
+		return this.getKeybind().getStringValue();
+	}
+
+	@Override
+	public String getDefault() {
+		return this.getKeybind().getDefaultStringValue();
+	}
+
+	@Override
+	public void set(String value) {
+		this.getKeybind().setValueFromString(value);
 	}
 }

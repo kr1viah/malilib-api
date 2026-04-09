@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class ConfigList<T extends IConfigBase & IConfigResettable> extends CustomConfigBase<ConfigList<T>> implements IVariableHotkeyContainer {
+public class ConfigList<T extends IConfigBase & IConfigResettable> extends CustomConfigBase<ConfigList<T>, List<T>> implements IVariableHotkeyContainer {
 	private final Supplier<T> supplier;
 	private final String buttonDisplayName;
 	private final List<T> list;
@@ -196,5 +196,21 @@ public class ConfigList<T extends IConfigBase & IConfigResettable> extends Custo
 	@Override
 	public void registerListener(Runnable toRun) {
 		this.runnables.add(toRun);
+	}
+
+	@Override
+	public List<T> get() {
+		return this.list;
+	}
+
+	@Override
+	public List<T> getDefault() {
+		return this.defaultValue;
+	}
+
+	@Override
+	public void set(List<T> value) {
+		this.list.clear();
+		this.list.addAll(value);
 	}
 }

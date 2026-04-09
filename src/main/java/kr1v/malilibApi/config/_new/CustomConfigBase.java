@@ -9,7 +9,7 @@ import fi.dy.masa.malilib.util.StringUtils;
 import kr1v.malilibApi.config.plus.Plus;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class CustomConfigBase<T extends IConfigBase> implements IConfigBase, IConfigResettable, IConfigNotifiable<T>, Plus<T, T> {
+public abstract class CustomConfigBase<T extends IConfigBase, V> implements IConfigBase, IConfigResettable, IConfigNotifiable<T>, Plus<T, T, V> {
 	private final String name;
 	private String comment;
 	private String translatedName;

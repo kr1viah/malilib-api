@@ -2,7 +2,7 @@ package kr1v.malilibApi.config.plus;
 
 import fi.dy.masa.malilib.config.options.ConfigDouble;
 
-public class ConfigDoublePlus extends ConfigDouble implements Plus<ConfigDouble, ConfigDoublePlus> {
+public class ConfigDoublePlus extends ConfigDouble implements Plus<ConfigDouble, ConfigDoublePlus, Double> {
 	public ConfigDoublePlus(String name) {
 		this(name, 0);
 	}
@@ -53,5 +53,20 @@ public class ConfigDoublePlus extends ConfigDouble implements Plus<ConfigDouble,
 
 	public ConfigDoublePlus(String name, double defaultValue, double minValue, double maxValue, boolean useSlider, String comment, String prettyName, String translatedName) {
 		super(name, defaultValue, minValue, maxValue, useSlider, comment/*? if >=1.21 {*/, prettyName, translatedName/*? }*/);
+	}
+
+	@Override
+	public Double get() {
+		return this.getDoubleValue();
+	}
+
+	@Override
+	public Double getDefault() {
+		return this.getDefaultDoubleValue();
+	}
+
+	@Override
+	public void set(Double value) {
+		this.setDoubleValue(value);
 	}
 }

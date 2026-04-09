@@ -14,11 +14,12 @@ import kr1v.malilibApi.interfaces.IWidgetResettableSupplier;
 import kr1v.malilibApi.mixin.accessor.WidgetConfigOptionAccessor;
 import kr1v.malilibApi.mixin.accessor.WidgetConfigOptionBaseAccessor;
 import kr1v.malilibApi.widget.WidgetPair;
+import net.minecraft.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConfigPair<L extends IConfigBase & IConfigResettable, R extends IConfigBase & IConfigResettable> extends CustomConfigBase<ConfigPair<L, R>> implements IHotkeyContainer {
+public class ConfigPair<L extends IConfigBase & IConfigResettable, R extends IConfigBase & IConfigResettable> extends CustomConfigBase<ConfigPair<L, R>, Pair<L, R>> implements IHotkeyContainer {
 	private final L left;
 	private final R right;
 
@@ -134,5 +135,22 @@ public class ConfigPair<L extends IConfigBase & IConfigResettable, R extends ICo
 			hotkeys.addAll(container.getHotkeys());
 		}
 		return hotkeys;
+	}
+
+	// TODO: perhaps something better for this
+
+	@Override
+	public Pair<L, R> get() {
+		throw new IllegalStateException("This makes no sense.");
+	}
+
+	@Override
+	public Pair<L, R> getDefault() { // :confuse:
+		throw new IllegalStateException("This makes no sense.");
+	}
+
+	@Override
+	public void set(Pair<L, R> value) {
+		throw new IllegalStateException("This makes no sense.");
 	}
 }

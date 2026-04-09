@@ -3,7 +3,7 @@ package kr1v.malilibApiTest.custo;
 import com.google.gson.JsonElement;
 import kr1v.malilibApi.config._new.CustomConfigBase;
 
-public class ConfigClass extends CustomConfigBase<ConfigClass> {
+public class ConfigClass extends CustomConfigBase<ConfigClass, Void> {
     public ConfigClass(String name, String comment, String translatedName, String prettyName) {
         super(name, comment, translatedName, prettyName);
     }
@@ -31,4 +31,19 @@ public class ConfigClass extends CustomConfigBase<ConfigClass> {
     public void resetToDefault() {
 
     }
+
+	@Override
+	public Void get() {
+		return null;
+	}
+
+	@Override
+	public Void getDefault() {
+		return null;
+	}
+
+	@Override
+	public void set(Void value) {
+
+	}
 }

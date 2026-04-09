@@ -1,7 +1,8 @@
 package kr1v.malilibApi.config._new;
 
-public class ConfigLabel extends CustomConfigBase<ConfigLabel> implements IDummyConfig {
-	private final String label;
+// TODO: move this to the new thing
+public class ConfigLabel extends CustomConfigBase<ConfigLabel, String> implements IDummyConfig {
+	private String label;
 
 	public ConfigLabel(String label) {
 		super(label, label, label, label);
@@ -11,5 +12,20 @@ public class ConfigLabel extends CustomConfigBase<ConfigLabel> implements IDummy
 	@Override
 	public String getComment() {
 		return label;
+	}
+
+	@Override
+	public String get() {
+		throw new IllegalStateException("This makes no sense.");
+	}
+
+	@Override
+	public String getDefault() {
+		throw new IllegalStateException("This makes no sense.");
+	}
+
+	@Override
+	public void set(String value) {
+		throw new IllegalStateException("This makes no sense.");
 	}
 }

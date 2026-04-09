@@ -4,7 +4,7 @@ import fi.dy.masa.malilib.config.IConfigOptionListEntry;
 import fi.dy.masa.malilib.config.options.ConfigOptionList;
 import kr1v.malilibApi.config.plus.Plus;
 
-public abstract class ConfigCycle<T> extends ConfigOptionList implements Plus<ConfigOptionList, ConfigCycle<T>> {
+public abstract class ConfigCycle<T> extends ConfigOptionList implements Plus<ConfigOptionList, ConfigCycle<T>, T> {
 	T defaultValue;
 
 	public ConfigCycle(String name, CycleConfigEntry<T> defaultValue, String comment, String prettyName, String translatedName) {
@@ -38,6 +38,21 @@ public abstract class ConfigCycle<T> extends ConfigOptionList implements Plus<Co
 	@Override
 	public void resetToDefault() {
 		this.getOptionListValue().value = defaultValue;
+	}
+
+	@Override
+	public T get() {
+		return this.getOptionListValue().getValue();
+	}
+
+	@Override
+	public T getDefault() {
+		return defaultValue;
+	}
+
+	@Override
+	public void set(T value) {
+		this.getOptionListValue().setValue(value);
 	}
 
 	@Override
