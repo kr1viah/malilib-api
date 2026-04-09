@@ -31,14 +31,14 @@ public class MinecraftClientMixin {
 //	}
 
 	@Group(name = "init inject", min = 1, max = 1)
-	@WrapOperation(method = "init", at = @At(value = "INVOKE", target = "Lnet/fabricmc/loader/impl/game/minecraft/Hooks;startClient(Ljava/io/File;Ljava/lang/Object;)V"))
+	@WrapOperation(method = "init", at = @At(value = "INVOKE", target = "Lnet/fabricmc/loader/impl/game/minecraft/Hooks;startClient(Ljava/io/File;Ljava/lang/Object;)V"), remap = false)
 	private static void startClient1_14_4_dev(File runDir, Object gameInstance, Operation<Void> original) {
 		original.call(runDir, gameInstance);
 		InternalMalilibApi.init();
 	}
 
 	@Group(name = "init inject", min = 1, max = 1)
-	@WrapOperation(method = "method_1503", at = @At(value = "INVOKE", target = "Lnet/fabricmc/loader/impl/game/minecraft/Hooks;startClient(Ljava/io/File;Ljava/lang/Object;)V"))
+	@WrapOperation(method = "method_1503", at = @At(value = "INVOKE", target = "Lnet/fabricmc/loader/impl/game/minecraft/Hooks;startClient(Ljava/io/File;Ljava/lang/Object;)V"), remap = false)
 	private static void startClient_1_14_4_prod(File runDir, Object gameInstance, Operation<Void> original) {
 		original.call(runDir, gameInstance);
 		InternalMalilibApi.init();
