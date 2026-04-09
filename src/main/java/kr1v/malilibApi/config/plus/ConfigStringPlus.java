@@ -35,6 +35,6 @@ public class ConfigStringPlus extends ConfigString implements Plus<ConfigString,
 
 	@Override
 	public void set(String value) {
-		this.setStringValue(value);
+		this.setValueFromString(value);
 	}
 }
