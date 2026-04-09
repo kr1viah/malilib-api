@@ -1,10 +1,9 @@
-## 0.7.0 changelog
+## 0.8.0 changelog
 
 ### Users
 
-26.1.1 compatibility
+Nothing new for users
 
 ### Mod developers
 
-New: Register annotation handlers (`MaLiLibAPI#registerAnnotationHandler`)
-Change JsonUtils import
+New: generic `get` and `set` on Plus classes
