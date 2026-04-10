@@ -7,6 +7,8 @@ import kr1v.malilibApi.annotation.Label;
 import kr1v.malilibApi.config._new.ConfigButton;
 //import kr1v.malilibApi.config._new.ConfigDropdown;
 import kr1v.malilibApi.config._new.ConfigObject;
+import kr1v.malilibApi.config._new.boring.*;
+import kr1v.malilibApi.config._new.boring.ConfigFloat;
 import kr1v.malilibApi.config.custom.ArrayBackedCycleConfig;
 import kr1v.malilibApi.config.plus.ConfigBooleanHotkeyedPlus;
 import kr1v.malilibApi.config.plus.ConfigBooleanPlus;
@@ -24,6 +26,10 @@ public class MalilibConfigTest {
 	public static final ConfigObject<ObjectThing> TEST_OBJECT = new ConfigObject<>("object", new ObjectThing(), MOD_ID, "");
 	public static final ConfigBooleanPlus TEST_BOOLEAN_PLUS = new ConfigBooleanPlus("boolean_plus").setChangeCallback(b -> System.out.println(b.getBooleanValue()));
 	public static final ConfigBooleanHotkeyedPlus TEST_BOOLEAN_HOTKEYED_PLUS = new ConfigBooleanHotkeyedPlus("boolean_hotkeyed_plus").setChangeCallbackCBH(b -> System.out.println("Is now " + b.getBooleanValue() + " and " + b.getKeybind().getStringValue()));
+	public static final ConfigByte TEST_BYTE = new ConfigByte("byte");
+	public static final ConfigChar TEST_CHAR = new ConfigChar("char");
+	public static final ConfigFloat TEST_FLOAT = new ConfigFloat("float");
+	public static final ConfigShort TEST_SHORT = new ConfigShort("short");
 
 	@Label
 	@Label("MaLiLib")
@@ -34,7 +40,7 @@ public class MalilibConfigTest {
 	public static final ConfigColorList TEST_COLOR_LIST = new ConfigColorList("color_list", ImmutableList.of(), "");
 	public static final ConfigDouble TEST_DOUBLE = new ConfigDouble("double", 0, "");
 	//? if >=1.21
-	public static final ConfigFloat TEST_FLOAT = new ConfigFloat("float", 0);
+//	public static final ConfigFloat TEST_FLOAT = new ConfigFloat("float", 0);
 	public static final ConfigHotkey TEST_HOTKEY = new ConfigHotkey("hotkey", "", "");
 	public static final ConfigInteger TEST_INTEGER = new ConfigInteger("integer", 0, "");
 	public static final ConfigOptionList TEST_OPTION_LIST = new ArrayBackedCycleConfig<>("option_list", "", "", "", str -> str, "", new String[]{"", "awaw", "wawaw"});
