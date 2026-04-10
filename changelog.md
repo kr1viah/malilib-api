@@ -1,4 +1,4 @@
-## 0.8.0 changelog
+## 0.8.1 changelog
 
 ### Users
 
@@ -6,4 +6,5 @@ Nothing new for users
 
 ### Mod developers
 
-New: generic `get` and `set` on Plus classes
+New: ConfigByte, ConfigChar, ConfigShort, ConfigFloat
+Coming Soontm: ConfigLong
