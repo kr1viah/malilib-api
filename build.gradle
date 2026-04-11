@@ -232,7 +232,7 @@ publishMods {
         }
         case "26.1" -> {
             startV = "26.1"
-            endV = "26.1.1"
+            endV = "26.1.2"
         }
         default -> {
             startV = currentV
