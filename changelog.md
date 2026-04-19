@@ -1,4 +1,4 @@
-## 0.8.1 changelog
+## 0.8.2 changelog
 
 ### Users
 
@@ -6,5 +6,4 @@ Nothing new for users
 
 ### Mod developers
 
-New: ConfigByte, ConfigChar, ConfigShort, ConfigFloat
-Coming Soontm: ConfigLong
+Fix crash when using mixin
