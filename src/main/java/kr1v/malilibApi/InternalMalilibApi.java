@@ -17,6 +17,7 @@ import kr1v.malilibApi.util.AnnotationUtils;
 import kr1v.malilibApi.util.ConfigUtils;
 import kr1v.malilibApi.util.Util;
 import net.minecraft.client.gui.screen.Screen;
+import org.spongepowered.asm.mixin.transformer.ClassInfo;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -70,6 +71,7 @@ public class InternalMalilibApi {
 					Map<String, List<ConfigProcessor.ElementRepresentation>> map = GSON.fromJson(reader, type);
 
 					for (String clazz : map.keySet()) {
+						if (ClassInfo.isMixin(clazz)) continue;
 						classToRepresentation.put(Class.forName(clazz, false, Thread.currentThread().getContextClassLoader()), map.get(clazz));
 					}
 				}

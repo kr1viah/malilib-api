@@ -15,7 +15,9 @@
       "kr1v.malilibApiTest.Init"
     ]
   },
-  "mixins": [],
+  "mixins": [
+    "testmod.mixins.json"
+  ],
   "depends": {
     "fabricloader": "*",
     "minecraft": "*",
