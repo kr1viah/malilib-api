@@ -26,13 +26,13 @@ public final class ClassUtils {
 				if (el.type.equals("field")) {
 					f = clazz.getDeclaredField(el.name);
 				} else if (el.type.equals("innerClass")) {
-					klass = Class.forName(el.name);
+					klass = Class.forName(el.name, false, clazz.getClassLoader());
 				} else if (el.type.equals("method")) {
 					if (el.name.contains("<")) continue;
 					try {
 						List<Class<?>> typeList = new ArrayList<>();
 						for (String type : el.types) {
-							typeList.add(Class.forName(type));
+							typeList.add(Class.forName(type, false, clazz.getClassLoader()));
 						}
 						Class<?>[] types = typeList.toArray(new Class[]{});
 						m = clazz.getDeclaredMethod(el.name, types);
@@ -58,7 +58,7 @@ public final class ClassUtils {
 
 				ConfigProcessor.Element element = new ConfigProcessor.Element(f, m, klass);
 				for (ConfigProcessor.AnnotationDTO ann : el.annotations) {
-					element.annotations.add(ConfigProcessor.toAnnotation(ann, Class.forName(ann.annotationType)));
+					element.annotations.add(ConfigProcessor.toAnnotation(ann, Class.forName(ann.annotationType, false, clazz.getClassLoader())));
 				}
 				elementsOfClass.add(element);
 			}
