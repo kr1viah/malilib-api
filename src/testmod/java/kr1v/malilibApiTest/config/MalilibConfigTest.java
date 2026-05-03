@@ -39,8 +39,6 @@ public class MalilibConfigTest {
 	//? if >=1.20.1
 	public static final ConfigColorList TEST_COLOR_LIST = new ConfigColorList("color_list", ImmutableList.of(), "");
 	public static final ConfigDouble TEST_DOUBLE = new ConfigDouble("double", 0, "");
-	//? if >=1.21
-//	public static final ConfigFloat TEST_FLOAT = new ConfigFloat("float", 0);
 	public static final ConfigHotkey TEST_HOTKEY = new ConfigHotkey("hotkey", "", "");
 	public static final ConfigInteger TEST_INTEGER = new ConfigInteger("integer", 0, "");
 	public static final ConfigOptionList TEST_OPTION_LIST = new ArrayBackedCycleConfig<>("option_list", "", "", "", str -> str, "", new String[]{"", "awaw", "wawaw"});
