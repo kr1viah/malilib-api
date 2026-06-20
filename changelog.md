@@ -2,8 +2,8 @@
 
 ### Users
 
-Nothing new for users
+26.2 update
 
 ### Mod developers
 
-Fix crash when using mixin
+Nothing new for developers

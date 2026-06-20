@@ -20,7 +20,11 @@ public class ConfigListButton extends ButtonGeneric {
 	@Override
 	protected boolean onMouseClickedImpl(/*? if >=1.21.10 {*//*net.minecraft.client.gui.Click click, boolean doubleClick*//*? } else {*/int mouseX, int mouseY, int mouseButton/*? }*/) {
 		super.onMouseClickedImpl(/*? if >=1.21.10 {*//*click, doubleClick*//*? } else {*/mouseX, mouseY, mouseButton/*? }*/);
+		//? if <26.2 {
 		GuiBase.openGui(new ConfigListScreen(list, null, MinecraftClient.getInstance().currentScreen));
+		//? } else {
+		/*GuiBase.openGui(new ConfigListScreen(list, null, MinecraftClient.getInstance().guiManager.getCurrentScreen()));
+		*///? }
 		return true;
 	}
 

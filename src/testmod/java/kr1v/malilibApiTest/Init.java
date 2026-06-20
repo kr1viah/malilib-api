@@ -13,7 +13,7 @@ import net.minecraft.client.gui.screen.Screen;
 
 public class Init implements ClientModInitializer {
 	public static final String MOD_ID = "malilib-api-test";
-	public static final String MOD_NAME = "Test mod";
+	public static final String MOD_NAME = "Test mod :3";
 
 	@Override
 	public void onInitializeClient() {
