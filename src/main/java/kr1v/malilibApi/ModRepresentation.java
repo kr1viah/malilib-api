@@ -32,31 +32,23 @@ public class ModRepresentation {
 		this.modId = modId;
 	}
 
-	public static final class Tab {
+	public static class Tab {
 		private final String translationKey;
 		private final List<IConfigBase> options;
-		private final boolean isPopup;
 		private final int order;
 
-		public Tab(String translationKey, List<IConfigBase> options, boolean isPopup, int order) {
+		public Tab(String translationKey, List<IConfigBase> options, int order) {
 			this.translationKey = translationKey;
-			// defensive copy to approximate record immutability
-			this.options = options == null ? null : Collections.unmodifiableList(new ArrayList<>(options));
-			this.isPopup = isPopup;
+			this.options = options;
 			this.order = order;
 		}
 
-		/* -- Record-style accessors (same names as a record would provide) -- */
 		public String translationKey() {
 			return translationKey;
 		}
 
 		public List<IConfigBase> options() {
 			return options;
-		}
-
-		public boolean isPopup() {
-			return isPopup;
 		}
 
 		public int order() {
@@ -68,15 +60,14 @@ public class ModRepresentation {
 			if (this == o) return true;
 			if (!(o instanceof Tab)) return false;
 			Tab tab = (Tab) o;
-			return isPopup == tab.isPopup &&
-					order == tab.order &&
+			return order == tab.order &&
 					Objects.equals(translationKey, tab.translationKey) &&
 					Objects.equals(options, tab.options);
 		}
 
 		@Override
 		public int hashCode() {
-			return Objects.hash(translationKey, options, isPopup, order);
+			return Objects.hash(translationKey, options, order);
 		}
 
 		@Override
@@ -84,7 +75,6 @@ public class ModRepresentation {
 			return "Tab[" +
 					"translationKey=" + translationKey +
 					", options=" + options +
-					", isPopup=" + isPopup +
 					", order=" + order +
 					']';
 		}
@@ -98,8 +88,8 @@ public class ModRepresentation {
 		GuiBase.openGui(configScreenSupplier.get(parent));
 	}
 
-	public void registerTab(String tabName, List<IConfigBase> options, boolean isPopup, int order) {
-		this.tabs.add(new Tab(tabName, options, isPopup, order));
+	public void registerTab(String tabName, List<IConfigBase> options, int order) {
+		this.tabs.add(new Tab(tabName, options, order));
 	}
 
 	public void unregisterTab(String tabName) {
@@ -110,8 +100,7 @@ public class ModRepresentation {
 		return tabs
 				.stream()
 				.sorted(Comparator
-						.comparing(Tab::isPopup)
-						.thenComparingInt(Tab::order)
+						.comparingInt(Tab::order)
 						.thenComparing(Tab::translationKey)
 				)
 				.collect(Collectors.toList());

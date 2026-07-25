@@ -141,9 +141,6 @@ public final class ConfigUtils {
 					popupConfig.height()
 			);
 
-			InternalMalilibApi.cacheFor(modId).put(klass, configs);
-			InternalMalilibApi.registerTab(modId, AnnotationUtils.nameForConfig(klass), list, true, 0); // order doesnt matter for popups
-
 			list.add(configObject);
 		}));
 	}

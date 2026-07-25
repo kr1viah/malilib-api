@@ -109,7 +109,7 @@ public class InternalMalilibApi {
 		setDefaultEnabled(defaultEnabled);
 		List<IConfigBase> list = ConfigUtils.generateOptions(cfgClass, modId);
 		setDefaultEnabled(true);
-		registerTab(modId, AnnotationUtils.nameForConfig(cfgClass), list, false, order);
+		registerTab(modId, AnnotationUtils.nameForConfig(cfgClass), list, order);
 		cacheFor(modId).put(cfgClass, list);
 	}
 
@@ -159,8 +159,8 @@ public class InternalMalilibApi {
 		defaultEnabled = defaultEnabled1;
 	}
 
-	public static void registerTab(String modId, String tabName, List<IConfigBase> options, boolean isPopup, int order) {
-		getMod(modId).registerTab(tabName, options, isPopup, order);
+	public static void registerTab(String modId, String tabName, List<IConfigBase> options, int order) {
+		getMod(modId).registerTab(tabName, options, order);
 	}
 
 	public static void unregisterTab(String modId, String tabName) {
@@ -171,8 +171,7 @@ public class InternalMalilibApi {
 		return rawTabs(modId)
 				.stream()
 				.sorted(Comparator
-						.comparing(ModRepresentation.Tab::isPopup)
-						.thenComparingInt(ModRepresentation.Tab::order)
+						.comparingInt(ModRepresentation.Tab::order)
 						.thenComparing(ModRepresentation.Tab::translationKey)
 				)
 				.collect(Collectors.toList());
