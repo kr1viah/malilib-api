@@ -3,6 +3,7 @@ package kr1v.malilibApi.screen;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
+import fi.dy.masa.malilib.util.StringUtils;
 import kr1v.malilibApi.InternalMalilibApi;
 import kr1v.malilibApi.ModRepresentation;
 import kr1v.malilibApi.mixin.accessor.WidgetListConfigOptionsBaseAccessor;
@@ -56,7 +57,7 @@ public class ConfigScreen extends GuiConfigsBase {
 	@SuppressWarnings("SameParameterValue")
 	private int createButton(int x, int y, int width, ModRepresentation.Tab tab) {
 		// I need to be sent to jail for this method
-		ButtonGeneric button = new ButtonGeneric(x, y, width, 20, tab.translationKey());
+		ButtonGeneric button = new ButtonGeneric(x, y, width, 20, StringUtils.translate(tab.translationKey()));
 		button.setEnabled(!this.tab.equals(tab));
 		final ModRepresentation.Tab tab2 = tab;
 
