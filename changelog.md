@@ -1,9 +1,9 @@
-## 0.8.2 changelog
+## 0.8.4 changelog
 
 ### Users
 
-26.2 update
+Nothing new for users
 
 ### Mod developers
 
-Nothing new for developers
+You can now translate tabs
