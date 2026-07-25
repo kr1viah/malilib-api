@@ -68,7 +68,11 @@ public final class ConfigUtils {
 
 	static {
 		InternalMalilibApi.registerAnnotationHandler(Hide.class, ((annotation, element, list, declaringClass, modId, aStatic, instance) -> {
-			InternalMalilibApi.addHide(element.field.get(instance));
+			try {
+				InternalMalilibApi.addHide(element.field.get(instance));
+			} catch (IllegalAccessException e) {
+				Util.rethrow(e);
+			}
 		}));
 
 		InternalMalilibApi.registerAnnotationHandler(Marker.class, ((annotation, element, list, declaringClass, modId, static_, instance) -> {
@@ -82,7 +86,12 @@ public final class ConfigUtils {
 					for (String value : extras.runAt()) {
 						if (marker.value().equals(value)) {
 							m.setAccessible(true);
-							m.invoke(instance, list);
+							try {
+								m.invoke(instance, list);
+							} catch (IllegalAccessException | InvocationTargetException e) {
+								System.out.println("@Extras method " + m + " failed: " + e);
+								Util.rethrow(e);
+							}
 						}
 					}
 				}
@@ -94,7 +103,12 @@ public final class ConfigUtils {
 			// if is @Extras or any is "" (e.g. @Extras {"One", ""}) run here
 			if (extras.runAt().length == 0 || Arrays.stream(extras.runAt()).anyMatch(String::isEmpty)) {
 				element.method.setAccessible(true);
-				element.method.invoke(instance, list);
+				try {
+					element.method.invoke(instance, list);
+				} catch (IllegalAccessException | InvocationTargetException e) {
+					System.out.println("@Extras method " + element.method + " failed: " + e);
+					Util.rethrow(e);
+				}
 			}
 		}));
 

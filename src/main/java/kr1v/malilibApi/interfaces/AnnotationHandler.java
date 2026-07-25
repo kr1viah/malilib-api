@@ -15,5 +15,5 @@ public interface AnnotationHandler {
 				String modId,
 				boolean static_,
 				Object instance
-	) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException;
+	);
 }

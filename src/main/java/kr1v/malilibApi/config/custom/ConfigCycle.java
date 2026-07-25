@@ -5,7 +5,7 @@ import fi.dy.masa.malilib.config.options.ConfigOptionList;
 import kr1v.malilibApi.config.plus.Plus;
 
 public abstract class ConfigCycle<T> extends ConfigOptionList implements Plus<ConfigOptionList, ConfigCycle<T>, T> {
-	T defaultValue;
+	private final T defaultValue;
 
 	public ConfigCycle(String name, CycleConfigEntry<T> defaultValue, String comment, String prettyName, String translatedName) {
 		super(name, defaultValue, comment, prettyName/*? if >=1.21 {*/, translatedName/*? }*/);

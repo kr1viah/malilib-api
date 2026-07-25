@@ -32,13 +32,14 @@ import java.util.stream.Collectors;
 
 /// this exists in order to not bloat MalilibApi with methods that need to be public but aren't ""supposed"" to be used by others
 public class InternalMalilibApi {
-	static final Map<String, ModRepresentation> registeredMods = new HashMap<>();
 	public static final Map<Class<?>, List<ConfigProcessor.ElementRepresentation>> classToRepresentation = new HashMap<>();
 	public static final Gson GSON = ConfigProcessor.GSON;
 
+	static final Map<String, ModRepresentation> registeredMods = new HashMap<>();
+
 	public static void registerMod(String modId, String modName, ConfigHandler configHandler, InputHandler inputHandler, IConfigScreenSupplier configScreenSupplier) {
 		if (isModRegistered(modId)) throw new IllegalStateException("Mod id is already registered! mod id: " + modId);
-		System.out.println("(MaLiLib API) Registering mod " + modName + " with mod id " + modId);
+		System.out.println("Registering mod " + modName + " with mod id " + modId);
 
 		Supplier<GuiBase> guiBaseSupplier = configScreenSupplier::get;
 
@@ -211,7 +212,7 @@ public class InternalMalilibApi {
 		return getMod(modId).tabs;
 	}
 
-	public static Map<Class<?>, IWidgetSupplier<?>> customConfigMap = new HashMap<>();
+	public static final Map<Class<?>, IWidgetSupplier<?>> customConfigMap = new HashMap<>();
 
 	public static <T extends IConfigBase & IConfigResettable> void registerWidgetBasedConfigType(Class<?> configClass, IWidgetResettableSupplier<T> widgetSupplier) {
 		if (customConfigMap.containsKey(configClass)) throw new IllegalStateException("Config class already registered! " + configClass);
@@ -229,6 +230,7 @@ public class InternalMalilibApi {
 	}
 
 	private static final Set<Object> toHide = new HashSet<>();
+	public static final Map<Class<? extends Annotation>, AnnotationHandler> annotationHandlers = new LinkedHashMap<>();
 
 	public static void removeHide(Object o) {
 		toHide.remove(o);
@@ -246,6 +248,4 @@ public class InternalMalilibApi {
 	public static void registerAnnotationHandler(Class<? extends Annotation> annotationClass, AnnotationHandler handler) {
 		annotationHandlers.put(annotationClass, handler);
 	}
-
-	public static Map<Class<? extends Annotation>, AnnotationHandler> annotationHandlers = new LinkedHashMap<>();
 }

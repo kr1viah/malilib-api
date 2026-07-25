@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 public class ModMenu implements ModMenuApi {
 	@Override
 	public Map<String, ConfigScreenFactory<?>> getProvidedConfigScreenFactories() {
+		// todo make registeredMods private
 		return InternalMalilibApi.registeredMods.entrySet()
 				.stream()
 				.collect(Collectors.toMap(
