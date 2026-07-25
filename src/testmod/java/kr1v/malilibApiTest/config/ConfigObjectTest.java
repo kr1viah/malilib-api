@@ -45,6 +45,8 @@ public class ConfigObjectTest {
 	static final ConfigHotkeyPlus PRINT_KEY = new ConfigHotkeyPlus("Print blocks").setPressCallback((action, key) -> {
 		StringBuilder s = new StringBuilder();
 
+		if (BLOCKS.getList().isEmpty()) return false;
+
 		for (ConfigObject<BlockPosConfig> config : BLOCKS.getList()) {
 			BlockPos pos = config.get().get();
 			s.append(pos.toString()).append(", \n");
