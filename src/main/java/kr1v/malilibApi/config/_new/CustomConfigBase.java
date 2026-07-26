@@ -86,7 +86,7 @@ public abstract class CustomConfigBase<T extends IConfigBase, V> implements ICon
 	}
 
 	//? if >=1.21.10 {
-	/*@Override
+	@Override
 	public boolean isDirty() {
 		return false;
 	}
@@ -105,5 +105,5 @@ public abstract class CustomConfigBase<T extends IConfigBase, V> implements ICon
 	public void checkIfClean() {
 
 	}
-	*///? }
+	//? }
 }

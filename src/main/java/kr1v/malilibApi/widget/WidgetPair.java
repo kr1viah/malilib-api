@@ -183,7 +183,7 @@ public class WidgetPair extends WidgetContainer {
 		//? }
 
 		@Override
-		protected void addConfigTextFieldEntry(int x, int y, int resetX, int configWidth, int configHeight, IConfigValue config/*? if >=1.21.11 {*//*, fi.dy.masa.malilib.gui.wrappers.TextFieldType type*//*? }*/) {
+		protected void addConfigTextFieldEntry(int x, int y, int resetX, int configWidth, int configHeight, IConfigValue config/*? if >=1.21.11 {*/, fi.dy.masa.malilib.gui.wrappers.TextFieldType type/*? }*/) {
 			GuiTextFieldGeneric field = this.createTextField(x, y + 1, configWidth - 4, configHeight - 3);
 			field.setMaxLength(this.maxTextfieldTextLength);
 			field.setText(config.getStringValue());
@@ -192,7 +192,7 @@ public class WidgetPair extends WidgetContainer {
 			ConfigOptionListenerResetConfig listenerReset = new ConfigOptionListenerResetConfig(config, new ConfigOptionListenerResetConfig.ConfigResetterTextField(config, field), resetButton, null);
 			multipleListenerReset.add(listenerReset);
 
-			this.addTextField(field, listenerChange/*? if >=1.21.11 {*//*, type*//*? }*/);
+			this.addTextField(field, listenerChange/*? if >=1.21.11 {*/, type/*? }*/);
 		}
 
 		@Override

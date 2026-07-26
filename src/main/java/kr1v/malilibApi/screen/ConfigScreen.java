@@ -28,10 +28,10 @@ public class ConfigScreen extends GuiConfigsBase {
 	public ConfigScreen(String modId, String titleKey, Screen parent) {
 		super(10, 50, modId, parent, titleKey);
 		//? if <1.21.11 {
-		if (this.client == null) {
+		/*if (this.client == null) {
 			this.client = MinecraftClient.getInstance();
 		}
-		//? }
+		*///? }
 	}
 
 	@Override
@@ -115,10 +115,10 @@ public class ConfigScreen extends GuiConfigsBase {
 		//? if =1.21 {
 		/*this.applyBlur(partialTicks); // this arg was removed in 24w33a
 		 *///? } else if =1.21.5 {
-		this.applyBlur();
-		//? } else if >=1.21.8 {
-		/*this.applyBlur(drawContext); // this arg was added in 25w17a
-		 *///? }
+		/*this.applyBlur();
+		*///? } else if >=1.21.8 {
+		this.applyBlur(drawContext); // this arg was added in 25w17a
+		 //? }
 		InternalMalilibApi.setActiveTabFor(modId, this.tab);
 		InternalMalilibApi.setScrollValueFor(modId, this.tab, getListWidget().getScrollbar().getValue());
 		super.render(drawContext, mouseX, mouseY, partialTicks);
@@ -152,23 +152,23 @@ public class ConfigScreen extends GuiConfigsBase {
 					super.setSelectedEntry(index);
 
 					//? if >=1.21.11 {
-					/*if (selectedEntry != null && selectedEntry.configScreenSupplier() != null) {
+					if (selectedEntry != null && selectedEntry.configScreenSupplier() != null) {
 						fi.dy.masa.malilib.gui.GuiBase.openGui(selectedEntry.configScreenSupplier().get());
 					}
-					*///? } else {
-					if (selectedEntry != null && selectedEntry.getConfigScreenSupplier() != null) {
+					//? } else {
+					/*if (selectedEntry != null && selectedEntry.getConfigScreenSupplier() != null) {
 						fi.dy.masa.malilib.gui.GuiBase.openGui(selectedEntry.getConfigScreenSupplier().get());
 					}
-					//? }
+					*///? }
 				}
 
 				@Override
 				protected String getDisplayString(fi.dy.masa.malilib.util.data.ModInfo entry) {
 					//? if >=1.21.11 {
-					/*return entry.modName();
-					 *///? } else {
-					return entry.getModName();
-					//? }
+					return entry.modName();
+					 //? } else {
+					/*return entry.getModName();
+					*///? }
 				}
 			};
 

@@ -18,13 +18,13 @@ public class ConfigListButton extends ButtonGeneric {
 
 
 	@Override
-	protected boolean onMouseClickedImpl(/*? if >=1.21.10 {*//*net.minecraft.client.gui.Click click, boolean doubleClick*//*? } else {*/int mouseX, int mouseY, int mouseButton/*? }*/) {
-		super.onMouseClickedImpl(/*? if >=1.21.10 {*//*click, doubleClick*//*? } else {*/mouseX, mouseY, mouseButton/*? }*/);
+	protected boolean onMouseClickedImpl(/*? if >=1.21.10 {*/net.minecraft.client.gui.Click click, boolean doubleClick/*? } else {*//*int mouseX, int mouseY, int mouseButton*//*? }*/) {
+		super.onMouseClickedImpl(/*? if >=1.21.10 {*/click, doubleClick/*? } else {*//*mouseX, mouseY, mouseButton*//*? }*/);
 		//? if <26.2 {
-		GuiBase.openGui(new ConfigListScreen(list, null, MinecraftClient.getInstance().currentScreen));
-		//? } else {
-		/*GuiBase.openGui(new ConfigListScreen(list, null, MinecraftClient.getInstance().guiManager.getCurrentScreen()));
-		*///? }
+		/*GuiBase.openGui(new ConfigListScreen(list, null, MinecraftClient.getInstance().currentScreen));
+		*///? } else {
+		GuiBase.openGui(new ConfigListScreen(list, null, MinecraftClient.getInstance().guiManager.getCurrentScreen()));
+		//? }
 		return true;
 	}
 
@@ -41,24 +41,24 @@ public class ConfigListButton extends ButtonGeneric {
 		super.render(mouseX, mouseY, selected, matrixStack);
 	}
 	*///? } else if <= 1.21.5 {
-	@Override
+	/*@Override
 	public void render(int mouseX, int mouseY, boolean selected, net.minecraft.client.gui.DrawContext drawContext) {
 		setDisplay();
 		super.render(mouseX, mouseY, selected, drawContext);
 	}
-	//? } else if <=1.21.10 {
+	*///? } else if <=1.21.10 {
 	/*@Override
 	public void render(net.minecraft.client.gui.DrawContext drawContext, int mouseX, int mouseY, boolean selected) {
 		setDisplay();
 		super.render(drawContext, mouseX, mouseY, selected);
 	}
 	*///? } else {
-	/*@Override
+	@Override
 	public void render(fi.dy.masa.malilib.render.GuiContext ctx, int mouseX, int mouseY, boolean selected) {
 		setDisplay();
 		super.render(ctx, mouseX, mouseY, selected);
 	}
-	*///? }
+	//? }
 
 	private void setDisplay() {
 		if (!this.list.getButtonDisplayName().isEmpty()) {

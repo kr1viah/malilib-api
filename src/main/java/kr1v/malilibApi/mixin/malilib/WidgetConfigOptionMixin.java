@@ -74,19 +74,19 @@ public abstract class WidgetConfigOptionMixin extends WidgetConfigOptionBase<Gui
 	}
 
 	//? if =1.21.5 {
-	@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lfi/dy/masa/malilib/gui/widgets/WidgetConfigOption;drawSubWidgets(IILnet/minecraft/client/gui/DrawContext;)V"))
+	/*@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lfi/dy/masa/malilib/gui/widgets/WidgetConfigOption;drawSubWidgets(IILnet/minecraft/client/gui/DrawContext;)V"))
 	private void preventRedraw(WidgetConfigOption instance, int mouseX, int mouseY, net.minecraft.client.gui.DrawContext drawContext, Operation<Void> original) {
 	}
-	//? } else if >=1.21.8 <= 1.21.10 {
+	*///? } else if >=1.21.8 <= 1.21.10 {
 	/*@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lfi/dy/masa/malilib/gui/widgets/WidgetConfigOption;drawSubWidgets(Lnet/minecraft/client/gui/DrawContext;II)V"))
 	private void preventRedraw(WidgetConfigOption instance, net.minecraft.client.gui.DrawContext drawContext, int mouseX, int mouseY, Operation<Void> original) {
 	}
 	*///? } else if >1.21.11 {
-	/*@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lfi/dy/masa/malilib/gui/widgets/WidgetConfigOption;drawSubWidgets(Lfi/dy/masa/malilib/render/GuiContext;II)V"))
+	@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lfi/dy/masa/malilib/gui/widgets/WidgetConfigOption;drawSubWidgets(Lfi/dy/masa/malilib/render/GuiContext;II)V"))
 	private void preventRedraw(WidgetConfigOption instance, fi.dy.masa.malilib.render.GuiContext guiContext, int mouseX, int mouseY, Operation<Void> original) {
 		if (this.wrapper.getType() == GuiConfigsBase.ConfigOptionWrapper.Type.LABEL) {
 			original.call(instance, guiContext, mouseX, mouseY);
 		}
 	}
-	*///? }
+	//? }
 }

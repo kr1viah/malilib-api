@@ -132,8 +132,8 @@ public class ConfigListScreen extends GuiConfigsBase {
 	}
 	*///? } else {
 	@Override
-	protected void drawScreenBackground(/*? if >=1.21.11 {*//*fi.dy.masa.malilib.render.GuiContext*//*? } else {*/net.minecraft.client.gui.DrawContext/*? }*/ drawContext, int mouseX, int mouseY) {
-		RenderUtils.drawOutlinedBox(/*? if >=1.21.8 {*//*drawContext, *//*? }*/this.dialogLeft, this.dialogTop, this.dialogWidth, this.dialogHeight, 0xFF000000, COLOR_HORIZONTAL_BAR);
+	protected void drawScreenBackground(/*? if >=1.21.11 {*/fi.dy.masa.malilib.render.GuiContext/*? } else {*//*net.minecraft.client.gui.DrawContext*//*? }*/ drawContext, int mouseX, int mouseY) {
+		RenderUtils.drawOutlinedBox(/*? if >=1.21.8 {*/drawContext, /*? }*/this.dialogLeft, this.dialogTop, this.dialogWidth, this.dialogHeight, 0xFF000000, COLOR_HORIZONTAL_BAR);
 	}
 	//? }
 
@@ -152,7 +152,7 @@ public class ConfigListScreen extends GuiConfigsBase {
 	}
 	*///? } else {
 	@Override
-	protected void drawTitle(/*? if >=1.21.11 {*//*fi.dy.masa.malilib.render.GuiContext*//*? } else {*/net.minecraft.client.gui.DrawContext/*? }*/ drawContext, int mouseX, int mouseY, float partialTicks) {
+	protected void drawTitle(/*? if >=1.21.11 {*/fi.dy.masa.malilib.render.GuiContext/*? } else {*//*net.minecraft.client.gui.DrawContext*//*? }*/ drawContext, int mouseX, int mouseY, float partialTicks) {
 		this.drawStringWithShadow(drawContext, this.title, this.dialogLeft + 10, this.dialogTop + 6, COLOR_WHITE);
 	}
 	//? }

@@ -4,7 +4,7 @@ plugins {
     id("me.modmuss50.mod-publish-plugin") version "1.1.0"
 }
 
-stonecutter.active "1.21.5"
+stonecutter.active "26.2"
 
 boolean releaseGithub() {
     return providers.environmentVariable("RELEASE_GITHUB").getOrElse("false").toBoolean()

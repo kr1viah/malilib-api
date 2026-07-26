@@ -19,12 +19,12 @@ public class Init implements ClientModInitializer {
 	public void onInitializeClient() {
 		MalilibApi.registerButtonBasedConfigType(ConfigClass.class, (widgetConfigOption, config, x, y, configWidth, configHeight) -> new ButtonGeneric(x, y, configWidth, configHeight, config.getName()) {
 			//? if <=1.21.8 {
-            @Override
+            /*@Override
             protected boolean onMouseClickedImpl(int mouseX, int mouseY, int mouseButton) {
                 System.out.println("Custom button!!");
                 return super.onMouseClickedImpl(mouseX, mouseY, mouseButton);
             }
-			//? }
+			*///? }
         });
 
 		MalilibApi.registerMod(
