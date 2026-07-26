@@ -17,8 +17,6 @@ public class ConfigObjectButton extends ButtonGeneric {
 		}
 	}
 
-	// TODO: fix sliders having the same issue as previously buttons
-
 	@Override
 	protected boolean onMouseClickedImpl(/*? if >=1.21.10 {*//*net.minecraft.client.gui.Click click, boolean doubleClick*//*? } else {*/int mouseX, int mouseY, int mouseButton/*? }*/) {
 		super.onMouseClickedImpl(/*? if >=1.21.10 {*//*click, doubleClick*//*? } else {*/mouseX, mouseY, mouseButton/*? }*/);

@@ -35,7 +35,7 @@ public class InternalMalilibApi {
 	public static final Map<Class<?>, List<ConfigProcessor.ElementRepresentation>> classToRepresentation = new HashMap<>();
 	public static final Gson GSON = ConfigProcessor.GSON;
 
-	static final Map<String, ModRepresentation> registeredMods = new HashMap<>();
+	private static final Map<String, ModRepresentation> registeredMods = new HashMap<>();
 
 	public static void registerMod(String modId, String modName, ConfigHandler configHandler, InputHandler inputHandler, IConfigScreenSupplier configScreenSupplier) {
 		if (isModRegistered(modId)) throw new IllegalStateException("Mod id is already registered! mod id: " + modId);

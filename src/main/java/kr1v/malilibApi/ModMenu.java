@@ -6,22 +6,19 @@ package kr1v.malilibApi;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import kr1v.malilibApi.interfaces.IConfigScreenSupplier;
-import net.minecraft.client.gui.screen.Screen;
 
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class ModMenu implements ModMenuApi {
 	@Override
 	public Map<String, ConfigScreenFactory<?>> getProvidedConfigScreenFactories() {
-		// todo make registeredMods private
-		return InternalMalilibApi.registeredMods.entrySet()
+		return InternalMalilibApi.getModConfigs()
 				.stream()
 				.collect(Collectors.toMap(
-						Map.Entry::getKey,
-						e -> (screen -> {
-							IConfigScreenSupplier supplier = e.getValue().configScreenSupplier;
+						mod -> mod.modId,
+						mod -> (screen -> {
+							IConfigScreenSupplier supplier = mod.configScreenSupplier;
 							if (screen == null) return supplier.get();
 							return supplier.get(screen);
 						})
