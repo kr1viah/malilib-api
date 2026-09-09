@@ -70,6 +70,7 @@ public abstract class ConfigCycle<T> extends ConfigOptionList implements Plus<Co
 
 	@Override
 	public String toString() {
+		if (getOptionListValue() == null) return "ConfigCycle{name=" + this.getName() + "}";
 		return getValue().toString();
 	}
 
