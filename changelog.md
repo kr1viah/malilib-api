@@ -1,9 +1,9 @@
-## 0.8.4 changelog
+## 0.8.5 changelog
 
 ### Users
 
-Nothing new for users
+Update to 26.3
 
 ### Mod developers
 
-You can now translate tabs
+Nothing new for users
