@@ -6,4 +6,4 @@ Update to 26.3
 
 ### Mod developers
 
-Nothing new for users
+Migrate to Mojang Mappings
