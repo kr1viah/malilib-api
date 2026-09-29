@@ -1,24 +1,24 @@
-//file:noinspection GroovyAssignabilityCheck
 pluginManagement {
     repositories {
-        maven {
-            name = 'Fabric'
-            url = 'https://maven.fabricmc.net/'
+        maven("https://maven.fabricmc.net/") {
+            name = "Fabric"
         }
         gradlePluginPortal()
-        maven {
+        maven("https://maven.kikugie.dev/snapshots") {
             name = "KikuGie Snapshots"
-            url = "https://maven.kikugie.dev/snapshots"
+        }
+        maven("https://maven.kikugie.dev/releases") {
+            name = "KikuGie Releases"
         }
     }
 }
 
 plugins {
     id("dev.kikugie.stonecutter") version "0.10-alpha.11"
+    id("dev.kikugie.loom-back-compat") version "0.4.2"
 }
 
 stonecutter {
-    //noinspection GrDeprecatedAPIUsage
     create(rootProject) {
         versions(
                 "26.3", "26.2", "26.1",
@@ -28,7 +28,7 @@ stonecutter {
                 "1.17.1",
                 "1.16.5",
                 "1.15.2",
-                )
+        )
         vcsVersion = "26.3"
     }
 }
