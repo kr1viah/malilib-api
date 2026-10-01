@@ -10,10 +10,9 @@ import kr1v.malilibApi.config.custom.ConfigCycle;
 import kr1v.malilibApi.config.custom.EnumBackedCycleConfig;
 import kr1v.malilibApi.config.plus.ConfigStringPlus;
 import kr1v.malilibApiTest.Init;
-import net.minecraft.world.GameMode;
+import net.minecraft.world.level.GameType;
 
 import java.util.Arrays;
-import java.util.List;
 
 @SuppressWarnings("unused")
 @Config(Init.MOD_ID)
@@ -34,7 +33,7 @@ public class Test3 {
 	public static final ConfigList<ConfigStringList> TEST_STRING_LIST = new ConfigList<>("string_list", () -> new ConfigStringList("", ImmutableList.of(), ""));
 
 	@Label("MaLiLib API")
-	public static final ConfigList<ConfigCycle<GameMode>> TEST_CYCLE = new ConfigList<>("cycle", () -> new EnumBackedCycleConfig.Builder<>("", GameMode.class).build());
+	public static final ConfigList<ConfigCycle<GameType>> TEST_CYCLE = new ConfigList<>("cycle", () -> new EnumBackedCycleConfig.Builder<>("", GameType.class).build());
 	public static final ConfigList<ConfigList<ConfigBoolean>> TEST_LIST = new ConfigList<>("list", () -> new ConfigList<>("", () -> new ConfigBoolean("", false, "")));
 
 	@Label("Default values")

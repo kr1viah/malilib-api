@@ -18,7 +18,6 @@ import kr1v.malilibApi.interfaces.IWidgetSupplier;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class WidgetPair extends WidgetContainer {
 	public final ButtonGeneric resetButton;
@@ -69,7 +68,7 @@ public class WidgetPair extends WidgetContainer {
 
 			x += labelWidth + 10;
 
-			for (Map.Entry<Class<?>, IWidgetSupplier<?>> entry : InternalMalilibApi.customConfigMap.entrySet()) {
+			for (java.util.Map.Entry<Class<?>, IWidgetSupplier<?>> entry : InternalMalilibApi.customConfigMap.entrySet()) {
 				Class<?> configClass = entry.getKey();
 				IWidgetSupplier<?> widgetSupplier = entry.getValue();
 
@@ -186,7 +185,7 @@ public class WidgetPair extends WidgetContainer {
 		protected void addConfigTextFieldEntry(int x, int y, int resetX, int configWidth, int configHeight, IConfigValue config/*? if >=1.21.11 {*/, fi.dy.masa.malilib.gui.wrappers.TextFieldType type/*? }*/) {
 			GuiTextFieldGeneric field = this.createTextField(x, y + 1, configWidth - 4, configHeight - 3);
 			field.setMaxLength(this.maxTextfieldTextLength);
-			field.setText(config.getStringValue());
+			field.setValue(config.getStringValue());
 
 			ConfigOptionChangeListenerTextField listenerChange = new ConfigOptionChangeListenerTextField(config, field, resetButton);
 			ConfigOptionListenerResetConfig listenerReset = new ConfigOptionListenerResetConfig(config, new ConfigOptionListenerResetConfig.ConfigResetterTextField(config, field), resetButton, null);

@@ -4,7 +4,7 @@ import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.IConfigResettable;
 import kr1v.malilibApi.interfaces.*;
 import kr1v.malilibApi.screen.ConfigScreen;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screens.Screen;
 
 import java.lang.annotation.Annotation;
 import java.util.List;

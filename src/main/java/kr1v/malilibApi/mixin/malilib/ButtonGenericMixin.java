@@ -1,11 +1,13 @@
 package kr1v.malilibApi.mixin.malilib;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+//? if <1.20.1 {
+/*import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import org.spongepowered.asm.mixin.injection.At;
+*///? }
 import fi.dy.masa.malilib.gui.button.ButtonBase;
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(ButtonGeneric.class)
 public abstract class ButtonGenericMixin extends ButtonBase {
@@ -54,9 +56,9 @@ public abstract class ButtonGenericMixin extends ButtonBase {
 	/*// the original rendering was _hyperjank_. I don't even know what to say
 	// EDIT: turns out on <1.19.4 vanilla also used "malilib"s way of rendering. what the fuck.
 	@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lfi/dy/masa/malilib/render/RenderUtils;drawTexturedRect(IIIIII)V", ordinal = 0))
-	private void wrap(int x, int y, int u, int v, int width, int height, Operation<Void> original, @com.llamalad7.mixinextras.sugar.Local(argsOnly = true) net.minecraft.client.gui.DrawContext drawContext) {
-		drawContext.drawNineSlicedTexture(
-				net.minecraft.client.gui.widget.ClickableWidget.WIDGETS_TEXTURE,
+	private void wrap(int x, int y, int u, int v, int width, int height, Operation<Void> original, @com.llamalad7.mixinextras.sugar.Local(argsOnly = true) net.minecraft.client.gui.GuiGraphicsExtractor gui) {
+		gui.blitNineSliced(
+				net.minecraft.client.gui.components.AbstractWidget.WIDGETS_LOCATION,
 				x, y, width*2, height,
 				20, 4, 200,
 				20, u, v);

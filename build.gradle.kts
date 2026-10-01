@@ -122,14 +122,14 @@ tasks {
 
         inputs.property("versions", versions)
         inputs.property("version", projectVersion)
-        inputs.property("minecraft_version", { property("minecraft_version") })
+        inputs.property("minecraft_version", { project.property("minecraft_version") })
         inputs.property("loader_version", loaderVersion)
         filteringCharset = "UTF-8"
 
         filesMatching("fabric.mod.json") {
             expand(
                 "version" to projectVersion,
-                "minecraft_version" to "${property("minecraft_version")}",
+                "minecraft_version" to "${project.property("minecraft_version")}",
                 "loader_version" to loaderVersion,
                 "versions" to versions,
             )
@@ -147,6 +147,22 @@ tasks {
         inputs.property("version", project.property("mod_version"))
         from(loomx.modJar.flatMap { it.archiveFile }, loomx.modSourcesJar.flatMap { it.archiveFile })
         into(rootProject.layout.buildDirectory.file("libs/${project.property("mod_version")}"))
+    }
+}
+
+stonecutter {
+    replacements.string(current.parsed >= "1.21.11") {
+        replace(
+            "net.minecraft.Util",
+            "net.minecraft.util.Util"
+        )
+    }
+
+    replacements.string(current.parsed >= "26.1") {
+        replace(
+            "GuiGraphics",
+            "GuiGraphicsExtractor"
+        )
     }
 }
 

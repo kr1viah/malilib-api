@@ -11,7 +11,7 @@ import kr1v.malilibApi.config.plus.ConfigIntegerPlus;
 import kr1v.malilibApi.config.plus.ConfigStringListPlus;
 import kr1v.malilibApi.config.plus.ConfigStringPlus;
 import kr1v.malilibApiTest.Init;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 
 import java.util.List;
 

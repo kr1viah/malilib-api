@@ -96,8 +96,8 @@ public class ConfigPair<L extends IConfigBase & IConfigResettable, R extends ICo
 
 				String labelReset = StringUtils.translate("malilib.gui.button.reset.caps");
 				//? if <=1.17.1 {
-				/*int resetButtonXOffset = 4;
-				*///? } else
+				//int resetButtonXOffset = 4;
+				//? } else
 				int resetButtonXOffset = 2;
 				ButtonGeneric resetButton = new ButtonGeneric(x + configWidth + resetButtonXOffset, y, -1, 20, labelReset);
 				resetButton.setEnabled(pair.isModified());

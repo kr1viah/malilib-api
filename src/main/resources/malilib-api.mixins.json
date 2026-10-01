@@ -12,7 +12,7 @@
     "malilib.WidgetSliderMixin"
   ],
   "client": [
-    "MinecraftClientMixin",
+    "MinecraftMixin",
     "accessor.WidgetListConfigOptionsBaseAccessor"
   ],
   "injectors": {

@@ -9,7 +9,7 @@ import kr1v.malilibApi.interfaces.IConfigScreenSupplier;
 import kr1v.malilibApi.screen.ConfigScreen;
 import kr1v.malilibApiTest.custo.ConfigClass;
 import net.fabricmc.api.ClientModInitializer;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screens.Screen;
 
 public class Init implements ClientModInitializer {
 	public static final String MOD_ID = "malilib-api-test";

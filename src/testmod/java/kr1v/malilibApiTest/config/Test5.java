@@ -9,7 +9,7 @@ import kr1v.malilibApi.config.custom.ArrayBackedCycleConfig;
 import kr1v.malilibApi.config.custom.ConfigCycle;
 import kr1v.malilibApi.config.custom.EnumBackedCycleConfig;
 import kr1v.malilibApiTest.Init;
-import net.minecraft.world.GameMode;
+import net.minecraft.world.level.GameType;
 
 @SuppressWarnings("unused")
 @Config(Init.MOD_ID)
@@ -128,10 +128,10 @@ public class Test5 {
 	public static final ConfigPair<ConfigStringList, ConfigStringList> TEST_STRING_LIST_PAIR = new ConfigPair<>("string_list", new ConfigStringList("", ImmutableList.of(), ""), new ConfigStringList("", ImmutableList.of(), ""));
 
 	@Label("MaLiLib API")
-	public static final ConfigPair<ConfigCycle<GameMode>, ConfigCycle<GameMode>> TEST_CYCLE_PAIR = new ConfigPair<>(
+	public static final ConfigPair<ConfigCycle<GameType>, ConfigCycle<GameType>> TEST_CYCLE_PAIR = new ConfigPair<>(
 			"cycle",
-			new EnumBackedCycleConfig.Builder<>("", GameMode.class).build(),
-			new EnumBackedCycleConfig.Builder<>("", GameMode.class).build()
+			new EnumBackedCycleConfig.Builder<>("", GameType.class).build(),
+			new EnumBackedCycleConfig.Builder<>("", GameType.class).build()
 	);
 	public static final ConfigPair<ConfigList<ConfigBoolean>, ConfigList<ConfigBoolean>> TEST_LIST_PAIR = new ConfigPair<>(
 			"list",

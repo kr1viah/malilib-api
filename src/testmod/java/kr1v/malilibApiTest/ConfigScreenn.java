@@ -1,7 +1,7 @@
 package kr1v.malilibApiTest;
 
 import kr1v.malilibApi.screen.ConfigScreen;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screens.Screen;
 
 public class ConfigScreenn extends ConfigScreen {
 	public ConfigScreenn(String modId, String titleKey) {

@@ -1,15 +1,22 @@
 package kr1v.malilibApi.screen;
 
+import fi.dy.masa.malilib.MaLiLibConfigs;
+import fi.dy.masa.malilib.gui.GuiBase;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
+import fi.dy.masa.malilib.gui.widgets.WidgetDropDownList;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
+import fi.dy.masa.malilib.util.GuiUtils;
 import fi.dy.masa.malilib.util.StringUtils;
+import fi.dy.masa.malilib.util.data.ModInfo;
 import kr1v.malilibApi.InternalMalilibApi;
 import kr1v.malilibApi.ModRepresentation;
 import kr1v.malilibApi.mixin.accessor.WidgetListConfigOptionsBaseAccessor;
 import kr1v.malilibApi.util.ConfigUtils;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
+//? >=1.20
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -18,9 +25,6 @@ import java.util.Objects;
 public class ConfigScreen extends GuiConfigsBase {
 	public ModRepresentation.Tab tab = InternalMalilibApi.getActiveTabFor(modId);
 
-	//? if <1.16
-	//protected MinecraftClient client = this.minecraft;
-
 	public ConfigScreen(String modId, String titleKey) {
 		this(modId, titleKey, null);
 	}
@@ -28,8 +32,8 @@ public class ConfigScreen extends GuiConfigsBase {
 	public ConfigScreen(String modId, String titleKey, Screen parent) {
 		super(10, 50, modId, parent, titleKey);
 		//? if <1.21.11 {
-		/*if (this.client == null) {
-			this.client = MinecraftClient.getInstance();
+		/*if (this.minecraft == null) {
+			this.minecraft = Minecraft.getInstance();
 		}
 		*///? }
 	}
@@ -89,39 +93,41 @@ public class ConfigScreen extends GuiConfigsBase {
 	//? if <1.16 {
 	/*@Override
 	public void render(int mouseX, int mouseY, float partialTicks) {
-		if (this.client != null && this.client.world == null) this.renderBackground();
+		if (this.minecraft != null && this.minecraft.level == null) this.renderBackground();
 		InternalMalilibApi.setActiveTabFor(modId, this.tab);
 		InternalMalilibApi.setScrollValueFor(modId, this.tab, getListWidget().getScrollbar().getValue());
 		super.render(mouseX, mouseY, partialTicks);
 	}
 	*///? } else if <1.20.1 {
 	/*@Override
-	public void render(net.minecraft.client.util.math.MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-		if (this.client != null && this.client.world == null) this.renderBackground(matrixStack);
+	public void render(com.mojang.blaze3d.vertex.PoseStack stack, int mouseX, int mouseY, float partialTicks) {
+		if (this.minecraft != null && this.minecraft.level == null) this.renderBackground(stack);
 		InternalMalilibApi.setActiveTabFor(modId, this.tab);
 		InternalMalilibApi.setScrollValueFor(modId, this.tab, getListWidget().getScrollbar().getValue());
-		super.render(matrixStack, mouseX, mouseY, partialTicks);
+		super.render(stack, mouseX, mouseY, partialTicks);
 	}
 	*///? } else {
 	@Override
-	public void render(net.minecraft.client.gui.DrawContext drawContext, int mouseX, int mouseY, float partialTicks) {
-		//? if >=1.20.6 {
-		if (this.client != null && this.client.world == null) this.renderPanoramaBackground(drawContext, partialTicks);
-		//? } else if >=1.20.2 {
-		/*if (this.client != null && this.client.world == null) this.renderBackground(drawContext, mouseX, mouseY, partialTicks);
-		*///? } else {
-		/*if (this.client != null && this.client.world == null) this.renderBackground(drawContext);
-		*///? }
+	//~ if >1.21.11 'render' -> 'extractRenderState'
+	public void extractRenderState(GuiGraphicsExtractor gui, int mouseX, int mouseY, float partialTicks) {
+		//? if >=1.20.5 {
+		//~ if >1.21.11 'render' -> 'extract'
+		if (this.minecraft != null && this.minecraft.level == null) this.extractPanorama(gui, partialTicks);
+		//? } else {
+		//if (this.minecraft != null && this.minecraft.level == null) this.renderDirtBackground(gui);
+		//? }
 		//? if =1.21 {
-		/*this.applyBlur(partialTicks); // this arg was removed in 24w33a
-		 *///? } else if =1.21.5 {
-		/*this.applyBlur();
-		*///? } else if >=1.21.8 {
-		this.applyBlur(drawContext); // this arg was added in 25w17a
+		//this.renderBlurredBackground(partialTicks);
+		 //? } else if =1.21.5 {
+		//this.renderBlurredBackground();
+		//? } else if >=1.21.8 {
+		//~ if >1.21.11 'render' -> 'extract'
+		this.extractBlurredBackground(gui);
 		 //? }
 		InternalMalilibApi.setActiveTabFor(modId, this.tab);
 		InternalMalilibApi.setScrollValueFor(modId, this.tab, getListWidget().getScrollbar().getValue());
-		super.render(drawContext, mouseX, mouseY, partialTicks);
+		//~ if >1.21.11 'render' -> 'extractRenderState'
+		super.extractRenderState(gui, mouseX, mouseY, partialTicks);
 	}
 	//? }
 
@@ -129,7 +135,7 @@ public class ConfigScreen extends GuiConfigsBase {
 	//? if <=1.20.4 {
 	/*@Override
 	protected void drawScreenBackground(int mouseX, int mouseY) {
-		if (this.client != null && this.client.world == null) {
+		if (this.minecraft != null && this.minecraft.level == null) {
 			return;
 		}
 		super.drawScreenBackground(mouseX, mouseY);
@@ -141,8 +147,8 @@ public class ConfigScreen extends GuiConfigsBase {
 	// why was it using the class :sob: that's so brittle
 	@Override
 	protected void buildConfigSwitcher() {
-		if (fi.dy.masa.malilib.MaLiLibConfigs.Generic.ENABLE_CONFIG_SWITCHER.getBooleanValue()) {
-			this.modSwitchWidget = new fi.dy.masa.malilib.gui.widgets.WidgetDropDownList<>(fi.dy.masa.malilib.util.GuiUtils.getScaledWindowWidth() - 155, 6, 130, 18, 200, 10, fi.dy.masa.malilib.registry.Registry.CONFIG_SCREEN.getAllModsWithConfigScreens()) {
+		if (MaLiLibConfigs.Generic.ENABLE_CONFIG_SWITCHER.getBooleanValue()) {
+			this.modSwitchWidget = new WidgetDropDownList<>(GuiUtils.getScaledWindowWidth() - 155, 6, 130, 18, 200, 10, fi.dy.masa.malilib.registry.Registry.CONFIG_SCREEN.getAllModsWithConfigScreens()) {
 				{
 					selectedEntry = InternalMalilibApi.getMod(modId).modInfo;
 				}
@@ -153,7 +159,7 @@ public class ConfigScreen extends GuiConfigsBase {
 
 					//? if >=1.21.11 {
 					if (selectedEntry != null && selectedEntry.configScreenSupplier() != null) {
-						fi.dy.masa.malilib.gui.GuiBase.openGui(selectedEntry.configScreenSupplier().get());
+						GuiBase.openGui(selectedEntry.configScreenSupplier().get());
 					}
 					//? } else {
 					/*if (selectedEntry != null && selectedEntry.getConfigScreenSupplier() != null) {
@@ -163,12 +169,12 @@ public class ConfigScreen extends GuiConfigsBase {
 				}
 
 				@Override
-				protected String getDisplayString(fi.dy.masa.malilib.util.data.ModInfo entry) {
+				protected String getDisplayString(ModInfo entry) {
 					//? if >=1.21.11 {
 					return entry.modName();
 					 //? } else {
-					/*return entry.getModName();
-					*///? }
+					//return entry.getModName();
+					//? }
 				}
 			};
 

@@ -5,7 +5,7 @@ import fi.dy.masa.malilib.gui.button.ButtonGeneric;
 import fi.dy.masa.malilib.util.StringUtils;
 import kr1v.malilibApi.config._new.ConfigList;
 import kr1v.malilibApi.screen.ConfigListScreen;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 
 public class ConfigListButton extends ButtonGeneric {
 	private final ConfigList<?> list;
@@ -18,12 +18,12 @@ public class ConfigListButton extends ButtonGeneric {
 
 
 	@Override
-	protected boolean onMouseClickedImpl(/*? if >=1.21.10 {*/net.minecraft.client.gui.Click click, boolean doubleClick/*? } else {*//*int mouseX, int mouseY, int mouseButton*//*? }*/) {
+	protected boolean onMouseClickedImpl(/*? if >=1.21.10 {*/net.minecraft.client.input.MouseButtonEvent click, boolean doubleClick/*? } else {*//*int mouseX, int mouseY, int mouseButton*//*? }*/) {
 		super.onMouseClickedImpl(/*? if >=1.21.10 {*/click, doubleClick/*? } else {*//*mouseX, mouseY, mouseButton*//*? }*/);
 		//? if <26.2 {
-		/*GuiBase.openGui(new ConfigListScreen(list, null, MinecraftClient.getInstance().currentScreen));
-		*///? } else {
-		GuiBase.openGui(new ConfigListScreen(list, null, MinecraftClient.getInstance().guiManager.getCurrentScreen()));
+		//GuiBase.openGui(new ConfigListScreen(list, null, Minecraft.getInstance().screen));
+		//? } else {
+		GuiBase.openGui(new ConfigListScreen(list, null, Minecraft.getInstance().gui.screen()));
 		//? }
 		return true;
 	}
@@ -36,21 +36,21 @@ public class ConfigListButton extends ButtonGeneric {
 	}
 	*///? } else if <1.20.1 {
 	/*@Override
-	public void render(int mouseX, int mouseY, boolean selected, net.minecraft.client.util.math.MatrixStack matrixStack) {
+	public void render(int mouseX, int mouseY, boolean selected, com.mojang.blaze3d.vertex.PoseStack stack) {
 		setDisplay();
-		super.render(mouseX, mouseY, selected, matrixStack);
+		super.render(mouseX, mouseY, selected, stack);
 	}
 	*///? } else if <= 1.21.5 {
 	/*@Override
-	public void render(int mouseX, int mouseY, boolean selected, net.minecraft.client.gui.DrawContext drawContext) {
+	public void render(int mouseX, int mouseY, boolean selected, net.minecraft.client.gui.GuiGraphicsExtractor gui) {
 		setDisplay();
-		super.render(mouseX, mouseY, selected, drawContext);
+		super.render(mouseX, mouseY, selected, gui);
 	}
 	*///? } else if <=1.21.10 {
 	/*@Override
-	public void render(net.minecraft.client.gui.DrawContext drawContext, int mouseX, int mouseY, boolean selected) {
+	public void render(net.minecraft.client.gui.GuiGraphicsExtractor gui, int mouseX, int mouseY, boolean selected) {
 		setDisplay();
-		super.render(drawContext, mouseX, mouseY, selected);
+		super.render(gui, mouseX, mouseY, selected);
 	}
 	*///? } else {
 	@Override

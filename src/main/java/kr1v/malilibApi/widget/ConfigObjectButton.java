@@ -18,7 +18,7 @@ public class ConfigObjectButton extends ButtonGeneric {
 	}
 
 	@Override
-	protected boolean onMouseClickedImpl(/*? if >=1.21.10 {*/net.minecraft.client.gui.Click click, boolean doubleClick/*? } else {*//*int mouseX, int mouseY, int mouseButton*//*? }*/) {
+	protected boolean onMouseClickedImpl(/*? if >=1.21.10 {*/net.minecraft.client.input.MouseButtonEvent click, boolean doubleClick/*? } else {*//*int mouseX, int mouseY, int mouseButton*//*? }*/) {
 		super.onMouseClickedImpl(/*? if >=1.21.10 {*/click, doubleClick/*? } else {*//*mouseX, mouseY, mouseButton*//*? }*/);
 		GuiBase.openGui(
 				new ConfigObjectScreen(

@@ -7,7 +7,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import kr1v.malilibApi.interfaces.IConfigScreenSupplier;
 import kr1v.malilibApi.util.AnnotationUtils;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screens.Screen;
 
 import java.util.*;
 import java.util.stream.Collectors;
