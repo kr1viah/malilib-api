@@ -1,6 +1,6 @@
 package kr1v.malilibApi.mixin.malilib;
 
-//? if <1.20.1 {
+//? if <=1.20.1 {
 /*import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import org.spongepowered.asm.mixin.injection.At;
