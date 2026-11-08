@@ -73,11 +73,17 @@ public class InternalMalilibApi {
 
 					for (String clazz : map.keySet()) {
 						if (ClassInfo.isMixin(clazz)) continue;
-						classToRepresentation.put(Class.forName(clazz, false, Thread.currentThread().getContextClassLoader()), map.get(clazz));
+						Class<?> theClass;
+						try {
+							theClass = Class.forName(clazz, false, Thread.currentThread().getContextClassLoader());
+						} catch (ClassNotFoundException | NoClassDefFoundError ignored) { // if its important it'll fail at a later stage anyway
+							continue;
+						}
+						classToRepresentation.put(theClass, map.get(clazz));
 					}
 				}
 			}
-		} catch (IOException | ClassNotFoundException e) {
+		} catch (IOException e) {
 			Util.rethrow(e);
 		}
 

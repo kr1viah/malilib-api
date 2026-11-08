@@ -4,6 +4,7 @@
   "package": "kr1v.malilibApi.mixin",
   "compatibilityLevel": "${java}",
   "mixins": [
+    "SharedConstantsMixin",
     "accessor.WidgetConfigOptionAccessor",
     "accessor.WidgetConfigOptionBaseAccessor",
     "malilib.ButtonGenericMixin",

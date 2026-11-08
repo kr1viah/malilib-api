@@ -47,11 +47,16 @@ repositories {
 }
 
 dependencies {
+    fun DependencyHandler.modNotTransitive(dependencyNotation: String, dependencyConfiguration: Action<ExternalModuleDependency>): ExternalModuleDependency {
+        modLocalRuntime(dependencyNotation, dependencyConfiguration)
+        return modCompileOnly(dependencyNotation, dependencyConfiguration)
+    }
+
     minecraft("com.mojang:minecraft:${property("minecraft_version")}")
     loomx.applyMojangMappings()
     modImplementation("net.fabricmc:fabric-loader:${property("loader_version")}")
 
-    modImplementation("${property("malilib")}") {
+    modNotTransitive("${property("malilib")}") {
         exclude(group = "io.github.prospector")
     }
 

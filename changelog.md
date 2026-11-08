@@ -1,9 +1,11 @@
-## 0.8.5 changelog
+## 0.8.6 changelog
 
 ### Users
 
-Update to 26.3
+Nothing new for users
 
 ### Mod developers
 
-Migrate to Mojang Mappings
+Exclude MaLiLib from transitive dependencies
+Prevent MaLiLib from updating `SharedConstants.RUNNING_IN_IDE` in >=1.21.11
+Don't crash on missing class when loading mod classes
