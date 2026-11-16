@@ -136,8 +136,6 @@ public class ConfigPair<L extends IConfigBase & IConfigResettable, R extends ICo
 		return hotkeys;
 	}
 
-	// TODO: perhaps something better for this
-
 	@Override
 	public Void get() {
 		throw new IllegalStateException("This makes no sense.");

@@ -105,7 +105,6 @@ public class ConfigList<T extends IConfigBase & IConfigResettable> extends Custo
 		this.run();
 	}
 
-	// TODO: resetToDefault and isModified etc
 	@Override
 	public boolean isModified() {
 		if (defaultValue.size() != list.size()) {
@@ -126,7 +125,6 @@ public class ConfigList<T extends IConfigBase & IConfigResettable> extends Custo
 			config.resetToDefault();
 		}
 	}
-
 
 	@Override
 	public String toString() {

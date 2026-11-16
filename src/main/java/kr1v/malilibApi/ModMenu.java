@@ -1,7 +1,5 @@
 package kr1v.malilibApi;
 
-// TODO fix
-
 //? if >=1.16 {
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
@@ -27,7 +25,6 @@ public class ModMenu implements ModMenuApi {
 
 	@Override
 	public ConfigScreenFactory<?> getModConfigScreenFactory() {
-		// TODO this
 //		var supplier = InternalMalilibApi.registeredMods.get("malilib-api").configScreenSupplier;
 //		return screen -> {
 //			if (screen == null) return supplier.get();
