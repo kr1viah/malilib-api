@@ -3,6 +3,7 @@ package kr1v.malilibApi;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.hotkeys.*;
 import kr1v.malilibApi.interfaces.IHotkeyContainer;
+import kr1v.malilibApi.interfaces.IKeybindContainer;
 import kr1v.malilibApi.interfaces.IVariableHotkeyContainer;
 
 import java.util.ArrayList;
@@ -22,11 +23,11 @@ public class InputHandler implements IKeybindProvider, IKeyboardInputHandler, IM
 				if (option instanceof IHotkey) {
 					IHotkey hotkey = (IHotkey) option;
 					manager.addKeybindToMap(hotkey.getKeybind());
-				} else if (option instanceof IHotkeyContainer) {
-					IHotkeyContainer container = (IHotkeyContainer) option;
-					List<IHotkey> containedHotkeys = container.getHotkeys();
-					for (IHotkey hotkey : containedHotkeys) {
-						manager.addKeybindToMap(hotkey.getKeybind());
+				} else if (option instanceof IKeybindContainer) {
+					IKeybindContainer container = (IKeybindContainer) option;
+					List<IKeybind> containedKeybinds = container.getKeybinds();
+					for (IKeybind keybind : containedKeybinds) {
+						manager.addKeybindToMap(keybind);
 					}
 				}
 			}
