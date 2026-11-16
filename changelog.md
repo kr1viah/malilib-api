@@ -1,4 +1,4 @@
-## 0.8.6 changelog
+## 0.8.7 changelog
 
 ### Users
 
@@ -6,6 +6,4 @@ Nothing new for users
 
 ### Mod developers
 
-Exclude MaLiLib from transitive dependencies
-Prevent MaLiLib from updating `SharedConstants.RUNNING_IN_IDE` in >=1.21.11
-Don't crash on missing class when loading mod classes
+Add IKeybindContainer (Use it if your CustomConfigBase has a keybind, but not a hotkey option)
