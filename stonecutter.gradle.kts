@@ -18,7 +18,7 @@ val releaseGithub = envFlag("RELEASE_GITHUB")
 val releaseModrinth = envFlag("RELEASE_MODRINTH")
 val releaseMaven = envFlag("RELEASE_MAVEN")
 val releaseCurseForge = envFlag("RELEASE_CURSEFORGE")
-val releaseChangelog = rootProject.file("changelog.md").readText().replace($$"${version}", version.toString())
+val releaseChangelog = rootProject.file("changelog.md").readText().replace($$"${version}", property("mod_version").toString())
 
 extra["releaseGithub"] = releaseGithub
 extra["releaseModrinth"] = releaseModrinth
