@@ -14,6 +14,7 @@ val releaseGithub = rootProject.extra["releaseGithub"] as Boolean
 val releaseModrinth = rootProject.extra["releaseModrinth"] as Boolean
 val releaseMaven = rootProject.extra["releaseMaven"] as Boolean
 val releaseCurseForge =  rootProject.extra["releaseCurseForge"] as Boolean
+val releaseChangelog = rootProject.extra["releaseChangelog"] as String
 
 val requiredJava: JavaVersion = when {
     sc.current.parsed >= "26.1" -> JavaVersion.VERSION_25
@@ -198,6 +199,8 @@ publishMods {
         }
     }
 
+    changelog = releaseChangelog
+
     if (releaseCurseForge) {
         curseforge {
             accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
@@ -221,7 +224,6 @@ publishMods {
 
             requires("malilib")
 
-            changelog = rootProject.file("changelog.md").readText()
             changelogType = "markdown"
         }
     }
@@ -230,7 +232,6 @@ publishMods {
         modrinth {
             accessToken = providers.environmentVariable("MODRINTH_TOKEN")
             projectId = "Qppvg0Y6"
-            changelog = rootProject.file("changelog.md").readText()
             type = STABLE
 
             if (endV != null) {

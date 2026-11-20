@@ -158,7 +158,7 @@ public class ConfigObject<T> extends CustomConfigBase<ConfigObject<T>, T> implem
 
 	@Override
 	public List<IKeybind> getKeybinds() {
-		List<IKeybind> keybinds = IHotkeyContainer.super.getKeybinds();
+		List<IKeybind> keybinds = new ArrayList<>(IHotkeyContainer.super.getKeybinds());
 		for (IConfigBase config : configs) {
 			if (config instanceof IKeybindContainer) {
 				IKeybindContainer container = (IKeybindContainer) config;

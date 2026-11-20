@@ -141,7 +141,7 @@ public class ConfigPair<L extends IConfigBase & IConfigResettable, R extends ICo
 
 	@Override
 	public List<IKeybind> getKeybinds() {
-		List<IKeybind> keybinds = IHotkeyContainer.super.getKeybinds();
+		List<IKeybind> keybinds = new ArrayList<>(IHotkeyContainer.super.getKeybinds());
 		if (left instanceof IKeybindContainer) {
 			IKeybindContainer container = (IKeybindContainer) left;
 			keybinds.addAll(container.getKeybinds());

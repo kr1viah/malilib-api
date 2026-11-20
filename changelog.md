@@ -1,8 +1,8 @@
-## 0.8.7 changelog
+## ${version} changelog
 
 ### Users
 
-Fix issue where keybinds sometimes wouldn't get registered
+Fix crash that would sometimes happen relating to list configs
 
 ### Mod developers
 

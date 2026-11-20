@@ -196,7 +196,7 @@ public class ConfigList<T extends IConfigBase & IConfigResettable> extends Custo
 
 	@Override
 	public List<IKeybind> getKeybinds() {
-		List<IKeybind> keybinds = IVariableHotkeyContainer.super.getKeybinds();
+		List<IKeybind> keybinds = new ArrayList<>(IVariableHotkeyContainer.super.getKeybinds());
 		for (IConfigBase config : list) {
 			if (config instanceof IKeybindContainer) {
 				IKeybindContainer container = (IKeybindContainer) config;
