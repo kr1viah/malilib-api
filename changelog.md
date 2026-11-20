@@ -2,8 +2,8 @@
 
 ### Users
 
-Nothing new for users
+Fix issue where keybinds sometimes wouldn't get registered
 
 ### Mod developers
 
-Add IKeybindContainer (Use it if your CustomConfigBase has a keybind, but not a hotkey option)
+Nothing new for developers

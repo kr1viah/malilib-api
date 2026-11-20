@@ -7,9 +7,11 @@ import fi.dy.masa.malilib.config.IConfigResettable;
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
 import fi.dy.masa.malilib.gui.widgets.WidgetBase;
 import fi.dy.masa.malilib.hotkeys.IHotkey;
+import fi.dy.masa.malilib.hotkeys.IKeybind;
 import fi.dy.masa.malilib.util.StringUtils;
 import kr1v.malilibApi.InternalMalilibApi;
 import kr1v.malilibApi.interfaces.IHotkeyContainer;
+import kr1v.malilibApi.interfaces.IKeybindContainer;
 import kr1v.malilibApi.interfaces.IWidgetResettableSupplier;
 import kr1v.malilibApi.mixin.accessor.WidgetConfigOptionAccessor;
 import kr1v.malilibApi.mixin.accessor.WidgetConfigOptionBaseAccessor;
@@ -17,6 +19,7 @@ import kr1v.malilibApi.widget.WidgetPair;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ConfigPair<L extends IConfigBase & IConfigResettable, R extends IConfigBase & IConfigResettable> extends CustomConfigBase<ConfigPair<L, R>, Void> implements IHotkeyContainer {
 	private final L left;
@@ -134,6 +137,20 @@ public class ConfigPair<L extends IConfigBase & IConfigResettable, R extends ICo
 			hotkeys.addAll(container.getHotkeys());
 		}
 		return hotkeys;
+	}
+
+	@Override
+	public List<IKeybind> getKeybinds() {
+		List<IKeybind> keybinds = IHotkeyContainer.super.getKeybinds();
+		if (left instanceof IKeybindContainer) {
+			IKeybindContainer container = (IKeybindContainer) left;
+			keybinds.addAll(container.getKeybinds());
+		}
+		if (right instanceof IKeybindContainer) {
+			IKeybindContainer container = (IKeybindContainer) right;
+			keybinds.addAll(container.getKeybinds());
+		}
+		return keybinds.stream().distinct().collect(Collectors.toList());
 	}
 
 	@Override

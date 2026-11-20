@@ -7,12 +7,15 @@ import fi.dy.masa.malilib.config.ConfigUtils;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.IConfigResettable;
 import fi.dy.masa.malilib.hotkeys.IHotkey;
+import fi.dy.masa.malilib.hotkeys.IKeybind;
 import kr1v.malilibApi.InternalMalilibApi;
 import kr1v.malilibApi.interfaces.IHotkeyContainer;
+import kr1v.malilibApi.interfaces.IKeybindContainer;
 import kr1v.malilibApi.widget.ConfigObjectButton;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ConfigObject<T> extends CustomConfigBase<ConfigObject<T>, T> implements IHotkeyContainer {
 	public final ImmutableList<IConfigBase> configs;
@@ -150,5 +153,19 @@ public class ConfigObject<T> extends CustomConfigBase<ConfigObject<T>, T> implem
 			}
 		}
 		return hotkeys;
+	}
+
+
+	@Override
+	public List<IKeybind> getKeybinds() {
+		List<IKeybind> keybinds = IHotkeyContainer.super.getKeybinds();
+		for (IConfigBase config : configs) {
+			if (config instanceof IKeybindContainer) {
+				IKeybindContainer container = (IKeybindContainer) config;
+				keybinds.addAll(container.getKeybinds());
+			}
+		}
+
+		return keybinds.stream().distinct().collect(Collectors.toList());
 	}
 }

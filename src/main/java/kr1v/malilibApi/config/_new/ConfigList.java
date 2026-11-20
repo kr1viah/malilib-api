@@ -7,9 +7,11 @@ import fi.dy.masa.malilib.config.IConfigResettable;
 import fi.dy.masa.malilib.config.options.ConfigBooleanHotkeyed;
 import fi.dy.masa.malilib.config.options.ConfigHotkey;
 import fi.dy.masa.malilib.hotkeys.IHotkey;
+import fi.dy.masa.malilib.hotkeys.IKeybind;
 import fi.dy.masa.malilib.interfaces.IStringValue;
 import kr1v.malilibApi.InternalMalilibApi;
 import kr1v.malilibApi.interfaces.IHotkeyContainer;
+import kr1v.malilibApi.interfaces.IKeybindContainer;
 import kr1v.malilibApi.interfaces.IVariableHotkeyContainer;
 import kr1v.malilibApi.widget.ConfigListButton;
 
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class ConfigList<T extends IConfigBase & IConfigResettable> extends CustomConfigBase<ConfigList<T>, List<T>> implements IVariableHotkeyContainer {
 	private final Supplier<T> supplier;
@@ -189,6 +192,19 @@ public class ConfigList<T extends IConfigBase & IConfigResettable> extends Custo
 			}
 		}
 		return hotkeys;
+	}
+
+	@Override
+	public List<IKeybind> getKeybinds() {
+		List<IKeybind> keybinds = IVariableHotkeyContainer.super.getKeybinds();
+		for (IConfigBase config : list) {
+			if (config instanceof IKeybindContainer) {
+				IKeybindContainer container = (IKeybindContainer) config;
+				keybinds.addAll(container.getKeybinds());
+			}
+		}
+
+		return keybinds.stream().distinct().collect(Collectors.toList());
 	}
 
 	@Override
